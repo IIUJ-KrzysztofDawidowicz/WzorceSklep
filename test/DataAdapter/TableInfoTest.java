@@ -33,7 +33,7 @@ public class TableInfoTest {
         assertNotNull("Zawartość nie została odłożona do cache.", TableInfo.getTableInfo(tableName));
     }
 
-    private TableInfo createTableInfo(String tableName, String[] columnNames, Class[] columnTypes) throws SQLException {
+    public static TableInfo createTableInfo(String tableName, String[] columnNames, Class[] columnTypes) throws SQLException {
         if(columnNames.length!=columnTypes.length)
             throw new IllegalArgumentException("Nie zgadzają się długości tablic typów danych i nazw kolumn.");
 

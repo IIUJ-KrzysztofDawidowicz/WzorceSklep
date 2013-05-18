@@ -1,8 +1,5 @@
 package DataEntity;
 
-import DataAdapter.UniversalDataEntity;
-import DataAdapter.UniversalDataEntityImpl;
-
 /**
  * Created with IntelliJ IDEA.
  * User: KrzysztofD
