@@ -37,7 +37,7 @@ class TableInfo
         TableInfo wynik = cache.get(tableName);
         if(wynik==null)
         {
-            wynik = adapter.getTableInfo(tableName);
+            wynik = TableInfo.getTableInfo(tableName);
             if(wynik==null)
             {
                 throw new IllegalArgumentException("Nie istnieje tabela o tej nazwie.");
@@ -60,14 +60,14 @@ class TableInfo
     static
     {
         primitives = new HashMap<String, Class>();
-        primitives.put(boolean.class.toString(),boolean.class);
-        primitives.put(byte.class.toString(),byte.class);
-        primitives.put(char.class.toString(),char.class);
-        primitives.put(int.class.toString(),int.class);
-        primitives.put(short.class.toString(),short.class);
-        primitives.put(long.class.toString(),long.class);
-        primitives.put(float.class.toString(),float.class);
-        primitives.put(double.class.toString(),double.class);
+        primitives.put(boolean.class.toString(),Boolean.class);
+        primitives.put(byte.class.toString(),Byte.class);
+        primitives.put(char.class.toString(),Character.class);
+        primitives.put(int.class.toString(),Integer.class);
+        primitives.put(short.class.toString(),Short.class);
+        primitives.put(long.class.toString(),Long.class);
+        primitives.put(float.class.toString(),Float.class);
+        primitives.put(double.class.toString(),Double.class);
         primitives.put(String.class.toString(),String.class);
     }
     final static DatabaseAdapter adapter = FactoryFactory.getInstance().getDatabaseAdapterFactory().getDatabaseAdapter();
@@ -88,14 +88,15 @@ class TableInfo
             for (int i = 0;i< wynik.columns.length;i++)
             {
                 wynik.columns[i] = metaData.getColumnName(i);
-                columnTypeName = metaData.getColumnClassName(i);
+                columnTypeName = metaData.getColumnClassName(i).substring("class ".length());
                 if(primitives.containsKey(columnTypeName))
                     columnType = primitives.get(columnTypeName);
                 else
                 {
                     try
                     {
-                        columnType = Class.forName(metaData.getColumnClassName(i));
+
+                        columnType = Class.forName(columnTypeName);
                     }
                     catch (ClassNotFoundException ignored)
                     {
@@ -107,6 +108,10 @@ class TableInfo
             cache.put(tableName,wynik);
         }
         return wynik;
+    }
+
+    public int getColumnCount() {
+        return columns.length;
     }
     //</editor-fold>
 }

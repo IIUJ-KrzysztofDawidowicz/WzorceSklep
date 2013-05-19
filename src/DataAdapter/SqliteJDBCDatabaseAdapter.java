@@ -114,9 +114,4 @@ public class SqliteJDBCDatabaseAdapter implements DatabaseAdapter
 
         throw new NotImplementedException();
     }
-
-    public TableInfo getTableInfo(String tableName) {
-
-        throw new NotImplementedException();
-    }
 }

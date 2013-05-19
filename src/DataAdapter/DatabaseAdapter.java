@@ -13,5 +13,5 @@ public interface DatabaseAdapter
     public int insert(UniversalDataEntity nowy);
     public void update(UniversalDataEntity nowy);
     public void delete(String tableName, int id);
-    public TableInfo getTableInfo(String tableName);
+    //public TableInfo getTableInfo(String tableName);
 }

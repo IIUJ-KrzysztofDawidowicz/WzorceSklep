@@ -1,9 +1,11 @@
 package DataAdapter;
 
 
-import main.FactoryFactory;
-
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,7 +17,7 @@ public class UniversalDataEntityImpl implements UniversalDataEntity
 
     public UniversalDataEntityImpl(String tableName)
     {
-        this.tableInfo = FactoryFactory.getInstance().getDatabaseAdapterFactory().getDatabaseAdapter().getTableInfo(tableName);
+        this.tableInfo = TableInfo.getTableInfo(tableName);
         values = new HashMap<String, Object>();
     }
 
@@ -51,9 +53,14 @@ public class UniversalDataEntityImpl implements UniversalDataEntity
     @Override
     public void setValue(String columnName, Object value)
     {
-        if(tableInfo.getValueType(columnName)!= value.getClass())
+//        try
+//        {
+//            value.getClass().cast(tableInfo.getValueType(columnName).newInstance());
+//        }
+//        catch (ClassCastException e)
+        if(!tableInfo.getValueType(columnName).equals(value.getClass()))
         {
-            throw new IllegalArgumentException("Próba przypisania wartości typu " + value.getClass().toString()
+            throw new IllegalArgumentException("Próba przypisania wartości typu " + value.getClass()
             + " do kolumny " + columnName + " o typie " + tableInfo.getValueType(columnName));
         }
         values.put(columnName,value);
@@ -70,8 +77,29 @@ public class UniversalDataEntityImpl implements UniversalDataEntity
     {
         setValue(tableInfo.getColumns()[columnIndex], value);
     }
+
+    @Override
+    public int getColumnCount() {
+        return tableInfo.getColumnCount();
+    }
     //</editor-fold>
 
     private TableInfo tableInfo;
     private Map<String,Object> values;
+
+    public static List<UniversalDataEntity> convertToUniversal(ResultSet resultSet) throws SQLException {
+
+        TableInfo info = TableInfo.getTableInfo(resultSet.getMetaData());
+        List<UniversalDataEntity> wynik = new LinkedList<UniversalDataEntity>();
+        UniversalDataEntity entity;
+        while (resultSet.next())
+        {
+            entity = new UniversalDataEntityImpl(info.tableName);
+            for (int i = 0; i < entity.getColumnCount(); i++) {
+                entity.setValue(i, resultSet.getObject(i));
+            }
+        }
+
+        return wynik;
+    }
 }

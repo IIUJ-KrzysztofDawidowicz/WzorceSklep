@@ -11,4 +11,6 @@ public interface UniversalDataEntity
     public void setValue(String columnName, Object value);
     public Object getValue(int columnIndex);
     public void setValue(int columnIndex, Object value);
+
+    int getColumnCount();
 }
