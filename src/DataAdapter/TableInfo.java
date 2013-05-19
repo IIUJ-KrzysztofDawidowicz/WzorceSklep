@@ -51,8 +51,8 @@ class TableInfo
     //<editor-fold desc="Pola">
     public final String tableName;
     private String[] columns;
-    private Map<String,Class> valueTypes;
-    private static Map<String,TableInfo> cache = new HashMap<String, TableInfo>();
+    private final Map<String,Class> valueTypes;
+    private final static Map<String,TableInfo> cache = new HashMap<String, TableInfo>();
     /**
      * Mapuje nazwy do typów prymitywnych - wszystkie inne klasy można dostać z Class.forName.
      */

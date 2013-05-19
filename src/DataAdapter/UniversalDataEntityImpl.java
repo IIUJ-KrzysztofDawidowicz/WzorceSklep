@@ -84,8 +84,8 @@ public class UniversalDataEntityImpl implements UniversalDataEntity
     }
     //</editor-fold>
 
-    private TableInfo tableInfo;
-    private Map<String,Object> values;
+    private final TableInfo tableInfo;
+    private final Map<String,Object> values;
 
     public static List<UniversalDataEntity> convertToUniversal(ResultSet resultSet) throws SQLException {
 

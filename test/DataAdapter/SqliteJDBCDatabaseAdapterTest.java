@@ -12,7 +12,7 @@ import java.sql.SQLException;
  * Time: 16:55
  * To change this template use File | Settings | File Templates.
  */
-public class SqliteJDBCDatabaseAdapterTest extends TestCase
+public class SqliteJDBCDatabaseAdapterTest
 {
     SqliteJDBCDatabaseAdapter adapter;
 

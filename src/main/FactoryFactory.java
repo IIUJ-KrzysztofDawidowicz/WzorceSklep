@@ -19,7 +19,7 @@ public abstract class FactoryFactory
 
     public abstract DataAdapterFactory getDatabaseAdapterFactory();
 
-    private static FactoryFactory ourInstance = new FactoryFactory() {
+    private final static FactoryFactory ourInstance = new FactoryFactory() {
         @Override
         public DataAdapterFactory getDatabaseAdapterFactory() {
             return new SqliteJDBCDataAdapterFactory("testDB.db");
