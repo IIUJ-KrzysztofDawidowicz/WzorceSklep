@@ -95,7 +95,6 @@ class TableInfo
                 {
                     try
                     {
-
                         columnType = Class.forName(columnTypeName);
                     }
                     catch (ClassNotFoundException ignored)

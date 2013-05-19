@@ -8,20 +8,17 @@ import java.util.List;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static DataAdapter.DBTestUtils.*;
 
 public class UniversalDataEntityImplTest
 {
-
-    private final String tableName = "Test Table";
-    private final String[] columnNames = new String[] {"ID", "Name"};
-    private final Class[] columnTypes = new Class[] {Integer.class, String.class};
 
     @Test
     public void testConvertToUniversal() throws Exception
     {
         ResultSet resultSet = createMock(ResultSet.class);
         expect(resultSet.getMetaData())
-                .andStubReturn(TableInfoTest.getMockResultSetMetaData(tableName, columnNames, columnTypes));
+                .andStubReturn(DBTestUtils.getMockResultSetMetaData(tableName, columnNames, columnTypes));
         int[] idColumn = new int[]{1,2,3};
         String[] nameColumn = new String[] {"First", "Second", "Third"};
 
@@ -48,7 +45,7 @@ public class UniversalDataEntityImplTest
     @Test
     public void testGetValue() throws Exception
     {
-        TableInfoTest.createTableInfo(tableName, columnNames, columnTypes);
+        createTableInfo(tableName, columnNames, columnTypes);
         UniversalDataEntity entity = new UniversalDataEntityImpl(tableName);
         entity.setValue("ID", 1);
         entity.setValue("Name", "First");
@@ -61,7 +58,7 @@ public class UniversalDataEntityImplTest
     @Test
     public void testValueChecking() throws Exception
     {
-        TableInfoTest.createTableInfo(tableName, columnNames, columnTypes);
+        DBTestUtils.createTableInfo(tableName, columnNames, columnTypes);
         UniversalDataEntity entity = new UniversalDataEntityImpl(tableName);
         boolean exceptionCaught = false;
         //Kolumna ID, typ int
@@ -88,11 +85,7 @@ public class UniversalDataEntityImplTest
     @Test
     public void testUDEConstructor() throws Exception
     {
-        final String tableName = "Test Table";
-        final String[] columnNames = new String[] {"ID", "Name"};
-        final Class[] columnTypes = new Class[] {int.class, String.class};
-
-        TableInfoTest.createTableInfo(tableName,columnNames,columnTypes);
+        DBTestUtils.createTableInfo(tableName, columnNames, columnTypes);
         UniversalDataEntity entity = new UniversalDataEntityImpl(tableName);
         String[] gotColumns = entity.getColumns();
         for (int i = 0; i < columnNames.length; i++)
