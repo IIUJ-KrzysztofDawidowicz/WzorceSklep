@@ -70,7 +70,6 @@ class TableInfo
         primitives.put(double.class.toString(),Double.class);
         primitives.put(String.class.toString(),String.class);
     }
-    final static DatabaseAdapter adapter = FactoryFactory.getInstance().getDatabaseAdapterFactory().getDatabaseAdapter();
 
     public static TableInfo getTableInfo(ResultSetMetaData metaData) throws SQLException {
         TableInfo wynik;
