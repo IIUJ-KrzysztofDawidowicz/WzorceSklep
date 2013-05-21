@@ -1,6 +1,7 @@
 package main;
 
 import DataAdapter.SqliteJDBCDatabaseAdapter;
+import DataAdapter.UniversalDataEntity;
 
 import java.sql.SQLException;
 
@@ -21,8 +22,11 @@ public class Main
         String sMakeSelect = "SELECT response from dummy";
 
         try {
-            System.out.println(adapter.createTable(sMakeTable, sMakeInsert, sMakeSelect));
+            for(UniversalDataEntity entity: adapter.select("dummy", null, null))
+                System.out.println(entity);
         } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }

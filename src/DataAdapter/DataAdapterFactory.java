@@ -1,6 +1,9 @@
 package DataAdapter;
 
-public interface DataAdapterFactory
+class DataAdapterFactory
 {
-    public DatabaseAdapter getDatabaseAdapter();
+    public static DatabaseAdapter getDatabaseAdapter()
+    {
+        return null;
+    }
 }

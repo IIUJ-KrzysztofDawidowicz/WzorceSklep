@@ -19,11 +19,11 @@ class DBTestUtils {
             throw new IllegalArgumentException("Nie zgadzają się długości tablic typów danych i nazw kolumn.");
 
         ResultSetMetaData metaData = EasyMock.createMock(ResultSetMetaData.class);
-        EasyMock.expect(metaData.getTableName(0)).andStubReturn(tableName);
+        EasyMock.expect(metaData.getTableName(1)).andStubReturn(tableName);
         EasyMock.expect(metaData.getColumnCount()).andStubReturn(columnNames.length);
         for (int i = 0; i < columnNames.length; i++) {
-            EasyMock.expect(metaData.getColumnClassName(i)).andStubReturn(columnTypes[i].toString());
-            EasyMock.expect(metaData.getColumnName(i)).andStubReturn(columnNames[i]);
+            EasyMock.expect(metaData.getColumnClassName(i+1)).andStubReturn(columnTypes[i].toString());
+            EasyMock.expect(metaData.getColumnName(i+1)).andStubReturn(columnNames[i]);
         }
         EasyMock.replay(metaData);
         return metaData;

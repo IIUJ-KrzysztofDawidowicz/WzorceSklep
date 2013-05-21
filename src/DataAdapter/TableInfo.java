@@ -1,7 +1,5 @@
 package DataAdapter;
 
-import main.FactoryFactory;
-
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -14,15 +12,17 @@ class TableInfo
 {
 
     TableInfo(ResultSetMetaData metaData) throws SQLException  {
-        tableName = metaData.getTableName(0);
+        tableName = metaData.getTableName(1);
         this.columns = new String[metaData.getColumnCount()];
         valueTypes = new HashMap<String, Class>();
         Class columnType = null;
         String columnTypeName;
         for (int i = 0;i< this.columns.length;i++)
         {
-            this.columns[i] = metaData.getColumnName(i); //Zwracany string zaczyna się od "class " i dopiero jest nazwa klasy.
-            columnTypeName = metaData.getColumnClassName(i).substring("class ".length());
+            this.columns[i] = metaData.getColumnName(i+1); //Zwracany string zaczyna się od "class " i dopiero jest nazwa klasy.
+            columnTypeName = metaData.getColumnClassName(i+1);
+            if(columnTypeName.startsWith("class "))
+                columnTypeName=columnTypeName.substring("class ".length());
             if(primitives.containsKey(columnTypeName))
                 columnType = primitives.get(columnTypeName);
             else
@@ -61,7 +61,7 @@ class TableInfo
      */
     static TableInfo getTableInfo(String tableName) throws SQLException {
         if(!cache.containsKey(tableName))
-            FactoryFactory.getInstance().getDatabaseAdapterFactory().getDatabaseAdapter().createTableInfo(tableName);
+            DataAdapterFactory.getDatabaseAdapter().createTableInfo(tableName);
         return cache.get(tableName);
     }
 
@@ -73,7 +73,7 @@ class TableInfo
      * @throws SQLException Jeśli w bazie danych zaszedł błąd.
      */
     public static TableInfo getTableInfo(ResultSetMetaData metaData) throws SQLException {
-        String tableName = metaData.getTableName(0);
+        String tableName = metaData.getTableName(1);
         if(cache.containsKey(tableName))
             return cache.get(tableName);
         return new TableInfo(metaData);

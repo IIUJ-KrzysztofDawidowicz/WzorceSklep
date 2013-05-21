@@ -24,8 +24,8 @@ public class UniversalDataEntityImplTest
 
         for (int i = 0; i < idColumn.length; i++) {
             expect(resultSet.next()).andReturn(true);
-            expect(resultSet.getObject(0)).andReturn(idColumn[i]);
-            expect(resultSet.getObject(1)).andReturn(nameColumn[i]);
+            expect(resultSet.getObject(1)).andReturn(idColumn[i]);
+            expect(resultSet.getObject(2)).andReturn(nameColumn[i]);
         }
         expect(resultSet.next()).andReturn(false);
 
@@ -93,5 +93,16 @@ public class UniversalDataEntityImplTest
             assertEquals(columnNames[i], gotColumns[i]);
 
         }
+    }
+
+    @Test
+    public void testToString() throws Exception
+    {
+        createTableInfo(tableName,columnNames,columnTypes);
+        UniversalDataEntity entity = UniversalDataEntityFactory.createUniversalDataEntity(tableName);
+        entity.setValue(0,1);
+        entity.setValue(1,"First");
+        String expected = String.format("Wiersz tabeli: %s\n%s, %s\n1, First", tableName, columnNames[0], columnNames[1]);
+        assertEquals(expected, entity.toString());
     }
 }

@@ -14,7 +14,6 @@ import java.util.List;
  */
 public class SqliteJDBCDatabaseAdapter implements DatabaseAdapter
 {
-    Connection connection;
     static final String driverName = "org.sqlite.JDBC";
     String databaseFileName = "testDB.db";
     static final String jdbc = "jdbc:sqlite";

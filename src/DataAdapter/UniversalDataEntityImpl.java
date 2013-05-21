@@ -4,6 +4,7 @@ package DataAdapter;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Reprezentuje dowolny obiekt trzymany w wierszu tabeli.
@@ -78,9 +79,22 @@ public class UniversalDataEntityImpl implements UniversalDataEntity
     public int getColumnCount() {
         return tableInfo.getColumnCount();
     }
+
+    @Override
+    public String toString()
+    {
+        StringUtils.join(getColumns(), ", ");
+        return String.format("Wiersz tabeli: %s\n%s\n%s",
+                getTableName(),
+                StringUtils.join(getColumns(), ", "),
+                StringUtils.join(getValues(), ", "));
+    }
     //</editor-fold>
 
     private final TableInfo tableInfo;
     private final Map<String,Object> values;
 
+    public String getTableName() {
+        return tableInfo.tableName;
+    }
 }
