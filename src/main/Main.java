@@ -1,6 +1,7 @@
 package main;
 
-import DataAdapter.SqliteJDBCDatabaseAdapter;
+import DataAdapter.DataAdapterFactory;
+import DataAdapter.DatabaseAdapter;
 import DataAdapter.UniversalDataEntity;
 
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ public class Main
 {
     public static void main(String[] args)
     {
-        SqliteJDBCDatabaseAdapter adapter = new SqliteJDBCDatabaseAdapter("testDB.db");
+        DatabaseAdapter adapter = DataAdapterFactory.getDatabaseAdapter("testDB.db");
         String sMakeTable = "";//"CREATE TABLE dummy (id numeric, response text)";
         String sMakeInsert = "INSERT INTO dummy VALUES(1,'Hello from the database')";
         String sMakeSelect = "SELECT response from dummy";

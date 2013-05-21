@@ -1,9 +1,15 @@
 package DataAdapter;
 
-class DataAdapterFactory
+public class DataAdapterFactory
 {
+    private static String defaultDB = "testDB.db";
+
+    public static DatabaseAdapter getDatabaseAdapter(String dbFileName) {
+        return new JavaDBAdapter(dbFileName);
+    }
+
     public static DatabaseAdapter getDatabaseAdapter()
     {
-        return null;
+        return getDatabaseAdapter(defaultDB);
     }
 }
