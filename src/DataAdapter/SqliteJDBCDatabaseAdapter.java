@@ -111,4 +111,9 @@ public class SqliteJDBCDatabaseAdapter implements DatabaseAdapter
         }
         TableInfo.getTableInfo(rs.getMetaData());
     }
+
+    @Override
+    public void executeArbitraryStatement(String statement) throws SQLException {
+        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
+    }
 }

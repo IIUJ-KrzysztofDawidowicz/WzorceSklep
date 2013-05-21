@@ -14,4 +14,6 @@ public interface DatabaseAdapter
     public void update(UniversalDataEntity nowy);
     public void delete(String tableName, int id);
     public void createTableInfo(String tableName) throws SQLException;
+
+    void executeArbitraryStatement(String statement) throws SQLException;
 }

@@ -6,7 +6,7 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 class DBTestUtils {
-    static final String tableName = "Test Table";
+    static final String tableName = "TestTable";
     static final String[] columnNames = new String[] {"ID", "Name"};
     static final Class[] columnTypes = new Class[] {Integer.class, String.class};
 

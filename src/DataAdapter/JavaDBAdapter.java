@@ -1,7 +1,6 @@
 package DataAdapter;
 
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.Properties;
 
@@ -15,7 +14,7 @@ import java.util.Properties;
 public class JavaDBAdapter implements DatabaseAdapter {
     private final String dbName;
     private final Properties properties;
-    private final String connectionUrl;
+    private final String url;
 
     public JavaDBAdapter(String dbName, Properties properties) {
         this.dbName = dbName;
@@ -27,9 +26,9 @@ public class JavaDBAdapter implements DatabaseAdapter {
         }
         setDBSystemDir();
 
-        connectionUrl = String.format("jdbc:derby:%s;", dbName);
+        url = String.format("jdbc:derby:%s;", dbName);
         try {
-            DriverManager.getConnection(connectionUrl, properties);
+            DriverManager.getConnection(url, properties);
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -46,7 +45,19 @@ public class JavaDBAdapter implements DatabaseAdapter {
 
     @Override
     public List<UniversalDataEntity> select(String tableName, String lookFor, String orderBy) throws SQLException, ClassNotFoundException {
-        throw new UnsupportedOperationException("Not implemented.");
+        Connection conn = DriverManager.getConnection(url);
+        Statement stmt = conn.createStatement();
+        String selectCommand = String.format("SELECT * from %s", tableName);
+
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery(selectCommand);
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Błąd przy próbie odczytu danych z tabeli " + tableName
+                    + ", prawdopodobnie nieprawidłowa nazwa.", e);
+        }
+
+        return UniversalDataEntityFactory.convertToUniversal(rs);
     }
 
     @Override
@@ -67,5 +78,12 @@ public class JavaDBAdapter implements DatabaseAdapter {
     @Override
     public void createTableInfo(String tableName) throws SQLException {
         throw new UnsupportedOperationException("Not implemented.");
+    }
+
+    @Override
+    public void executeArbitraryStatement(String command) throws SQLException {
+        Connection connection = DriverManager.getConnection(url, properties);
+        Statement statement = connection.createStatement();
+        statement.execute(command);
     }
 }
