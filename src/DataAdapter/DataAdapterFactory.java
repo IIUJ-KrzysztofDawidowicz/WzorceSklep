@@ -2,7 +2,7 @@ package DataAdapter;
 
 public class DataAdapterFactory
 {
-    private static String defaultDB = "testDB.db";
+    private static final String defaultDB = "testDB.db";
 
     public static DatabaseAdapter getDatabaseAdapter(String dbFileName) {
         return new JavaDBAdapter(dbFileName);

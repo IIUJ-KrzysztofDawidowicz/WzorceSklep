@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class UniversalDataEntityFactory
 {
-    public static List<UniversalDataEntity> convertToUniversal(ResultSet resultSet) throws SQLException, ClassNotFoundException {
+    public static List<UniversalDataEntity> convertToUniversal(ResultSet resultSet) throws SQLException {
 
         TableInfo info;
         info = TableInfo.getTableInfo(resultSet.getMetaData());
