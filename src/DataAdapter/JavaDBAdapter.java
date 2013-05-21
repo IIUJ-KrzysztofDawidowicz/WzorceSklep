@@ -1,5 +1,7 @@
 package DataAdapter;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.sql.*;
 import java.util.List;
 import java.util.Properties;
@@ -61,8 +63,20 @@ public class JavaDBAdapter implements DatabaseAdapter {
     }
 
     @Override
-    public int insert(UniversalDataEntity nowy) {
-        throw new UnsupportedOperationException("Not implemented.");
+    public void insert(UniversalDataEntity nowy) throws SQLException {
+        Connection connection = DriverManager.getConnection(url,properties);
+        String sql = String.format("INSERT INTO %s (%s) VALUES (%s)",
+                nowy.getTableName(),
+                StringUtils.join(nowy.getColumns(), ", "),
+                StringUtils.join(nowy.getValues(), ", ")
+        );
+        sql = String.format("INSERT INTO %s VALUES (%s)",
+                nowy.getTableName(),
+                StringUtils.join(nowy.getValues(), ", ")
+        );
+        sql = "INSERT INTO TestTable (Name) VALUES ('First')";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.execute();
     }
 
     @Override
@@ -88,7 +102,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
     }
 
     @Override
-    public void insert(List<UniversalDataEntity> entityList) {
+    public void insert(List<UniversalDataEntity> entityList) throws SQLException {
         for(UniversalDataEntity entity: entityList)
             insert(entity);
     }

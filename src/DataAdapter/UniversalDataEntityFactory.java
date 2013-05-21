@@ -26,6 +26,7 @@ public class UniversalDataEntityFactory
             for (int i = 0; i < entity.getColumnCount(); i++) {
                 entity.setValue(i, resultSet.getObject(i+1));
             }
+            wynik.add(entity);
         }
 
         return wynik;

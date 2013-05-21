@@ -13,4 +13,6 @@ public interface UniversalDataEntity
     public void setValue(int columnIndex, Object value);
 
     int getColumnCount();
+
+    String getTableName();
 }

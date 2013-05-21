@@ -27,6 +27,7 @@ public class UniversalDataEntityImplTest
             assertEquals(idColumn[i], entity.getValue(0));
             assertEquals(nameColumn[i], entity.getValue(1));
             assertEquals(nameColumn[i], entity.getValue("Name"));
+            i++;
         }
     }
 

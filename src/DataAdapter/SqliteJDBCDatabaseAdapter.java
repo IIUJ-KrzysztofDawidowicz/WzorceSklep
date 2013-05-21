@@ -78,7 +78,7 @@ public class SqliteJDBCDatabaseAdapter implements DatabaseAdapter
     }
 
     @Override
-    public int insert(UniversalDataEntity nowy) {
+    public void insert(UniversalDataEntity nowy) {
 
         throw new NotImplementedException();
     }

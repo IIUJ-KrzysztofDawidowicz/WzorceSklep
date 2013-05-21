@@ -50,7 +50,11 @@ public class JavaDBAdapterTest {
             i++;
         }
 
-
+/*        adapter.delete(tableName, 3);
+        List<UniversalDataEntity> fromDB = adapter.select(tableName,"","");
+        assertEquals(entityList.get(0), fromDB.get(0));
+        assertEquals(entityList.get(1), fromDB.get(1));
+        assertEquals(2, fromDB.size());*/
     }
 
     @Test
