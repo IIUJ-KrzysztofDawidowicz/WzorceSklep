@@ -1,7 +1,9 @@
 package DataAdapter;
 
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,10 +13,35 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class JavaDBAdapter implements DatabaseAdapter {
-    private final String dbFileName;
+    private final String dbName;
+    private final Properties properties;
+    private final String connectionUrl;
 
-    public JavaDBAdapter(String dbFileName) {
-        this.dbFileName = dbFileName;
+    public JavaDBAdapter(String dbName, Properties properties) {
+        this.dbName = dbName;
+        this.properties = properties;
+        try {
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        setDBSystemDir();
+
+        connectionUrl = String.format("jdbc:derby:%s;", dbName);
+        try {
+            DriverManager.getConnection(connectionUrl, properties);
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+    private void setDBSystemDir() {
+        // Decide on the db system directory: <userhome>/.addressbook/
+        //String userHomeDir = System.getProperty("user.home", ".");
+        String systemDir = "C:\\Users\\KrzysztofD\\Documents\\InteliJ Projects\\WzorceSklep\\";
+
+        // Set the db system directory.
+        System.setProperty("derby.system.home", systemDir);
     }
 
     @Override
