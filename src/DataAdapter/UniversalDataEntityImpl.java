@@ -1,11 +1,8 @@
 package DataAdapter;
 
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,8 +12,7 @@ public class UniversalDataEntityImpl implements UniversalDataEntity
 {
     //<editor-fold desc="Metody publiczne">
 
-    public UniversalDataEntityImpl(String tableName)
-    {
+    UniversalDataEntityImpl(String tableName) throws SQLException {
         this.tableInfo = TableInfo.getTableInfo(tableName);
         values = new HashMap<String, Object>();
     }
@@ -87,19 +83,4 @@ public class UniversalDataEntityImpl implements UniversalDataEntity
     private final TableInfo tableInfo;
     private final Map<String,Object> values;
 
-    public static List<UniversalDataEntity> convertToUniversal(ResultSet resultSet) throws SQLException {
-
-        TableInfo info = TableInfo.getTableInfo(resultSet.getMetaData());
-        List<UniversalDataEntity> wynik = new LinkedList<UniversalDataEntity>();
-        UniversalDataEntity entity;
-        while (resultSet.next())
-        {
-            entity = new UniversalDataEntityImpl(info.tableName);
-            for (int i = 0; i < entity.getColumnCount(); i++) {
-                entity.setValue(i, resultSet.getObject(i));
-            }
-        }
-
-        return wynik;
-    }
 }

@@ -3,7 +3,6 @@ package DataAdapter;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.sql.*;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -63,11 +62,10 @@ public class SqliteJDBCDatabaseAdapter implements DatabaseAdapter
     }
 
     @Override
-    public List<UniversalDataEntity> select(String tableName, String lookFor, String orderBy) throws SQLException {
+    public List<UniversalDataEntity> select(String tableName, String lookFor, String orderBy) throws SQLException, ClassNotFoundException {
         Connection conn = DriverManager.getConnection(url);
         Statement stmt = conn.createStatement();
-        String selectCommand = "SELECT * from " + tableName;
-        List<UniversalDataEntity> wynik = new LinkedList<UniversalDataEntity>();
+        String selectCommand = String.format("SELECT * from %s", tableName);
 
         ResultSet rs;
         try {
@@ -76,24 +74,8 @@ public class SqliteJDBCDatabaseAdapter implements DatabaseAdapter
             throw new IllegalArgumentException("Błąd przy próbie odczytu danych z tabeli " + tableName
                     + ", prawdopodobnie nieprawidłowa nazwa.", e);
         }
-        TableInfo tableInfo = TableInfo.getTableInfo(tableName);
-        if(tableInfo==null)
-        {
-            ResultSetMetaData metaData = rs.getMetaData();
-            tableInfo = TableInfo.getTableInfo(metaData);
-        }
-        try
-        {
-            UniversalDataEntity wiersz;
-            while(rs.next())
-            {
-//                wynik.append(rs.getString("response"));
 
-            }
-        } finally {
-            try { rs.close(); } catch (Exception ignore) {}
-        }
-        throw new NotImplementedException();
+        return UniversalDataEntityFactory.convertToUniversal(rs);
     }
 
     @Override
@@ -113,5 +95,21 @@ public class SqliteJDBCDatabaseAdapter implements DatabaseAdapter
     public void delete(String tableName, int id) {
 
         throw new NotImplementedException();
+    }
+
+    @Override
+    public void createTableInfo(String tableName) throws SQLException {
+        Connection conn = DriverManager.getConnection(url);
+        Statement stmt = conn.createStatement();
+        String selectCommand = String.format("SELECT * from %s", tableName);
+
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery(selectCommand);
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Błąd przy próbie odczytu danych z tabeli " + tableName
+                    + ", prawdopodobnie nieprawidłowa nazwa.", e);
+        }
+        TableInfo.getTableInfo(rs.getMetaData());
     }
 }

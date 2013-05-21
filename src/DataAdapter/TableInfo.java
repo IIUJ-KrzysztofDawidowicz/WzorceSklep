@@ -13,9 +13,29 @@ import java.util.Map;
 class TableInfo
 {
 
-    public TableInfo(String tableName) {
-        this.tableName = tableName;
-        this.valueTypes = new HashMap<String, Class>();
+    TableInfo(ResultSetMetaData metaData) throws SQLException  {
+        tableName = metaData.getTableName(0);
+        this.columns = new String[metaData.getColumnCount()];
+        valueTypes = new HashMap<String, Class>();
+        Class columnType = null;
+        String columnTypeName;
+        for (int i = 0;i< this.columns.length;i++)
+        {
+            this.columns[i] = metaData.getColumnName(i); //Zwracany string zaczyna się od "class " i dopiero jest nazwa klasy.
+            columnTypeName = metaData.getColumnClassName(i).substring("class ".length());
+            if(primitives.containsKey(columnTypeName))
+                columnType = primitives.get(columnTypeName);
+            else
+            {
+                try {
+                    columnType = Class.forName(columnTypeName);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+            }
+            valueTypes.put(columns[i], columnType);
+        }
+        cache.put(tableName,this);
     }
 
     String[] getColumns()
@@ -33,18 +53,30 @@ class TableInfo
         return wynik;
     }
 
-    static TableInfo getTableInfo(String tableName) throws IllegalArgumentException {
-        TableInfo wynik = cache.get(tableName);
-        if(wynik==null)
-        {
-            wynik = TableInfo.getTableInfo(tableName);
-            if(wynik==null)
-            {
-                throw new IllegalArgumentException("Nie istnieje tabela o tej nazwie.");
-            }
-            cache.put(tableName,wynik);
-        }
-        return wynik;
+    /**
+     *
+     * @param tableName
+     * @return
+     * @throws SQLException Jeśli nie ma takiej tabeli.
+     */
+    static TableInfo getTableInfo(String tableName) throws SQLException {
+        if(!cache.containsKey(tableName))
+            FactoryFactory.getInstance().getDatabaseAdapterFactory().getDatabaseAdapter().createTableInfo(tableName);
+        return cache.get(tableName);
+    }
+
+    /**
+     * Tworzy obiekt TableInfo na podstawie podanych metadanych.
+     * Jeśli obiekt dla danej tabeli jest już w cache, jest on zwracany - nie jest .
+     * @param metaData
+     * @return
+     * @throws SQLException Jeśli w bazie danych zaszedł błąd.
+     */
+    public static TableInfo getTableInfo(ResultSetMetaData metaData) throws SQLException {
+        String tableName = metaData.getTableName(0);
+        if(cache.containsKey(tableName))
+            return cache.get(tableName);
+        return new TableInfo(metaData);
     }
     //</editor-fold>
 
@@ -55,6 +87,7 @@ class TableInfo
     private final static Map<String,TableInfo> cache = new HashMap<String, TableInfo>();
     /**
      * Mapuje nazwy do typów prymitywnych - wszystkie inne klasy można dostać z Class.forName.
+     * Używany do tworzenia valueTypes.
      */
     private final static Map<String, Class> primitives;
     static
@@ -71,45 +104,12 @@ class TableInfo
         primitives.put(String.class.toString(),String.class);
     }
 
-    public static TableInfo getTableInfo(ResultSetMetaData metaData) throws SQLException {
-        TableInfo wynik;
-        String tableName = metaData.getTableName(0);
-        if(cache.containsKey(tableName))
-        {
-            wynik = cache.get(tableName);
-        }
-        else
-        {
-            wynik = new TableInfo(tableName);
-            wynik.columns = new String[metaData.getColumnCount()];
-            Class columnType = null;
-            String columnTypeName;
-            for (int i = 0;i< wynik.columns.length;i++)
-            {
-                wynik.columns[i] = metaData.getColumnName(i);
-                columnTypeName = metaData.getColumnClassName(i).substring("class ".length());
-                if(primitives.containsKey(columnTypeName))
-                    columnType = primitives.get(columnTypeName);
-                else
-                {
-                    try
-                    {
-                        columnType = Class.forName(columnTypeName);
-                    }
-                    catch (ClassNotFoundException ignored)
-                    {
-                        ignored.printStackTrace();  //Zasadniczo nie może się zdarzyć, chyba że oficjalne klasy javy przstały działać.
-                    }
-                }
-                wynik.valueTypes.put(wynik.columns[i], columnType);
-            }
-            cache.put(tableName,wynik);
-        }
-        return wynik;
-    }
-
     public int getColumnCount() {
         return columns.length;
+    }
+
+    public static boolean hasInfo(String tableName) {
+        return cache.containsKey(tableName);
     }
     //</editor-fold>
 }

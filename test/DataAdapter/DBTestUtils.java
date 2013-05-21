@@ -10,7 +10,7 @@ class DBTestUtils {
     static final String[] columnNames = new String[] {"ID", "Name"};
     static final Class[] columnTypes = new Class[] {Integer.class, String.class};
 
-    public static TableInfo createTableInfo(String tableName, String[] columnNames, Class[] columnTypes) throws SQLException {
+    public static TableInfo createTableInfo(String tableName, String[] columnNames, Class[] columnTypes) throws SQLException, ClassNotFoundException {
         return TableInfo.getTableInfo(getMockResultSetMetaData(tableName, columnNames, columnTypes));
     }
 
@@ -19,7 +19,7 @@ class DBTestUtils {
             throw new IllegalArgumentException("Nie zgadzają się długości tablic typów danych i nazw kolumn.");
 
         ResultSetMetaData metaData = EasyMock.createMock(ResultSetMetaData.class);
-        EasyMock.expect(metaData.getTableName(0)).andReturn(tableName);
+        EasyMock.expect(metaData.getTableName(0)).andStubReturn(tableName);
         EasyMock.expect(metaData.getColumnCount()).andStubReturn(columnNames.length);
         for (int i = 0; i < columnNames.length; i++) {
             EasyMock.expect(metaData.getColumnClassName(i)).andStubReturn(columnTypes[i].toString());

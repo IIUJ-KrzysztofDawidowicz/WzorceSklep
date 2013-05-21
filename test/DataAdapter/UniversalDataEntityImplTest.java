@@ -31,7 +31,7 @@ public class UniversalDataEntityImplTest
 
         replay(resultSet);
 
-        List<UniversalDataEntity> wynik = UniversalDataEntityImpl.convertToUniversal(resultSet);
+        List<UniversalDataEntity> wynik = UniversalDataEntityFactory.convertToUniversal(resultSet);
         int i = 0;
         for(UniversalDataEntity entity: wynik)
         {
@@ -46,7 +46,7 @@ public class UniversalDataEntityImplTest
     public void testGetValue() throws Exception
     {
         createTableInfo(tableName, columnNames, columnTypes);
-        UniversalDataEntity entity = new UniversalDataEntityImpl(tableName);
+        UniversalDataEntity entity = UniversalDataEntityFactory.createUniversalDataEntity(tableName);
         entity.setValue("ID", 1);
         entity.setValue("Name", "First");
         assertEquals(1, entity.getValue("ID"));
@@ -59,7 +59,7 @@ public class UniversalDataEntityImplTest
     public void testValueChecking() throws Exception
     {
         DBTestUtils.createTableInfo(tableName, columnNames, columnTypes);
-        UniversalDataEntity entity = new UniversalDataEntityImpl(tableName);
+        UniversalDataEntity entity = UniversalDataEntityFactory.createUniversalDataEntity(tableName);
         boolean exceptionCaught = false;
         //Kolumna ID, typ int
         try
@@ -86,7 +86,7 @@ public class UniversalDataEntityImplTest
     public void testUDEConstructor() throws Exception
     {
         DBTestUtils.createTableInfo(tableName, columnNames, columnTypes);
-        UniversalDataEntity entity = new UniversalDataEntityImpl(tableName);
+        UniversalDataEntity entity = UniversalDataEntityFactory.createUniversalDataEntity(tableName);
         String[] gotColumns = entity.getColumns();
         for (int i = 0; i < columnNames.length; i++)
         {
