@@ -2,13 +2,18 @@ package DataAdapter;
 
 import org.easymock.EasyMock;
 
+import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+
 class DBTestUtils {
-    static final String tableName = "TestTable";
-    static final String[] columnNames = new String[] {"ID", "Name"};
-    static final Class[] columnTypes = new Class[] {Integer.class, String.class};
+    static final String     tableName = "TestTable";
+    static final String[]   columnNames = new String[] {"ID", "Name"};
+    static final Class[]    columnTypes = new Class[] {Integer.class, String.class};
 
     public static TableInfo createTableInfo(String tableName, String[] columnNames, Class[] columnTypes) throws SQLException, ClassNotFoundException {
         return TableInfo.getTableInfo(getMockResultSetMetaData(tableName, columnNames, columnTypes));
@@ -27,5 +32,21 @@ class DBTestUtils {
         }
         EasyMock.replay(metaData);
         return metaData;
+    }
+
+    static ResultSet getMockResultSet(int[] idColumn, String[] nameColumn) throws SQLException {
+        ResultSet resultSet = createMock(ResultSet.class);
+        expect(resultSet.getMetaData())
+                .andStubReturn(DBTestUtils.getMockResultSetMetaData(tableName, columnNames, columnTypes));
+
+        for (int i = 0; i < idColumn.length; i++) {
+            expect(resultSet.next()).andReturn(true);
+            expect(resultSet.getObject(1)).andReturn(idColumn[i]);
+            expect(resultSet.getObject(2)).andReturn(nameColumn[i]);
+        }
+        expect(resultSet.next()).andReturn(false);
+
+        replay(resultSet);
+        return resultSet;
     }
 }

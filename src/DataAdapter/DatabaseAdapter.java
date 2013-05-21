@@ -16,4 +16,6 @@ public interface DatabaseAdapter
     public void createTableInfo(String tableName) throws SQLException;
 
     void executeArbitraryStatement(String statement) throws SQLException;
+
+    void insert(List<UniversalDataEntity> entityList);
 }

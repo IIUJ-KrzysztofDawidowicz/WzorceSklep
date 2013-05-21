@@ -1,10 +1,14 @@
 package DataAdapter;
 
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
-import static DataAdapter.DBTestUtils.*;
-import static org.junit.Assert.*;
+
+import java.util.List;
+
+import static DataAdapter.DBTestUtils.getMockResultSet;
+import static DataAdapter.DBTestUtils.tableName;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,22 +39,22 @@ public class JavaDBAdapterTest {
 
     @Test
     public void testSelect() throws Exception {
+        int[] idColumn = new int[]{1,2,3};
+        String[] nameColumn = new String[] {"First", "Second", "Third"};
+        List<UniversalDataEntity> entityList = UniversalDataEntityFactory.convertToUniversal(getMockResultSet(idColumn,nameColumn));
+        adapter.insert(entityList);
+        int i = 0;
         for(UniversalDataEntity entity: adapter.select(tableName,"",""))
-            System.out.print(entity);
-    }
+        {
+            assertEquals(entity.toString(), entityList.get(i).toString());
+            i++;
+        }
 
-    @Test
-    public void testInsert() throws Exception {
 
     }
 
     @Test
     public void testUpdate() throws Exception {
-        fail("Not implemented.");
-    }
-
-    @Test
-    public void testDelete() throws Exception {
         fail("Not implemented.");
     }
 

@@ -86,4 +86,10 @@ public class JavaDBAdapter implements DatabaseAdapter {
         Statement statement = connection.createStatement();
         statement.execute(command);
     }
+
+    @Override
+    public void insert(List<UniversalDataEntity> entityList) {
+        for(UniversalDataEntity entity: entityList)
+            insert(entity);
+    }
 }

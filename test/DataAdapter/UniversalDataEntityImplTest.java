@@ -5,7 +5,6 @@ import org.junit.Test;
 import java.sql.ResultSet;
 import java.util.List;
 
-import static org.easymock.EasyMock.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static DataAdapter.DBTestUtils.*;
@@ -16,20 +15,9 @@ public class UniversalDataEntityImplTest
     @Test
     public void testConvertToUniversal() throws Exception
     {
-        ResultSet resultSet = createMock(ResultSet.class);
-        expect(resultSet.getMetaData())
-                .andStubReturn(DBTestUtils.getMockResultSetMetaData(tableName, columnNames, columnTypes));
         int[] idColumn = new int[]{1,2,3};
         String[] nameColumn = new String[] {"First", "Second", "Third"};
-
-        for (int i = 0; i < idColumn.length; i++) {
-            expect(resultSet.next()).andReturn(true);
-            expect(resultSet.getObject(1)).andReturn(idColumn[i]);
-            expect(resultSet.getObject(2)).andReturn(nameColumn[i]);
-        }
-        expect(resultSet.next()).andReturn(false);
-
-        replay(resultSet);
+        ResultSet resultSet = getMockResultSet(idColumn, nameColumn);
 
         List<UniversalDataEntity> wynik = UniversalDataEntityFactory.convertToUniversal(resultSet);
         int i = 0;
