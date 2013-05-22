@@ -3,6 +3,7 @@ package DataAdapter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.*;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
@@ -76,7 +77,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
         statement.execute();
     }
 
-    private String[] proceesValuesForStatement(Object[] values) {
+    private static String[] proceesValuesForStatement(Object[] values) {
         String[] wynik = new String[values.length];
         for (int i = 0; i < wynik.length; i++) {
             if(values[i].getClass()==String.class)
@@ -88,8 +89,22 @@ public class JavaDBAdapter implements DatabaseAdapter {
     }
 
     @Override
-    public void update(UniversalDataEntity nowy) {
-        throw new UnsupportedOperationException("Not implemented.");
+    public void update(UniversalDataEntity nowy) throws SQLException {
+        Connection conn = DriverManager.getConnection(url);
+        Statement stmt = conn.createStatement();
+        String command = String.format("UPDATE %s SET %s WHERE ID = %s", nowy.getTableName(), createSetORWhereClause(nowy), nowy.getID());
+        stmt.execute(command);
+    }
+
+    private static String createSetORWhereClause(UniversalDataEntity entity) {
+        String[] columns = entity.getColumns();
+        String[] values = proceesValuesForStatement(entity.getValues());
+        List<String> clauses = new LinkedList<String>();
+        for (int i = 0; i < columns.length; i++) {
+            if(!columns[i].equals("ID"))
+                clauses.add(String.format("%s = %s", columns[i], values[i]));
+        }
+        return StringUtils.join(clauses, ", ");
     }
 
     @Override

@@ -21,16 +21,6 @@ public class JavaDBAdapterTest {
 
     private DatabaseAdapter adapter;
 
-    //@Test
-    public void testContsructor() throws Exception {
-        String statement = "CREATE table APP.TestTable (\n" +
-                "    ID          INTEGER NOT NULL \n" +
-                "                PRIMARY KEY GENERATED ALWAYS AS IDENTITY \n" +
-                "                (START WITH 1, INCREMENT BY 1),\n" +
-                "    NAME    VARCHAR(30)) ";
-        adapter.executeArbitraryStatement(statement);
-    }
-
     @Before
     public void setUp()
     {
@@ -74,9 +64,13 @@ public class JavaDBAdapterTest {
         }
     }
 
-    //@Test
+    @Test
     public void testUpdate() throws Exception {
-        fail("Not implemented.");
+        List<UniversalDataEntity> entityList = getTestEntities();
+        UniversalDataEntity entity = entityList.get(0);
+        entity.setValue("Name", "Different name");
+        adapter.update(entity);
+        compareEntityLists(entityList);
     }
 
 }

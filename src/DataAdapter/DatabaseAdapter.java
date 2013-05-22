@@ -11,7 +11,7 @@ public interface DatabaseAdapter
 {
     public List<UniversalDataEntity> select(String tableName, String lookFor, String orderBy) throws SQLException, ClassNotFoundException;
     public void insert(UniversalDataEntity nowy) throws SQLException;
-    public void update(UniversalDataEntity nowy);
+    public void update(UniversalDataEntity nowy) throws SQLException;
     public void delete(String tableName, int id) throws SQLException;
     public void createTableInfo(String tableName) throws SQLException;
 

@@ -103,4 +103,9 @@ public class UniversalDataEntityImpl implements UniversalDataEntity
         return tableInfo;
     }
 
+    @Override
+    public int getID() {
+        return (Integer) getValue("ID");
+    }
+
 }

@@ -17,4 +17,6 @@ public interface UniversalDataEntity
     String getTableName();
 
     TableInfo getTableInfo();
+
+    int getID();
 }
