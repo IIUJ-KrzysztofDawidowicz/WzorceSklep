@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import static DataAdapter.DBTestUtils.*;
@@ -38,10 +39,14 @@ public class JavaDBAdapterTest {
 
     @Test
     public void testSelect() throws Exception {
-        int[] idColumn = new int[]{1,2,3};
-        String[] nameColumn = new String[] {"First", "Second", "Third"};
-        List<UniversalDataEntity> entityList = UniversalDataEntityFactory.convertToUniversal(getMockResultSet(idColumn,nameColumn));
-        adapter.insert(entityList);
+        List<UniversalDataEntity> entityList = getTestEntities();
+        compareEntityLists(entityList);
+        adapter.delete(tableName, 1);
+        entityList.remove(0);
+        compareEntityLists(entityList);
+    }
+
+    private void compareEntityLists(List<UniversalDataEntity> entityList) throws SQLException, ClassNotFoundException {
         int i = 0;
         for(UniversalDataEntity entity: adapter.select(tableName,"",""))
         {
@@ -50,13 +55,14 @@ public class JavaDBAdapterTest {
 //            assertEquals(entity.toString(), entityList.get(i).toString());
             i++;
         }
+    }
 
-        for(UniversalDataEntity entity: adapter.selectAll(tableName))
-        {
-            adapter.delete(tableName,(Integer) entity.getValue("ID"));
-        }
-        assertEquals(0, adapter.selectAll(tableName).size());
-
+    private List<UniversalDataEntity> getTestEntities() throws SQLException {
+        int[] idColumn = new int[]{1,2,3};
+        String[] nameColumn = new String[] {"First", "Second", "Third"};
+        List<UniversalDataEntity> entityList = UniversalDataEntityFactory.convertToUniversal(getMockResultSet(idColumn, nameColumn));
+        adapter.insert(entityList);
+        return entityList;
     }
 
     @After
@@ -73,8 +79,4 @@ public class JavaDBAdapterTest {
         fail("Not implemented.");
     }
 
-    //@Test
-    public void testCreateTableInfo() throws Exception {
-        fail("Not implemented.");
-    }
 }
