@@ -34,7 +34,8 @@ public class UniversalDataEntityImplTest
     @Test
     public void testGetValue() throws Exception
     {
-        createTableInfo(tableName, columnNames, columnTypes);
+        TableInfo.getTableInfo(tableName);
+        //createTableInfo(tableName, columnNames, columnTypes);
         UniversalDataEntity entity = UniversalDataEntityFactory.createUniversalDataEntity(tableName);
         entity.setValue("ID", 1);
         entity.setValue("Name", "First");
@@ -47,7 +48,8 @@ public class UniversalDataEntityImplTest
     @Test
     public void testValueChecking() throws Exception
     {
-        DBTestUtils.createTableInfo(tableName, columnNames, columnTypes);
+        TableInfo.getTableInfo(tableName);
+        //createTableInfo(tableName, columnNames, columnTypes);
         UniversalDataEntity entity = UniversalDataEntityFactory.createUniversalDataEntity(tableName);
         boolean exceptionCaught = false;
         //Kolumna ID, typ int
@@ -74,7 +76,8 @@ public class UniversalDataEntityImplTest
     @Test
     public void testUDEConstructor() throws Exception
     {
-        DBTestUtils.createTableInfo(tableName, columnNames, columnTypes);
+        TableInfo.getTableInfo(tableName);
+        //createTableInfo(tableName, columnNames, columnTypes);
         UniversalDataEntity entity = UniversalDataEntityFactory.createUniversalDataEntity(tableName);
         String[] gotColumns = entity.getColumns();
         for (int i = 0; i < columnNames.length; i++)
@@ -87,7 +90,8 @@ public class UniversalDataEntityImplTest
     @Test
     public void testToString() throws Exception
     {
-        createTableInfo(tableName,columnNames,columnTypes);
+        TableInfo.getTableInfo(tableName);
+        //createTableInfo(tableName, columnNames, columnTypes);
         UniversalDataEntity entity = UniversalDataEntityFactory.createUniversalDataEntity(tableName);
         entity.setValue(0,1);
         entity.setValue(1,"First");

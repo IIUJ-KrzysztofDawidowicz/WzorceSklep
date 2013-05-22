@@ -20,4 +20,6 @@ public interface DatabaseAdapter
     void insert(List<UniversalDataEntity> entityList) throws SQLException;
 
     List<UniversalDataEntity> selectAll(String tableName) throws SQLException;
+
+    List<UniversalDataEntity> select(String tableName, String orderBy) throws SQLException;
 }

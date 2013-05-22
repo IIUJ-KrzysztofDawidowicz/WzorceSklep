@@ -46,7 +46,50 @@ public class JavaDBAdapter implements DatabaseAdapter {
 
     @Override
     public List<UniversalDataEntity> select(String tableName, String lookFor, String orderBy) throws SQLException, ClassNotFoundException {
-        return selectAll(tableName);
+        validateOrderBy(tableName, orderBy);
+        Connection conn = DriverManager.getConnection(url);
+        Statement stmt = conn.createStatement();
+        String selectCommand = String.format("SELECT * from %s WHERE %s ORDER BY %s", tableName, createWhereClause(tableName, lookFor), orderBy);
+
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery(selectCommand);
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Błąd przy próbie odczytu danych z tabeli " + tableName
+                    + ", prawdopodobnie nieprawidłowa nazwa.", e);
+        }
+
+        return UniversalDataEntityFactory.convertToUniversal(rs);
+    }
+
+    private static String createWhereClause(String tableName, String lookFor) throws SQLException {
+        TableInfo tableInfo = TableInfo.getTableInfo(tableName);
+        String[] columns = tableInfo.getColumns();
+        List<String> clauses = new LinkedList<String>();
+        for (String column : columns) {
+            if (tableInfo.getValueType(column) == String.class)
+                clauses.add(String.format("%s like '%%%s%%'", column, lookFor));
+        }
+        return StringUtils.join(clauses, " or ");
+    }
+
+    @Override
+    public List<UniversalDataEntity> select(String tableName, String orderBy) throws SQLException {
+        validateOrderBy(tableName, orderBy);
+        Connection conn = DriverManager.getConnection(url);
+        Statement stmt = conn.createStatement();
+        String selectCommand = String.format("SELECT * from %s ORDER BY %s", tableName, orderBy);
+
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery(selectCommand);
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Błąd przy próbie odczytu danych z tabeli " + tableName
+                    + ", prawdopodobnie nieprawidłowa nazwa.", e);
+        }
+
+        return UniversalDataEntityFactory.convertToUniversal(rs);
+
     }
 
     public List<UniversalDataEntity> selectAll(String tableName) throws SQLException {
@@ -92,11 +135,11 @@ public class JavaDBAdapter implements DatabaseAdapter {
     public void update(UniversalDataEntity nowy) throws SQLException {
         Connection conn = DriverManager.getConnection(url);
         Statement stmt = conn.createStatement();
-        String command = String.format("UPDATE %s SET %s WHERE ID = %s", nowy.getTableName(), createSetORWhereClause(nowy), nowy.getID());
+        String command = String.format("UPDATE %s SET %s WHERE ID = %s", nowy.getTableName(), createSetClause(nowy), nowy.getID());
         stmt.execute(command);
     }
 
-    private static String createSetORWhereClause(UniversalDataEntity entity) {
+    private static String createSetClause(UniversalDataEntity entity) {
         String[] columns = entity.getColumns();
         String[] values = proceesValuesForStatement(entity.getValues());
         List<String> clauses = new LinkedList<String>();
@@ -116,9 +159,34 @@ public class JavaDBAdapter implements DatabaseAdapter {
 
     }
 
+
+    private void validateOrderBy(String tableName, String orderBy) throws SQLException {
+        String[] columnNames = TableInfo.getTableInfo(tableName).getColumns();
+        boolean isOrderByValid = false;
+        for(String column: columnNames)
+            if(column.equals(orderBy))
+            {
+                isOrderByValid = true;
+                break;
+            }
+        if(!isOrderByValid)
+            throw new IllegalArgumentException(String.format("Próba sortowania po kolumnie %s która nie istinieje w tabeli %s", orderBy, tableName));
+    }
+
     @Override
     public void createTableInfo(String tableName) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented.");
+        Connection conn = DriverManager.getConnection(url);
+        Statement stmt = conn.createStatement();
+        String selectCommand = String.format("SELECT * from %s WHERE 0=1", tableName);
+
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery(selectCommand);
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Błąd przy próbie odczytu danych z tabeli " + tableName
+                    + ", prawdopodobnie nieprawidłowa nazwa.", e);
+        }
+        TableInfo.getTableInfo(rs.getMetaData());
     }
 
     @Override

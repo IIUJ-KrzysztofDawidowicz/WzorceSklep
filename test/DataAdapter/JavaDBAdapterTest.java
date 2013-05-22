@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static DataAdapter.DBTestUtils.*;
@@ -36,9 +38,43 @@ public class JavaDBAdapterTest {
         compareEntityLists(entityList);
     }
 
+    @Test
+    public void testSelectWithSort() throws Exception
+    {
+        List<UniversalDataEntity> entityList = getTestEntities();
+        Collections.sort(entityList, new Comparator<UniversalDataEntity>() {
+            @Override
+            public int compare(UniversalDataEntity o1, UniversalDataEntity o2) {
+                return ((String)o1.getValue("Name")).compareTo((String)o2.getValue("Name"));
+            }
+        });
+        int i = 0;
+        for(UniversalDataEntity entity: adapter.select(tableName,"Name"))
+        {
+            UniversalDataEntity entity2 = entityList.get(i);
+            assertTrue(String.format("Różnica między\n%s\n%s", entity, entity2), equalValues(entity, entity2));
+//            assertEquals(entity.toString(), entityList.get(i).toString());
+            i++;
+        }
+    }
+
+    @Test
+    public void testSelectWithWhere() throws Exception
+    {
+        List<UniversalDataEntity> entityList = getTestEntities();
+        entityList.remove(1);
+        int i = 0;
+        for(UniversalDataEntity entity: adapter.select(tableName,"F","ID"))
+        {
+            UniversalDataEntity entity2 = entityList.get(i);
+            assertTrue(String.format("Różnica między\n%s\n%s", entity, entity2), equalValues(entity, entity2));
+            i++;
+        }
+    }
+
     private void compareEntityLists(List<UniversalDataEntity> entityList) throws SQLException, ClassNotFoundException {
         int i = 0;
-        for(UniversalDataEntity entity: adapter.select(tableName,"",""))
+        for(UniversalDataEntity entity: adapter.selectAll(tableName))
         {
             UniversalDataEntity entity2 = entityList.get(i);
             assertTrue(String.format("Różnica między\n%s\n%s", entity, entity2), equalValues(entity, entity2));
