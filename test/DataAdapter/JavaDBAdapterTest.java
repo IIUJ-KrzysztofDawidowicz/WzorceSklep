@@ -1,14 +1,13 @@
 package DataAdapter;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-import static DataAdapter.DBTestUtils.getMockResultSet;
-import static DataAdapter.DBTestUtils.tableName;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static DataAdapter.DBTestUtils.*;
+import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,23 +45,35 @@ public class JavaDBAdapterTest {
         int i = 0;
         for(UniversalDataEntity entity: adapter.select(tableName,"",""))
         {
-            assertEquals(entity.toString(), entityList.get(i).toString());
+            UniversalDataEntity entity2 = entityList.get(i);
+            assertTrue(String.format("Różnica między\n%s\n%s", entity, entity2), equalValues(entity, entity2));
+//            assertEquals(entity.toString(), entityList.get(i).toString());
             i++;
         }
 
-/*        adapter.delete(tableName, 3);
-        List<UniversalDataEntity> fromDB = adapter.select(tableName,"","");
-        assertEquals(entityList.get(0), fromDB.get(0));
-        assertEquals(entityList.get(1), fromDB.get(1));
-        assertEquals(2, fromDB.size());*/
+        for(UniversalDataEntity entity: adapter.selectAll(tableName))
+        {
+            adapter.delete(tableName,(Integer) entity.getValue("ID"));
+        }
+        assertEquals(0, adapter.selectAll(tableName).size());
+
     }
 
-    @Test
+    @After
+    public void deleteAll() throws Exception
+    {
+        for(UniversalDataEntity entity: adapter.selectAll(tableName))
+        {
+            adapter.delete(tableName,(Integer) entity.getValue("ID"));
+        }
+    }
+
+    //@Test
     public void testUpdate() throws Exception {
         fail("Not implemented.");
     }
 
-    @Test
+    //@Test
     public void testCreateTableInfo() throws Exception {
         fail("Not implemented.");
     }

@@ -15,4 +15,6 @@ public interface UniversalDataEntity
     int getColumnCount();
 
     String getTableName();
+
+    TableInfo getTableInfo();
 }

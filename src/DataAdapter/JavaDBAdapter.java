@@ -14,12 +14,10 @@ import java.util.Properties;
  * To change this template use File | Settings | File Templates.
  */
 public class JavaDBAdapter implements DatabaseAdapter {
-    private final String dbName;
     private final Properties properties;
     private final String url;
 
     public JavaDBAdapter(String dbName, Properties properties) {
-        this.dbName = dbName;
         this.properties = properties;
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -47,6 +45,10 @@ public class JavaDBAdapter implements DatabaseAdapter {
 
     @Override
     public List<UniversalDataEntity> select(String tableName, String lookFor, String orderBy) throws SQLException, ClassNotFoundException {
+        return selectAll(tableName);
+    }
+
+    public List<UniversalDataEntity> selectAll(String tableName) throws SQLException {
         Connection conn = DriverManager.getConnection(url);
         Statement stmt = conn.createStatement();
         String selectCommand = String.format("SELECT * from %s", tableName);
@@ -68,15 +70,21 @@ public class JavaDBAdapter implements DatabaseAdapter {
         String sql = String.format("INSERT INTO %s (%s) VALUES (%s)",
                 nowy.getTableName(),
                 StringUtils.join(nowy.getColumns(), ", "),
-                StringUtils.join(nowy.getValues(), ", ")
+                StringUtils.join(proceesValuesForStatement(nowy.getValues()), ", ")
         );
-        sql = String.format("INSERT INTO %s VALUES (%s)",
-                nowy.getTableName(),
-                StringUtils.join(nowy.getValues(), ", ")
-        );
-        sql = "INSERT INTO TestTable (Name) VALUES ('First')";
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.execute();
+    }
+
+    private String[] proceesValuesForStatement(Object[] values) {
+        String[] wynik = new String[values.length];
+        for (int i = 0; i < wynik.length; i++) {
+            if(values[i].getClass()==String.class)
+                wynik[i] = String.format("'%s'", values[i]);
+            else
+                wynik[i] = values[i].toString();
+        }
+        return wynik;
     }
 
     @Override
@@ -85,8 +93,12 @@ public class JavaDBAdapter implements DatabaseAdapter {
     }
 
     @Override
-    public void delete(String tableName, int id) {
-        throw new UnsupportedOperationException("Not implemented.");
+    public void delete(String tableName, int id) throws SQLException {
+        Connection conn = DriverManager.getConnection(url);
+        Statement stmt = conn.createStatement();
+        String command = String.format("DELETE from %s WHERE ID = %s", tableName, id);
+        stmt.execute(command);
+
     }
 
     @Override
@@ -106,4 +118,5 @@ public class JavaDBAdapter implements DatabaseAdapter {
         for(UniversalDataEntity entity: entityList)
             insert(entity);
     }
+
 }

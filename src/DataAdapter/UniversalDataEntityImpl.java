@@ -97,4 +97,10 @@ public class UniversalDataEntityImpl implements UniversalDataEntity
     public String getTableName() {
         return tableInfo.tableName;
     }
+
+    @Override
+    public TableInfo getTableInfo() {
+        return tableInfo;
+    }
+
 }

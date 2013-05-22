@@ -2,7 +2,6 @@ package main;
 
 import DataAdapter.DataAdapterFactory;
 import DataAdapter.DatabaseAdapter;
-import DataAdapter.UniversalDataEntity;
 
 import java.sql.SQLException;
 
@@ -17,17 +16,14 @@ public class Main
 {
     public static void main(String[] args)
     {
-        DatabaseAdapter adapter = DataAdapterFactory.getDatabaseAdapter("testDB.db");
-        String sMakeTable = "";//"CREATE TABLE dummy (id numeric, response text)";
-        String sMakeInsert = "INSERT INTO dummy VALUES(1,'Hello from the database')";
-        String sMakeSelect = "SELECT response from dummy";
-
+        DatabaseAdapter adapter = DataAdapterFactory.getDatabaseAdapter();
+        String sql =
+                "CREATE table APP.TestTable (\n" +
+                "    ID          INTEGER NOT NULL,\n" +
+                "    NAME    VARCHAR(30))";
         try {
-            for(UniversalDataEntity entity: adapter.select("dummy", null, null))
-                System.out.println(entity);
+            adapter.executeArbitraryStatement(sql);
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }

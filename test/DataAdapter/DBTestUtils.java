@@ -11,7 +11,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 
 class DBTestUtils {
-    static final String     tableName = "TestTable";
+    static final String     tableName = "TESTTABLE";
     static final String[]   columnNames = new String[] {"ID", "Name"};
     static final Class[]    columnTypes = new Class[] {Integer.class, String.class};
 
@@ -48,5 +48,20 @@ class DBTestUtils {
 
         replay(resultSet);
         return resultSet;
+    }
+
+    public static boolean equalValues(UniversalDataEntity entity1, UniversalDataEntity entity2) {
+        if(entity1.getTableInfo()!= entity2.getTableInfo())
+            return false;
+        Object id = entity1.getValue("ID");
+        Object[] values = entity1.getValues();
+        Object[] otherValues = entity2.getValues();
+        for (int i = 0; i < values.length; i++) {
+            if(!values[i].equals(otherValues[i]) && !values[i].equals(id))
+                return false;
+        }
+
+
+        return true;
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
  * Time: 21:54
  * To change this template use File | Settings | File Templates.
  */
-public class SqliteJDBCDatabaseAdapter implements DatabaseAdapter
+public abstract class SqliteJDBCDatabaseAdapter implements DatabaseAdapter
 {
     static final String driverName = "org.sqlite.JDBC";
     String databaseFileName = "testDB.db";

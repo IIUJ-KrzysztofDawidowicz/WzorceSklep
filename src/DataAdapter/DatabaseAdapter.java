@@ -12,10 +12,12 @@ public interface DatabaseAdapter
     public List<UniversalDataEntity> select(String tableName, String lookFor, String orderBy) throws SQLException, ClassNotFoundException;
     public void insert(UniversalDataEntity nowy) throws SQLException;
     public void update(UniversalDataEntity nowy);
-    public void delete(String tableName, int id);
+    public void delete(String tableName, int id) throws SQLException;
     public void createTableInfo(String tableName) throws SQLException;
 
     void executeArbitraryStatement(String statement) throws SQLException;
 
     void insert(List<UniversalDataEntity> entityList) throws SQLException;
+
+    List<UniversalDataEntity> selectAll(String tableName) throws SQLException;
 }
