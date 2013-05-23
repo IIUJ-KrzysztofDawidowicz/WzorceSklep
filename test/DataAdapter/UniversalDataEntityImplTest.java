@@ -19,9 +19,9 @@ public class UniversalDataEntityImplTest
         String[] nameColumn = new String[] {"First", "Second", "Third"};
         ResultSet resultSet = getMockResultSet(idColumn, nameColumn);
 
-        List<UniversalDataEntity> wynik = UniversalDataEntityFactory.convertToUniversal(resultSet);
+        List<TableRow> wynik = TableRowFactory.convertToUniversal(resultSet);
         int i = 0;
-        for(UniversalDataEntity entity: wynik)
+        for(TableRow entity: wynik)
         {
             assertEquals(idColumn[i], entity.getValue("ID"));
             assertEquals(idColumn[i], entity.getValue(0));
@@ -36,7 +36,7 @@ public class UniversalDataEntityImplTest
     {
         TableInfo.getTableInfo(tableName);
         //createTableInfo(tableName, columnNames, columnTypes);
-        UniversalDataEntity entity = UniversalDataEntityFactory.createUniversalDataEntity(tableName);
+        TableRow entity = TableRowFactory.createUniversalDataEntity(tableName);
         entity.setValue("ID", 1);
         entity.setValue("Name", "First");
         assertEquals(1, entity.getValue("ID"));
@@ -50,7 +50,7 @@ public class UniversalDataEntityImplTest
     {
         TableInfo.getTableInfo(tableName);
         //createTableInfo(tableName, columnNames, columnTypes);
-        UniversalDataEntity entity = UniversalDataEntityFactory.createUniversalDataEntity(tableName);
+        TableRow entity = TableRowFactory.createUniversalDataEntity(tableName);
         boolean exceptionCaught = false;
         //Kolumna ID, typ int
         try
@@ -78,7 +78,7 @@ public class UniversalDataEntityImplTest
     {
         TableInfo.getTableInfo(tableName);
         //createTableInfo(tableName, columnNames, columnTypes);
-        UniversalDataEntity entity = UniversalDataEntityFactory.createUniversalDataEntity(tableName);
+        TableRow entity = TableRowFactory.createUniversalDataEntity(tableName);
         String[] gotColumns = entity.getColumns();
         for (int i = 0; i < columnNames.length; i++)
         {
@@ -92,7 +92,7 @@ public class UniversalDataEntityImplTest
     {
         TableInfo.getTableInfo(tableName);
         //createTableInfo(tableName, columnNames, columnTypes);
-        UniversalDataEntity entity = UniversalDataEntityFactory.createUniversalDataEntity(tableName);
+        TableRow entity = TableRowFactory.createUniversalDataEntity(tableName);
         entity.setValue(0,1);
         entity.setValue(1,"First");
         String expected = String.format("Wiersz tabeli: %s\n%s, %s\n1, First", tableName, columnNames[0], columnNames[1]);

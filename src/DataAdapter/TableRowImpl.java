@@ -9,11 +9,11 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Reprezentuje dowolny obiekt trzymany w wierszu tabeli.
  */
-public class UniversalDataEntityImpl implements UniversalDataEntity
+public class TableRowImpl implements TableRow
 {
     //<editor-fold desc="Metody publiczne">
 
-    UniversalDataEntityImpl(String tableName) throws SQLException {
+    TableRowImpl(String tableName) throws SQLException {
         this.tableInfo = TableInfo.getTableInfo(tableName);
         values = new HashMap<String, Object>();
     }

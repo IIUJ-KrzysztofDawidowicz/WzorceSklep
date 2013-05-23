@@ -9,17 +9,17 @@ import java.util.List;
  */
 public interface DatabaseAdapter
 {
-    public List<UniversalDataEntity> select(String tableName, String lookFor, String orderBy) throws SQLException, ClassNotFoundException;
-    public void insert(UniversalDataEntity nowy) throws SQLException;
-    public void update(UniversalDataEntity nowy) throws SQLException;
+    public List<TableRow> select(String tableName, String lookFor, String orderBy) throws SQLException, ClassNotFoundException;
+    public void insert(TableRow nowy) throws SQLException;
+    public void update(TableRow nowy) throws SQLException;
     public void delete(String tableName, int id) throws SQLException;
     public void createTableInfo(String tableName) throws SQLException;
 
     void executeArbitraryStatement(String statement) throws SQLException;
 
-    void insert(List<UniversalDataEntity> entityList) throws SQLException;
+    void insert(List<TableRow> entityList) throws SQLException;
 
-    List<UniversalDataEntity> selectAll(String tableName) throws SQLException;
+    List<TableRow> selectAll(String tableName) throws SQLException;
 
-    List<UniversalDataEntity> select(String tableName, String orderBy) throws SQLException;
+    List<TableRow> select(String tableName, String orderBy) throws SQLException;
 }

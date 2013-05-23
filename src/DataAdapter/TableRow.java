@@ -3,7 +3,7 @@ package DataAdapter;
 /**
  * Reprezentuje dowolny obiekt trzymany w wierszu tabeli.
  */
-public interface UniversalDataEntity
+public interface TableRow
 {
     public String[] getColumns();
     public Object[] getValues();

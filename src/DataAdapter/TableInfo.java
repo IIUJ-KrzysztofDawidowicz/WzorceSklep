@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Udostępnia informacje o tabeli w bazie danych. Używane przez UniversalDataEntity i DatabaseAdapter.
+ * Udostępnia informacje o tabeli w bazie danych. Używane przez TableRow i DatabaseAdapter.
  */
 class TableInfo
 {

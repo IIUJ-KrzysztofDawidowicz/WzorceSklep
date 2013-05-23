@@ -31,7 +31,7 @@ public class JavaDBAdapterTest {
 
     @Test
     public void testSelect() throws Exception {
-        List<UniversalDataEntity> entityList = getTestEntities();
+        List<TableRow> entityList = getTestEntities();
         compareEntityLists(entityList);
         adapter.delete(tableName, 1);
         entityList.remove(0);
@@ -41,17 +41,17 @@ public class JavaDBAdapterTest {
     @Test
     public void testSelectWithSort() throws Exception
     {
-        List<UniversalDataEntity> entityList = getTestEntities();
-        Collections.sort(entityList, new Comparator<UniversalDataEntity>() {
+        List<TableRow> entityList = getTestEntities();
+        Collections.sort(entityList, new Comparator<TableRow>() {
             @Override
-            public int compare(UniversalDataEntity o1, UniversalDataEntity o2) {
+            public int compare(TableRow o1, TableRow o2) {
                 return ((String)o1.getValue("Name")).compareTo((String)o2.getValue("Name"));
             }
         });
         int i = 0;
-        for(UniversalDataEntity entity: adapter.select(tableName,"Name"))
+        for(TableRow entity: adapter.select(tableName,"Name"))
         {
-            UniversalDataEntity entity2 = entityList.get(i);
+            TableRow entity2 = entityList.get(i);
             assertTrue(String.format("Różnica między\n%s\n%s", entity, entity2), equalValues(entity, entity2));
 //            assertEquals(entity.toString(), entityList.get(i).toString());
             i++;
@@ -61,32 +61,32 @@ public class JavaDBAdapterTest {
     @Test
     public void testSelectWithWhere() throws Exception
     {
-        List<UniversalDataEntity> entityList = getTestEntities();
+        List<TableRow> entityList = getTestEntities();
         entityList.remove(1);
         int i = 0;
-        for(UniversalDataEntity entity: adapter.select(tableName,"F","ID"))
+        for(TableRow entity: adapter.select(tableName,"F","ID"))
         {
-            UniversalDataEntity entity2 = entityList.get(i);
+            TableRow entity2 = entityList.get(i);
             assertTrue(String.format("Różnica między\n%s\n%s", entity, entity2), equalValues(entity, entity2));
             i++;
         }
     }
 
-    private void compareEntityLists(List<UniversalDataEntity> entityList) throws SQLException, ClassNotFoundException {
+    private void compareEntityLists(List<TableRow> entityList) throws SQLException, ClassNotFoundException {
         int i = 0;
-        for(UniversalDataEntity entity: adapter.selectAll(tableName))
+        for(TableRow entity: adapter.selectAll(tableName))
         {
-            UniversalDataEntity entity2 = entityList.get(i);
+            TableRow entity2 = entityList.get(i);
             assertTrue(String.format("Różnica między\n%s\n%s", entity, entity2), equalValues(entity, entity2));
 //            assertEquals(entity.toString(), entityList.get(i).toString());
             i++;
         }
     }
 
-    private List<UniversalDataEntity> getTestEntities() throws SQLException {
+    private List<TableRow> getTestEntities() throws SQLException {
         int[] idColumn = new int[]{1,2,3};
         String[] nameColumn = new String[] {"First", "Second", "Third"};
-        List<UniversalDataEntity> entityList = UniversalDataEntityFactory.convertToUniversal(getMockResultSet(idColumn, nameColumn));
+        List<TableRow> entityList = TableRowFactory.convertToUniversal(getMockResultSet(idColumn, nameColumn));
         adapter.insert(entityList);
         return entityList;
     }
@@ -94,7 +94,7 @@ public class JavaDBAdapterTest {
     @After
     public void deleteAll() throws Exception
     {
-        for(UniversalDataEntity entity: adapter.selectAll(tableName))
+        for(TableRow entity: adapter.selectAll(tableName))
         {
             adapter.delete(tableName,(Integer) entity.getValue("ID"));
         }
@@ -102,8 +102,8 @@ public class JavaDBAdapterTest {
 
     @Test
     public void testUpdate() throws Exception {
-        List<UniversalDataEntity> entityList = getTestEntities();
-        UniversalDataEntity entity = entityList.get(0);
+        List<TableRow> entityList = getTestEntities();
+        TableRow entity = entityList.get(0);
         entity.setValue("Name", "Different name");
         adapter.update(entity);
         compareEntityLists(entityList);

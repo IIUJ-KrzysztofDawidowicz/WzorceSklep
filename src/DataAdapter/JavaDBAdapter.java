@@ -45,7 +45,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
     }
 
     @Override
-    public List<UniversalDataEntity> select(String tableName, String lookFor, String orderBy) throws SQLException, ClassNotFoundException {
+    public List<TableRow> select(String tableName, String lookFor, String orderBy) throws SQLException, ClassNotFoundException {
         validateOrderBy(tableName, orderBy);
         Connection conn = DriverManager.getConnection(url);
         Statement stmt = conn.createStatement();
@@ -59,7 +59,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
                     + ", prawdopodobnie nieprawidłowa nazwa.", e);
         }
 
-        return UniversalDataEntityFactory.convertToUniversal(rs);
+        return TableRowFactory.convertToUniversal(rs);
     }
 
     private static String createWhereClause(String tableName, String lookFor) throws SQLException {
@@ -74,7 +74,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
     }
 
     @Override
-    public List<UniversalDataEntity> select(String tableName, String orderBy) throws SQLException {
+    public List<TableRow> select(String tableName, String orderBy) throws SQLException {
         validateOrderBy(tableName, orderBy);
         Connection conn = DriverManager.getConnection(url);
         Statement stmt = conn.createStatement();
@@ -88,11 +88,11 @@ public class JavaDBAdapter implements DatabaseAdapter {
                     + ", prawdopodobnie nieprawidłowa nazwa.", e);
         }
 
-        return UniversalDataEntityFactory.convertToUniversal(rs);
+        return TableRowFactory.convertToUniversal(rs);
 
     }
 
-    public List<UniversalDataEntity> selectAll(String tableName) throws SQLException {
+    public List<TableRow> selectAll(String tableName) throws SQLException {
         Connection conn = DriverManager.getConnection(url);
         Statement stmt = conn.createStatement();
         String selectCommand = String.format("SELECT * from %s", tableName);
@@ -105,11 +105,11 @@ public class JavaDBAdapter implements DatabaseAdapter {
                     + ", prawdopodobnie nieprawidłowa nazwa.", e);
         }
 
-        return UniversalDataEntityFactory.convertToUniversal(rs);
+        return TableRowFactory.convertToUniversal(rs);
     }
 
     @Override
-    public void insert(UniversalDataEntity nowy) throws SQLException {
+    public void insert(TableRow nowy) throws SQLException {
         Connection connection = DriverManager.getConnection(url,properties);
         String sql = String.format("INSERT INTO %s (%s) VALUES (%s)",
                 nowy.getTableName(),
@@ -132,7 +132,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
     }
 
     @Override
-    public void update(UniversalDataEntity nowy) throws SQLException {
+    public void update(TableRow nowy) throws SQLException {
         Connection conn = DriverManager.getConnection(url);
         Statement stmt = conn.createStatement();
         String command = String.format(
@@ -143,7 +143,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
         stmt.execute(command);
     }
 
-    private static String createSetClause(UniversalDataEntity entity) {
+    private static String createSetClause(TableRow entity) {
         String[] columns = entity.getColumns();
         String[] values = proceesValuesForStatement(entity.getValues());
         List<String> clauses = new LinkedList<String>();
@@ -201,8 +201,8 @@ public class JavaDBAdapter implements DatabaseAdapter {
     }
 
     @Override
-    public void insert(List<UniversalDataEntity> entityList) throws SQLException {
-        for(UniversalDataEntity entity: entityList)
+    public void insert(List<TableRow> entityList) throws SQLException {
+        for(TableRow entity: entityList)
             insert(entity);
     }
 

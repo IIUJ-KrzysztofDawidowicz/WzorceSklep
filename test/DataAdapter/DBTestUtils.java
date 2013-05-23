@@ -50,7 +50,7 @@ class DBTestUtils {
         return resultSet;
     }
 
-    public static boolean equalValues(UniversalDataEntity entity1, UniversalDataEntity entity2) {
+    public static boolean equalValues(TableRow entity1, TableRow entity2) {
         if(entity1.getTableInfo()!= entity2.getTableInfo())
             return false;
         Object id = entity1.getValue("ID");

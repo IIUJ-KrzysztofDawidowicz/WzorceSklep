@@ -12,14 +12,14 @@ import java.util.List;
  * Time: 21:15
  * To change this template use File | Settings | File Templates.
  */
-public class UniversalDataEntityFactory
+public class TableRowFactory
 {
-    public static List<UniversalDataEntity> convertToUniversal(ResultSet resultSet) throws SQLException {
+    public static List<TableRow> convertToUniversal(ResultSet resultSet) throws SQLException {
 
         TableInfo info;
         info = TableInfo.getTableInfo(resultSet.getMetaData());
-        List<UniversalDataEntity> wynik = new LinkedList<UniversalDataEntity>();
-        UniversalDataEntity entity;
+        List<TableRow> wynik = new LinkedList<TableRow>();
+        TableRow entity;
         while (resultSet.next())
         {
             entity = createUniversalDataEntity(info.tableName);
@@ -32,7 +32,7 @@ public class UniversalDataEntityFactory
         return wynik;
     }
 
-    public static UniversalDataEntity createUniversalDataEntity(String tableName) throws SQLException {
-        return new UniversalDataEntityImpl(tableName);
+    public static TableRow createUniversalDataEntity(String tableName) throws SQLException {
+        return new TableRowImpl(tableName);
     }
 }
