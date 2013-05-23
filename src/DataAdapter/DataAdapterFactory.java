@@ -4,7 +4,7 @@ import java.util.Properties;
 
 public class DataAdapterFactory
 {
-    private static final String defaultDB = "testDB";
+    private static String defaultDB = "";
 
     public static DatabaseAdapter getDatabaseAdapter(String dbFileName) {
         Properties properties = new Properties();

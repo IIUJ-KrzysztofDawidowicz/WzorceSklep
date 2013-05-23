@@ -135,7 +135,11 @@ public class JavaDBAdapter implements DatabaseAdapter {
     public void update(UniversalDataEntity nowy) throws SQLException {
         Connection conn = DriverManager.getConnection(url);
         Statement stmt = conn.createStatement();
-        String command = String.format("UPDATE %s SET %s WHERE ID = %s", nowy.getTableName(), createSetClause(nowy), nowy.getID());
+        String command = String.format(
+                "UPDATE %s SET %s WHERE ID = %s",
+                nowy.getTableName(),
+                createSetClause(nowy),
+                nowy.getValue("ID"));
         stmt.execute(command);
     }
 

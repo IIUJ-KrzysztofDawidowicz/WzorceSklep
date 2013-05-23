@@ -26,7 +26,7 @@ public class JavaDBAdapterTest {
     @Before
     public void setUp()
     {
-        adapter = DataAdapterFactory.getDatabaseAdapter();
+        adapter = DataAdapterFactory.getDatabaseAdapter("testDB");
     }
 
     @Test
