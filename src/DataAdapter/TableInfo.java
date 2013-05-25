@@ -45,20 +45,13 @@ class TableInfo
 
     Class getValueType(String columnName) throws IllegalArgumentException
     {
-        Class wynik = valueTypes.get(columnName);
-        if(wynik==null)
+        if(!valueTypes.containsKey(columnName))
         {
             throw new IllegalArgumentException("W tabeli " + tableName + " nie istnieje kolumna o nazwie " + columnName);
         }
-        return wynik;
+        return valueTypes.get(columnName);
     }
 
-    /**
-     *
-     * @param tableName
-     * @return
-     * @throws SQLException Jeśli nie ma takiej tabeli.
-     */
     static TableInfo getTableInfo(String tableName) throws SQLException {
         if(!cache.containsKey(tableName))
             DataAdapterFactory.getDatabaseAdapter().createTableInfo(tableName);
@@ -76,7 +69,9 @@ class TableInfo
         String tableName = metaData.getTableName(1);
         if(cache.containsKey(tableName))
             return cache.get(tableName);
-        return new TableInfo(metaData);
+        TableInfo tableInfo = new TableInfo(metaData);
+        cache.put(tableName,tableInfo);
+        return tableInfo;
     }
     //</editor-fold>
 

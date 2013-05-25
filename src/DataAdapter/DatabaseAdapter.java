@@ -22,4 +22,6 @@ public interface DatabaseAdapter
     List<TableRow> selectAll(String tableName) throws SQLException;
 
     List<TableRow> select(String tableName, String orderBy) throws SQLException;
+
+    int getMaxValueForColumn(String tableName, String columnName) throws SQLException;
 }

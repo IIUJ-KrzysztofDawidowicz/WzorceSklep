@@ -17,10 +17,14 @@ public class Main
     public static void main(String[] args)
     {
         DatabaseAdapter adapter = DataAdapterFactory.getDatabaseAdapter();
-        String sql =
-                "CREATE table APP.TestTable (\n" +
-                "    ID          INTEGER NOT NULL,\n" +
-                "    NAME    VARCHAR(30))";
+        String sql = "CREATE TABLE Klient\n" +
+                "(\n" +
+                "    ID int PRIMARY KEY,\n" +
+                "    Imie varchar(50) NOT NULL,\n" +
+                "    Nazwisko varchar(50) NOT NULL,\n" +
+                "    Telefon decimal(9,0) NOT NULL,\n" +
+                "    Mail varchar(50) NOT NULL\n" +
+                ")";
         try {
             adapter.executeArbitraryStatement(sql);
         } catch (SQLException e) {

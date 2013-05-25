@@ -98,4 +98,6 @@ public class UniversalDataEntityImplTest
         String expected = String.format("Wiersz tabeli: %s\n%s, %s\n1, First", tableName, columnNames[0], columnNames[1]);
         assertEquals(expected, entity.toString());
     }
+
+
 }

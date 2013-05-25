@@ -33,6 +33,6 @@ public class TableRowFactory
     }
 
     public static TableRow createUniversalDataEntity(String tableName) throws SQLException {
-        return new TableRowImpl(tableName);
+        return new JavaDBTableRow(tableName);
     }
 }

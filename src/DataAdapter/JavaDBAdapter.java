@@ -92,6 +92,23 @@ public class JavaDBAdapter implements DatabaseAdapter {
 
     }
 
+    @Override
+    public int getMaxValueForColumn(String tableName, String columnName) throws SQLException {
+        Connection conn = DriverManager.getConnection(url);
+        Statement stmt = conn.createStatement();
+        String selectCommand = String.format("SELECT MAX(%s) from %s", columnName, tableName);
+
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery(selectCommand);
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Błąd przy próbie odczytu danych z tabeli " + tableName
+                    + ", prawdopodobnie nieprawidłowa nazwa.", e);
+        }
+        rs.next();
+        return rs.getInt(1);
+    }
+
     public List<TableRow> selectAll(String tableName) throws SQLException {
         Connection conn = DriverManager.getConnection(url);
         Statement stmt = conn.createStatement();
@@ -111,18 +128,21 @@ public class JavaDBAdapter implements DatabaseAdapter {
     @Override
     public void insert(TableRow nowy) throws SQLException {
         Connection connection = DriverManager.getConnection(url,properties);
+        String[] processedValues = proceesValuesForStatement(nowy.getValues());
         String sql = String.format("INSERT INTO %s (%s) VALUES (%s)",
                 nowy.getTableName(),
                 StringUtils.join(nowy.getColumns(), ", "),
-                StringUtils.join(proceesValuesForStatement(nowy.getValues()), ", ")
+                StringUtils.join(processedValues, ", ")
         );
         PreparedStatement statement = connection.prepareStatement(sql);
         statement.execute();
     }
 
-    private static String[] proceesValuesForStatement(Object[] values) {
+    private static String[] proceesValuesForStatement(Object[] values) throws UnsupportedOperationException {
         String[] wynik = new String[values.length];
         for (int i = 0; i < wynik.length; i++) {
+            if(values[i] == null)
+                throw new UnsupportedOperationException("TableRow nie jest wypełniony.");
             if(values[i].getClass()==String.class)
                 wynik[i] = String.format("'%s'", values[i]);
             else

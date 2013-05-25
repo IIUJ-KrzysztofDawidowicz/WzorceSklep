@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static DataAdapter.DBTestUtils.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,21 +1,24 @@
 package DataAdapter;
 
 
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
+
+import java.sql.SQLException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * Reprezentuje dowolny obiekt trzymany w wierszu tabeli.
  */
-public class TableRowImpl implements TableRow
+public class BasicTableRow implements TableRow
 {
     //<editor-fold desc="Metody publiczne">
 
-    TableRowImpl(String tableName) throws SQLException {
-        this.tableInfo = TableInfo.getTableInfo(tableName);
-        values = new HashMap<String, Object>();
+    BasicTableRow(String tableName) throws SQLException {
+        tableInfo = TableInfo.getTableInfo(tableName);
+        if(tableInfo==null)
+            throw new SQLException(String.format("Table %s not found.", tableName));
+        values = new LinkedHashMap<String, Object>();
     }
 
     @Override
@@ -26,13 +29,14 @@ public class TableRowImpl implements TableRow
     @Override
     public Object[] getValues()
     {
-        String[] columns = getColumns();
+        return values.values().toArray();
+/*        String[] columns = getColumns();
         Object[] wynik = new Object[columns.length];
         for (int i = 0; i< columns.length; ++i)
         {
             wynik[i] = getValue(columns[i]);
         }
-        return wynik;
+        return wynik;*/
     }
 
     /**
@@ -44,6 +48,8 @@ public class TableRowImpl implements TableRow
     @Override
     public Object getValue(String columnName)
     {
+        if(!values.containsKey(columnName))
+            return new IllegalArgumentException(String.format("W tabeli %s nie ma kolumny o nazwie %s", getTableName(), columnName));
         return values.get(columnName);
     }
 
@@ -91,8 +97,8 @@ public class TableRowImpl implements TableRow
     }
     //</editor-fold>
 
-    private final TableInfo tableInfo;
-    private final Map<String,Object> values;
+    protected final TableInfo tableInfo;
+    protected final Map<String,Object> values;
 
     public String getTableName() {
         return tableInfo.tableName;

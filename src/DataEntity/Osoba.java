@@ -1,5 +1,7 @@
 package DataEntity;
 
+import java.math.BigDecimal;
+
 /**
  * Created with IntelliJ IDEA.
  * User: KrzysztofD
@@ -9,9 +11,10 @@ package DataEntity;
  */
 public abstract class Osoba implements DataEntity
 {
+    public int ID;
     public String imie;
     public String nazwisko;
-    public long telefon;
+    public BigDecimal telefon;
     public String mail;
     public AdresOsoby adres;
 }
