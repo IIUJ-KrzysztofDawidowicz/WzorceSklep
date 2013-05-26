@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="titleLabel" alignment="0" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="imieField" min="-2" pref="250" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="nazwiskoField" min="-2" pref="353" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="ulicaField" max="32767" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="nrdomuField" min="-2" pref="58" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="nrlokaluField" min="-2" pref="58" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="telefonField" min="-2" pref="125" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
+                                      <Component id="mailField" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="kodLabel" min="-2" pref="107" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="kodPocztowyField" min="-2" pref="80" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="pocztaField" min="-2" pref="181" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="krajField" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="miejscowoscField" alignment="1" pref="203" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="wypelnijPola" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="utworz" min="-2" pref="247" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+              <Component id="titleLabel" min="-2" pref="43" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="imieField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="nazwiskoField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="ulicaField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="nrdomuField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="nrlokaluField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="kodLabel" alignment="3" min="-2" pref="20" max="-2" attributes="0"/>
+                  <Component id="kodPocztowyField" alignment="3" max="32767" attributes="0"/>
+                  <Component id="pocztaField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="miejscowoscField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="telefonField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="mailField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="krajField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="wypelnijPola" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="utworz" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JTextField" name="telefonField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Telefon"/>
+      </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="telefonFieldFocusGained"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="telefonFieldFocusLost"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="pocztaField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Poczta"/>
+      </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="pocztaFieldFocusGained"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="pocztaFieldFocusLost"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="wypelnijPola">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
+        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="0" green="0" red="ff" type="rgb"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Wype&#x142;nij wszystkie pola!"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="miejscowoscField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Miejscowo&#x15b;&#x107;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="miejscowoscFieldFocusGained"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="miejscowoscFieldFocusLost"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="kodLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Kod pocztowy:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JFormattedTextField" name="kodPocztowyField">
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="kodPocztowyFieldFocusGained"/>
+      </Events>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JFormattedTextField(format)"/>
+      </AuxValues>
+    </Component>
+    <Component class="javax.swing.JTextField" name="nrdomuField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Nr domu"/>
+      </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="nrdomuFieldFocusGained"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="nrdomuFieldFocusLost"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="nrlokaluField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Nr lokalu"/>
+      </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="nrlokaluFieldFocusGained"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="nrlokaluFieldFocusLost"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="nazwiskoField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Nazwisko"/>
+      </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="nazwiskoFieldFocusGained"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="nazwiskoFieldFocusLost"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="ulicaField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Ulica"/>
+      </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="ulicaFieldFocusGained"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="ulicaFieldFocusLost"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="krajField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Kraj"/>
+      </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="krajFieldFocusGained"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="krajFieldFocusLost"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="mailField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Mail"/>
+      </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="mailFieldFocusGained"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="mailFieldFocusLost"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="imieField">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Imi&#x119;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="imieFieldFocusGained"/>
+        <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="imieFieldFocusLost"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="utworz">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Dodaj"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="utworzActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="titleLabel">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Vijaya" size="24" style="0"/>
+        </Property>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+        <Property name="text" type="java.lang.String" value="Dodawanie nowego klienta"/>
+      </Properties>
+    </Component>
+  </SubComponents>
+</Form>

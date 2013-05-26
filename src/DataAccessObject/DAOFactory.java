@@ -1,6 +1,7 @@
 package DataAccessObject;
 
 import DataAdapter.DataAdapterFactory;
+import DataEntity.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +13,11 @@ import DataAdapter.DataAdapterFactory;
 public class DAOFactory {
 
 
-    public static KlientDAO getKlientDAO() {
+    public static DataAccessObject<Klient> getKlientDAO() {
         return new KlientDAO(DataAdapterFactory.getDatabaseAdapter());
+    }
+
+    public static DataAccessObject<Pracownik> getPracownikDAO() {
+        return new PracownikDAO(DataAdapterFactory.getDatabaseAdapter());
     }
 }

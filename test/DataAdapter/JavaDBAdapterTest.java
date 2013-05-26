@@ -1,3 +1,4 @@
+/*
 package DataAdapter;
 
 import org.junit.After;
@@ -8,17 +9,20 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Properties;
 
 import static DataAdapter.DBTestUtils.*;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
+*/
 /**
  * Created with IntelliJ IDEA.
  * User: KrzysztofD
  * Date: 21.05.13
  * Time: 19:22
  * To change this template use File | Settings | File Templates.
- */
+ *//*
+
 public class JavaDBAdapterTest {
 
     private DatabaseAdapter adapter;
@@ -38,6 +42,8 @@ public class JavaDBAdapterTest {
         compareEntityLists(entityList);
     }
 
+*/
+/*
     @Test
     public void testSelectWithSort() throws Exception
     {
@@ -57,7 +63,11 @@ public class JavaDBAdapterTest {
             i++;
         }
     }
+*//*
 
+
+*/
+/*
     @Test
     public void testSelectWithWhere() throws Exception
     {
@@ -71,8 +81,11 @@ public class JavaDBAdapterTest {
             i++;
         }
     }
+*//*
 
-    private void compareEntityLists(List<TableRow> entityList) throws SQLException, ClassNotFoundException {
+
+    */
+/*private void compareEntityLists(List<TableRow> entityList) throws SQLException, ClassNotFoundException {
         int i = 0;
         for(TableRow entity: adapter.selectAll(tableName))
         {
@@ -81,7 +94,8 @@ public class JavaDBAdapterTest {
 //            assertEquals(entity.toString(), entityList.get(i).toString());
             i++;
         }
-    }
+    }*//*
+
 
     private List<TableRow> getTestEntities() throws SQLException {
         int[] idColumn = new int[]{1,2,3};
@@ -110,3 +124,4 @@ public class JavaDBAdapterTest {
     }
 
 }
+*/

@@ -2,6 +2,7 @@ package DataAccessObject;
 
 import DataEntity.DataEntity;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -13,9 +14,11 @@ import java.util.List;
  */
 public interface DataAccessObject<T extends DataEntity>
 {
-    public List<T> select(String lookFor, String orderBy);
-    public T select(int id);
-    public int insert(T nowy);
-    public void update(T nowy);
-    public void delete(int id);
+    public List<T> select(String orderBy) throws SQLException;
+    public List<T> select(String lookFor, String orderBy) throws SQLException, ClassNotFoundException;
+    public T selectOne(int id) throws SQLException;
+    public void insert(T nowy) throws SQLException;
+    public void update(T nowy) throws SQLException;
+    public void delete(int id) throws SQLException;
+
 }

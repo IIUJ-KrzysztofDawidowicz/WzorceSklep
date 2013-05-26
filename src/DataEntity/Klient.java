@@ -1,5 +1,7 @@
 package DataEntity;
 
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: KrzysztofD

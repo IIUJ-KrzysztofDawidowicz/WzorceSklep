@@ -45,7 +45,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
     }
 
     @Override
-    public List<TableRow> select(String tableName, String lookFor, String orderBy) throws SQLException, ClassNotFoundException {
+    public ResultSet select(String tableName, String lookFor, String orderBy) throws SQLException, ClassNotFoundException {
         validateOrderBy(tableName, orderBy);
         Connection conn = DriverManager.getConnection(url);
         Statement stmt = conn.createStatement();
@@ -59,7 +59,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
                     + ", prawdopodobnie nieprawidłowa nazwa.", e);
         }
 
-        return TableRowFactory.convertToUniversal(rs);
+        return rs;
     }
 
     private static String createWhereClause(String tableName, String lookFor) throws SQLException {
@@ -74,7 +74,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
     }
 
     @Override
-    public List<TableRow> select(String tableName, String orderBy) throws SQLException {
+    public ResultSet select(String tableName, String orderBy) throws SQLException {
         validateOrderBy(tableName, orderBy);
         Connection conn = DriverManager.getConnection(url);
         Statement stmt = conn.createStatement();
@@ -88,7 +88,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
                     + ", prawdopodobnie nieprawidłowa nazwa.", e);
         }
 
-        return TableRowFactory.convertToUniversal(rs);
+        return rs;
 
     }
 
@@ -109,7 +109,24 @@ public class JavaDBAdapter implements DatabaseAdapter {
         return rs.getInt(1);
     }
 
-    public List<TableRow> selectAll(String tableName) throws SQLException {
+    @Override
+    public TableRow selectOne(String tableName, int id) throws SQLException {
+        Connection conn = DriverManager.getConnection(url);
+        Statement stmt = conn.createStatement();
+        String selectCommand = String.format("SELECT * from %s WHERE ID = %s", tableName, id);
+
+        ResultSet rs;
+        try {
+            rs = stmt.executeQuery(selectCommand);
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Błąd przy próbie odczytu danych z tabeli " + tableName
+                    + ", prawdopodobnie nieprawidłowa nazwa.", e);
+        }
+
+        return TableRowFactory.convertToUniversal(rs).get(0);
+    }
+
+    public ResultSet selectAll(String tableName) throws SQLException {
         Connection conn = DriverManager.getConnection(url);
         Statement stmt = conn.createStatement();
         String selectCommand = String.format("SELECT * from %s", tableName);
@@ -122,7 +139,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
                     + ", prawdopodobnie nieprawidłowa nazwa.", e);
         }
 
-        return TableRowFactory.convertToUniversal(rs);
+        return rs;
     }
 
     @Override

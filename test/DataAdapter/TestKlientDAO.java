@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class TestKlientDAO {
 
+/*
     @Test
     public void testSelect() throws Exception
     {
@@ -34,6 +35,7 @@ public class TestKlientDAO {
         Assert.assertEquals("mail@mail.com", klient.mail);
         Assert.assertEquals(new BigDecimal("123456"), klient.telefon);
     }
+*/
 
     @Test
     public void testConvertToDataRow() throws Exception
@@ -51,7 +53,7 @@ public class TestKlientDAO {
         Assert.assertEquals(klient.mail, tableRow.getValue("Mail").toString());
     }
 
-    private static DatabaseAdapter getDatabaseAdapter() throws SQLException {
+    /*private static DatabaseAdapter getDatabaseAdapter() throws SQLException {
         DatabaseAdapter adapter = EasyMock.createMock(DatabaseAdapter.class);
         List<TableRow> tableRows = new LinkedList<TableRow>();
         TableRow row = TableRowFactory.createUniversalDataEntity("KLIENT");
@@ -64,5 +66,5 @@ public class TestKlientDAO {
         EasyMock.expect(adapter.selectAll("KLIENT")).andReturn(tableRows);
         EasyMock.replay(adapter);
         return adapter;
-    }
+    }*/
 }
