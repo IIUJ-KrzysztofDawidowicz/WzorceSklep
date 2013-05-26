@@ -15,12 +15,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-//import sklep.Main;
+//import sklep.Login;
 /**
  *
  * @author user
  */
-public class Main extends javax.swing.JFrame {
+public class Login extends javax.swing.JFrame {
     String Login = "Pracownik";
     String Haslo = "haslo";
     String dbAddress = "localhost\\SGLEXPRESS:1433";
@@ -31,7 +31,7 @@ public class Main extends javax.swing.JFrame {
 
 
     /** Creates new form Login */
-    public Main() {
+    public Login() {
         LoginAdmin();
         
         initComponents();
@@ -292,7 +292,7 @@ public class Main extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Main().setVisible(true);
+                new GUI.Login().setVisible(true);
             }
         });
     }

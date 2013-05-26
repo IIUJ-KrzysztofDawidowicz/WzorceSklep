@@ -4,7 +4,7 @@
  */
 
 /*
- * Main.java
+ * Login.java
  *
  * Created on 2012-03-12, 18:57:04
  */
@@ -46,8 +46,8 @@ public class Admin extends javax.swing.JFrame {
     Action akcjaUsunPracownika;
     Action akcjaPracownikSzczegoly;
     
-    /** Creates new form Main */
-    public Admin(Connection con) { //Main (Coccenction connect,String login)
+    /** Creates new form Login */
+    public Admin(Connection con) { //Login (Coccenction connect,String login)
         /* nalezy pobierac informacje o:
          * - connection po zalogowaniu do sql aby nie paskudzic kodu kolejnym logowaniem do sql-a
          * - login aby moc okreslic kto jest zalogowany (np. niezbedne do statystyk pracownika)
