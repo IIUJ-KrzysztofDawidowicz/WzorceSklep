@@ -1,27 +1,32 @@
 package WzorceSklep.GUI.Actions.RefreshTableActions;
 
+import WzorceSklep.DAOFactory;
+import WzorceSklep.Data.Produkt.Produkt;
+import WzorceSklep.DataAccessObject;
+import WzorceSklep.GUI.Actions.RefreshTableActions.TableConverters.ProduktyTableConverter;
 import WzorceSklep.GUI.Admin;
 import WzorceSklep.GUI.RefreshTableAction;
 
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.io.Serializable;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
-public class RefreshProduktyAction implements Serializable, RefreshTableAction {
-    private final Admin admin;
+public class RefreshProduktyAction extends AbstractRefreshTableAction<Produkt> implements Serializable, RefreshTableAction {
 
     public RefreshProduktyAction(Admin admin) {
-        this.admin = admin;
+        super(admin);
     }
 
-    public void refresh() //Rysuje klienci_tabela
+    /*public void refresh() //Rysuje klienci_tabela
     {
-        String lookFor = admin.getProdukty_szukaj_co().getText();
-/*        //String order_by=produkty_sortuj.getSelectedItem().toString();
+        String lookFor = getOrderBy();
+*//*        //String order_by=produkty_sortuj.getSelectedItem().toString();
         String search_by = admin.getProdukty_szukaj_co().getText();
-        *//*if(order_by.equals("ID")) order_by="ID_Produktu";*//*
+        *//**//*if(order_by.equals("ID")) order_by="ID_Produktu";*//**//*
         if (!search_by.isEmpty())
             search_by = " where Typ like '%" + search_by + "%' or Nazwa like '%" + search_by + "%'";
         int indeks_tabeli = 0;
@@ -52,7 +57,36 @@ public class RefreshProduktyAction implements Serializable, RefreshTableAction {
             admin.getProdukty_tabela().setModel(model);
             admin.getProdukty_szukaj_co().setText("");
         } catch (Exception e) {
-            e.printStackTrace();*/
+            e.printStackTrace();*//*
 //        }
+    }*/
+
+    @Override
+    protected String getOrderBy() {
+        return "ID";
     }
+
+    @Override
+    protected AbstractTableConverter<Produkt> getTableConverter() {
+        return new ProduktyTableConverter();
+    }
+
+    @Override
+    protected JTextField getSzukajTextField() {
+        return admin.getProdukty_szukaj_co();
+    }
+
+    @Override
+    protected JTable getTable() {
+        return admin.getProdukty_tabela();
+    }
+
+    @Override
+    protected DataAccessObject<Produkt> getDataAccessObject() throws SQLException {
+        return DAOFactory.getProduktyDAO();
+    }
+
+    @Override
+    protected void setButtonColumns() {}
+
 }

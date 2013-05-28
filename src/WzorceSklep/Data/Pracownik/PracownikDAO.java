@@ -64,7 +64,7 @@ public class PracownikDAO implements DataAccessObject<Pracownik> {
     public Pracownik getDetails(int id) throws SQLException, InvalidDataException {
         Pracownik pracownik;
         {
-            TableRow row = TableRowFactory.createUniversalDataEntity(tableNamePracownik);
+            TableRow row = TableRowFactory.createTableRow(tableNamePracownik);
             row.setValue("ID", id);
             List<Pracownik> list = convertToPracownik(adapter.selectExactMatch(row));
             if(list.isEmpty())
@@ -72,7 +72,7 @@ public class PracownikDAO implements DataAccessObject<Pracownik> {
             pracownik = list.get(0);
         }
         {
-            TableRow row = TableRowFactory.createUniversalDataEntity(tableNameAdres);
+            TableRow row = TableRowFactory.createTableRow(tableNameAdres);
             row.setValue("ID", id);
             List<AdresOsoby> list = convertToAdres(adapter.selectExactMatch(row));
             if(list.isEmpty())
@@ -83,7 +83,7 @@ public class PracownikDAO implements DataAccessObject<Pracownik> {
     }
 
     public Pracownik getByLogin(String login, String haslo) throws SQLException {
-        TableRow row = TableRowFactory.createUniversalDataEntity(tableNamePracownik);
+        TableRow row = TableRowFactory.createTableRow(tableNamePracownik);
         row.setValue("Login", login);
         row.setValue("Password", haslo);
         List<Pracownik> list = convertToPracownik(adapter.selectExactMatch(row));
@@ -93,7 +93,7 @@ public class PracownikDAO implements DataAccessObject<Pracownik> {
     }
 
     private static TableRow convertPracownikToTableRow(Pracownik pracownik) throws SQLException {
-        TableRow wynik = TableRowFactory.createUniversalDataEntity(tableNamePracownik);
+        TableRow wynik = TableRowFactory.createTableRow(tableNamePracownik);
 
         wynik.setValue("ID", pracownik.ID);
         wynik.setValue("Imie",pracownik.imie);
@@ -129,7 +129,7 @@ public class PracownikDAO implements DataAccessObject<Pracownik> {
     }
 
     private static TableRow convertAdresToTableRow(AdresOsoby adres, int idPracownika) throws SQLException {
-        TableRow wynik = TableRowFactory.createUniversalDataEntity(tableNameAdres);
+        TableRow wynik = TableRowFactory.createTableRow(tableNameAdres);
         wynik.setValue("ID",idPracownika);
         wynik.setValue("Ulica", adres.ulica);
         wynik.setValue("NrDomu", adres.nrDomu);

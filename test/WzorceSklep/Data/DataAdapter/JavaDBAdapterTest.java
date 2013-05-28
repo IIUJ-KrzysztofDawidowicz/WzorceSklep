@@ -100,7 +100,7 @@ public class JavaDBAdapterTest {
     private List<TableRow> getTestEntities() throws SQLException {
         int[] idColumn = new int[]{1,2,3};
         String[] nameColumn = new String[] {"First", "Second", "Third"};
-        List<TableRow> entityList = TableRowFactory.convertToUniversal(getMockResultSet(idColumn, nameColumn));
+        List<TableRow> entityList = TableRowFactory.convertToTableRow(getMockResultSet(idColumn, nameColumn));
         adapter.insert(entityList);
         return entityList;
     }

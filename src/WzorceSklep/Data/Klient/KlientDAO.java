@@ -61,7 +61,7 @@ public class KlientDAO implements DataAccessObject<Klient> {
     public static TableRow convertToTableRow(Klient klient) {
         TableRow tableRow = null;
         try {
-            tableRow = TableRowFactory.createUniversalDataEntity(tableName);
+            tableRow = TableRowFactory.createTableRow(tableName);
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -109,7 +109,7 @@ public class KlientDAO implements DataAccessObject<Klient> {
     }
 
     private TableRow convertAdresToTableRow(AdresOsoby adres, int id) throws SQLException {
-        TableRow wynik = TableRowFactory.createUniversalDataEntity(tableNameAdres);
+        TableRow wynik = TableRowFactory.createTableRow(tableNameAdres);
         wynik.setValue("ID",id);
         wynik.setValue("Ulica", adres.ulica);
         wynik.setValue("NrDomu", adres.nrDomu);

@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class TableRowFactory
 {
-    public static List<TableRow> convertToUniversal(ResultSet resultSet) throws SQLException {
+    public static List<TableRow> convertToTableRow(ResultSet resultSet) throws SQLException {
 
         TableInfo info;
         info = TableInfo.getTableInfo(resultSet.getMetaData());
@@ -22,7 +22,7 @@ public class TableRowFactory
         TableRow entity;
         while (resultSet.next())
         {
-            entity = createUniversalDataEntity(info.tableName);
+            entity = createTableRow(info.tableName);
             for (int i = 0; i < entity.getColumnCount(); i++) {
                 entity.setValue(i, resultSet.getObject(i+1));
             }
@@ -32,7 +32,7 @@ public class TableRowFactory
         return wynik;
     }
 
-    public static TableRow createUniversalDataEntity(String tableName) throws SQLException {
+    public static TableRow createTableRow(String tableName) throws SQLException {
         return new JavaDBTableRow(tableName);
     }
 }

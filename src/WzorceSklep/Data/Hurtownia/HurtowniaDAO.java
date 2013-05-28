@@ -85,7 +85,7 @@ public class HurtowniaDAO implements DataAccessObject<Hurtownia> {
     }
 
     private TableRow convertToTableRow(Hurtownia hurtownia) throws SQLException {
-        TableRow wynik = TableRowFactory.createUniversalDataEntity(tableNameHurtownia);
+        TableRow wynik = TableRowFactory.createTableRow(tableNameHurtownia);
 
         wynik.setValue("ID", hurtownia.ID);
         wynik.setValue("Nazwa", hurtownia.nazwa);
@@ -115,7 +115,7 @@ public class HurtowniaDAO implements DataAccessObject<Hurtownia> {
     }
 
     private TableRow convertAdresToTableRow(AdresHurtowni adres, int idPracownika) throws SQLException {
-        TableRow wynik = TableRowFactory.createUniversalDataEntity(tableNameAdres);
+        TableRow wynik = TableRowFactory.createTableRow(tableNameAdres);
         wynik.setValue("ID",idPracownika);
         wynik.setValue("Ulica", adres.ulica);
         wynik.setValue("NrDomu", adres.nrDomu);

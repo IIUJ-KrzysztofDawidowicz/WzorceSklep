@@ -86,6 +86,7 @@ public class Admin extends javax.swing.JFrame {
         actionMap.put(panel_hurtowni, new RefreshHurtownieAction(this));
         actionMap.put(panel_produkty, new RefreshProduktyAction(this));
         actionMap.put(panel_statystyka, new RefreshStatystykiAction(this));
+        actionMap.put(panel_zamowienia, refreshZamowieniaKlientAction);
 
         return actionMap;
     }
@@ -1311,7 +1312,7 @@ public class Admin extends javax.swing.JFrame {
     private void produkty_dodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produkty_dodajActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                dialog = new DialogDodajProdukt(Admin.this, true, connection);
+                dialog = new DialogDodajProdukt(Admin.this, true);
                 dialog.setVisible(true);
                 dialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
                 {

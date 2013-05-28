@@ -4,8 +4,13 @@
  */
 package WzorceSklep.Data.Produkt;
 
+import WzorceSklep.DAOFactory;
+
+import java.awt.*;
+import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.SQLException;
 import javax.swing.JFormattedTextField;
 
 /**
@@ -15,14 +20,13 @@ import javax.swing.JFormattedTextField;
 public class DialogDodajProdukt extends javax.swing.JDialog {
 
     JFormattedTextField.AbstractFormatter format;
-    Connection connection=null;
+
     /**
      * Creates new form DialogDodajProdukt
      */
-    public DialogDodajProdukt(java.awt.Frame parent, boolean modal, Connection con) {
+    public DialogDodajProdukt(Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        connection = con;
         wypelnijPola.setVisible(false);
         
     }
@@ -215,13 +219,24 @@ public class DialogDodajProdukt extends javax.swing.JDialog {
     private void utworzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_utworzActionPerformed
 
         wypelnijPola.setVisible(false);
-        String typ = typField.getText();
-        String specyfikacja = specyfikacjaField.getText();
-        String nazwa = nazwaField.getText();
-        Integer cena = new Integer(cenaField.getText());
-        Integer ilosc = new Integer(iloscField.getText());
-      
+        Produkt produkt = new Produkt();
+
+        produkt.typ = typField.getText();
+        produkt.specyfikacja = specyfikacjaField.getText();
+        produkt.nazwa = nazwaField.getText();
+        produkt.cena = new BigDecimal(cenaField.getText());
+        produkt.ilosc = new Integer(iloscField.getText());
+
         try {
+            DAOFactory.getProduktyDAO().insert(produkt);
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            wypelnijPola.setVisible(true);
+            return;
+        }
+        dispose();
+      
+/*        try {
             CallableStatement proc = connection.prepareCall("{call DodajProdukt(?, ?, ?, ?, ?)}");
                 proc.setString(1, typ);
                 proc.setString(2, specyfikacja);
@@ -232,9 +247,8 @@ public class DialogDodajProdukt extends javax.swing.JDialog {
             proc.close();
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            dispose();
-        }
+        } finally {*/
+//        }
     }//GEN-LAST:event_utworzActionPerformed
 
     /**

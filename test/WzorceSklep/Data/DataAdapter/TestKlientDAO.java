@@ -52,7 +52,7 @@ public class TestKlientDAO {
     /*private static DatabaseAdapter getDatabaseAdapter() throws SQLException {
         DatabaseAdapter adapter = EasyMock.createMock(DatabaseAdapter.class);
         List<TableRow> tableRows = new LinkedList<TableRow>();
-        TableRow row = TableRowFactory.createUniversalDataEntity("KLIENT");
+        TableRow row = TableRowFactory.createTableRow("KLIENT");
         row.setValue("ID", 1);
         row.setValue("Imie", "Jan");
         row.setValue("Nazwisko", "Kowalski");
