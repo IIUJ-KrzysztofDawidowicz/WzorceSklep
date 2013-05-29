@@ -11,19 +11,15 @@ import java.awt.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/**
- *
- * @author Krzysztof
- */
-public class DialogUsunPracownika extends javax.swing.JDialog 
+public class DialogUsunPracownika extends javax.swing.JDialog
 {
-    int id;
+    private final int id;
 
     /**
      * Creates new form DialogUsunPracownika
      */
-    public DialogUsunPracownika(Frame parent, boolean modal, int id, String nazwisko) {
-        super(parent, modal);
+    public DialogUsunPracownika(Frame parent, int id, String nazwisko) {
+        super(parent, true);
         this.id=id;
         initComponents();
         idnazwisko.setText(Integer.toString(id)+" "+nazwisko);
@@ -141,55 +137,6 @@ public class DialogUsunPracownika extends javax.swing.JDialog
 //        }
     }//GEN-LAST:event_takButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    /*public static void main(String args[]) {
-        *//*
-         * Set the Nimbus look and feel
-         *//*
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        *//*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-         * default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         *//*
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogUsunPracownika.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogUsunPracownika.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogUsunPracownika.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogUsunPracownika.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        *//*
-         * Create and display the dialog
-         *//*
-        *//*java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                DialogUsunPracownika dialog = new DialogUsunPracownika(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });*//*
-    }*/
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel czyjestespewienLabel;
     private javax.swing.JLabel idnazwisko;

@@ -19,9 +19,9 @@ import java.util.List;
  */
 public class RefreshTableAction<T extends DataEntity> implements RepresentDataAction {
 
-    protected final DataAccessObject<T>       dao;
-    protected final TableAccessors            tableAccessors;
-    protected final AbstractTableConverter<T> tableConverter;
+    private final DataAccessObject<T>       dao;
+    private final TableAccessors            tableAccessors;
+    private final AbstractTableConverter<T> tableConverter;
 
     public RefreshTableAction(AbstractTableConverter<T> tableConverter,
                               DataAccessObject<T> dao,

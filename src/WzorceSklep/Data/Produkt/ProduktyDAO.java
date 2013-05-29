@@ -23,7 +23,7 @@ import java.util.List;
 public class ProduktyDAO implements DataAccessObject<Produkt> {
 
 
-    public static final String TABLE_NAME = "PRODUKT";
+    private static final String TABLE_NAME = "PRODUKT";
     private final DatabaseAdapter adapter;
 
     public ProduktyDAO(DatabaseAdapter databaseAdapter) {
@@ -39,20 +39,6 @@ public class ProduktyDAO implements DataAccessObject<Produkt> {
         wynik.setValue("Nazwa", produkt.nazwa);
         wynik.setValue("Ilosc", produkt.ilosc);
         wynik.setValue("Specyfikacja", produkt.specyfikacja);
-
-        return wynik;
-    }
-
-    private static Produkt convertToProduct(TableRow row)
-    {
-        Produkt wynik = new Produkt();
-
-        wynik.ID = (Integer) row.getValue("ID");
-        wynik.typ = row.getValue("Typ").toString();
-        wynik.cena = (BigDecimal) row.getValue("Cena");
-        wynik.nazwa = row.getValue("Nazwa").toString();
-        wynik.ilosc = (Integer) row.getValue("Ilosc");
-        wynik.specyfikacja = row.getValue("Specyfikacja").toString();
 
         return wynik;
     }

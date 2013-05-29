@@ -37,7 +37,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
     }
 
     @Override
-    public ResultSet select(String tableName, String lookFor, String orderBy) throws SQLException, ClassNotFoundException {
+    public ResultSet select(String tableName, String lookFor, String orderBy) throws SQLException {
         validateOrderBy(tableName, orderBy);
         String selectCommand = String.format("SELECT * from %s WHERE %s ORDER BY %s", tableName, createWhereClause(tableName, lookFor), orderBy);
 
@@ -189,12 +189,6 @@ public class JavaDBAdapter implements DatabaseAdapter {
         Connection connection = DriverManager.getConnection(url, properties);
         Statement statement = connection.createStatement();
         statement.execute(command);
-    }
-
-    @Override
-    public void insert(List<TableRow> entityList) throws SQLException {
-        for(TableRow entity: entityList)
-            insert(entity);
     }
 
 }

@@ -8,6 +8,7 @@ import WzorceSklep.DataAccessObject;
 import WzorceSklep.DAOFactory;
 import WzorceSklep.Data.AdresOsoby;
 
+import java.awt.*;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,9 +22,8 @@ import javax.swing.text.MaskFormatter;
  */
 public class DialogDodajPracownika extends javax.swing.JDialog 
 {
-    JFormattedTextField.AbstractFormatter format;
-    Connection connection;
-    Pracownik pracownik;
+    private JFormattedTextField.AbstractFormatter format;
+    private Pracownik pracownik;
 
     private void utworzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_utworzActionPerformed
 
@@ -117,9 +117,9 @@ public class DialogDodajPracownika extends javax.swing.JDialog
     /**
      * Creates new form DialogDodajPracownika
      */
-    public DialogDodajPracownika(java.awt.Frame parent, boolean modal)
+    public DialogDodajPracownika(Frame parent)
     {
-        super(parent, modal);
+        super(parent, true);
         try
         {
             format = new MaskFormatter("##-###");

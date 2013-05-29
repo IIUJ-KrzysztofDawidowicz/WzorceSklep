@@ -5,9 +5,9 @@ import java.util.Properties;
 
 public class DataAdapterFactory
 {
-    private static String defaultDB = "WzorceSklep";
+    private final static String defaultDB = "WzorceSklep";
 
-    public static DatabaseAdapter getDatabaseAdapter(String dbFileName) throws SQLException {
+    private static DatabaseAdapter getDatabaseAdapter(String dbFileName) throws SQLException {
         Properties properties = new Properties();
 //        properties.put("user", "dbuser");
 //        properties.put("password", "dbuserpwd");

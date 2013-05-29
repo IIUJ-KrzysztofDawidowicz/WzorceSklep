@@ -44,10 +44,10 @@ import java.util.Map;
 
 public class Admin extends javax.swing.JFrame {
 
-    JPanel aktualnyPanel;
-    JDialog otwartyDialog;
-    Action akcjaUsunPracownika = new ActionUsuwaniePracownika();
-    Action akcjaPracownikSzczegoly = new ActionPracownikSczegoly();
+    private JPanel aktualnyPanel;
+    private JDialog otwartyDialog;
+    private final Action akcjaUsunPracownika = new ActionUsuwaniePracownika();
+    private final Action akcjaPracownikSzczegoly = new ActionPracownikSczegoly();
     private final Map<JPanel, RepresentDataAction> refreshTableActions;
 
     /** Creates new form Main */
@@ -79,7 +79,7 @@ public class Admin extends javax.swing.JFrame {
         refreshCurrentWindow();
     }
 
-    public void refreshCurrentWindow() {
+    void refreshCurrentWindow() {
         try {
             if (aktualnyPanel != null)
                 refreshTableActions.get(aktualnyPanel).execute();
@@ -107,14 +107,14 @@ public class Admin extends javax.swing.JFrame {
                     new ZamowieniaHurtowniTableAccessors());
 
             actionMap.put(panel_pracownicy, new RefreshTableAction<Pracownik>(
-                    new PracownicyTableConverter(akcjaPracownikSzczegoly, akcjaUsunPracownika, pracownicy_tabela), new DAOFactory().getPracownikDAO(), new PracownicyTableAccessors()));
+                    new PracownicyTableConverter(), new DAOFactory().getPracownikDAO(), new PracownicyTableAccessors()));
             actionMap.put(panel_klienci, new RefreshTableAction<Klient>(
                     new KlienciTableConverter(), new DAOFactory().getKlientDAO(), new KlienciTableAccesors()));
             actionMap.put(panel_hurtowni, new RefreshTableAction<Hurtownia>(
                     new HurtowniaTableConverter(), DAOFactory.getHurtowniaDAO(), new HurtowniaTableAccessors()));
             actionMap.put(panel_produkty, new RefreshTableAction<Produkt>(
                     new ProduktyTableConverter(), DAOFactory.getProduktyDAO(), new ProdktyTableAccessors()));
-            actionMap.put(panel_statystyka, new RefreshStatystykiAction(this));
+            actionMap.put(panel_statystyka, new RefreshStatystykiAction());
             actionMap.put(panel_zamowienia, new MulticastRepresentDataAction(
                     refreshZamowieniaHurtowniAction, refreshZamowieniaKlientAction));
         } catch (SQLException e) {
@@ -1259,7 +1259,7 @@ public class Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_guzik_pracownicyMouseClicked
 
     private void guzik_produktyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guzik_produktyActionPerformed
-        // TODO add your handling code here:
+        refreshCurrentWindow();
     }//GEN-LAST:event_guzik_produktyActionPerformed
 
     private void zam_szukaj_hurtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_zam_szukaj_hurtMouseClicked
@@ -1286,7 +1286,7 @@ public class Admin extends javax.swing.JFrame {
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                otwartyDialog = new DialogDodajPracownika(Admin.this, true);
+                otwartyDialog = new DialogDodajPracownika(Admin.this);
                 otwartyDialog.setVisible(true);
                 otwartyDialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
                 {
@@ -1323,7 +1323,7 @@ public class Admin extends javax.swing.JFrame {
     private void hurtownia_dodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hurtownia_dodajActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                otwartyDialog = new DialogDodajHurtownie(Admin.this, true);
+                otwartyDialog = new DialogDodajHurtownie(Admin.this);
                 otwartyDialog.setVisible(true);
                 otwartyDialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
                 {
@@ -1343,7 +1343,7 @@ public class Admin extends javax.swing.JFrame {
     private void produkty_dodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produkty_dodajActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                otwartyDialog = new DialogDodajProdukt(Admin.this, true);
+                otwartyDialog = new DialogDodajProdukt(Admin.this);
                 otwartyDialog.setVisible(true);
                 otwartyDialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
                 {
@@ -1368,7 +1368,7 @@ public class Admin extends javax.swing.JFrame {
     private void dodajKlientaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajKlientaButtonActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                otwartyDialog = new DialogDodajKlienta(Admin.this, true);
+                otwartyDialog = new DialogDodajKlienta(Admin.this);
                 otwartyDialog.setVisible(true);
                 otwartyDialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
                 {
@@ -1682,7 +1682,7 @@ public class Admin extends javax.swing.JFrame {
 
             public void run()
             {
-                otwartyDialog = new DialogPracownikSzczegoly(Admin.this, true, idPracownika);
+                otwartyDialog = new DialogPracownikSzczegoly(Admin.this, idPracownika);
                 otwartyDialog.setVisible(true);
             }
         }
@@ -1718,7 +1718,7 @@ public class Admin extends javax.swing.JFrame {
             }
 
             public void run() {
-                windowOwner.otwartyDialog = new DialogUsunPracownika(windowOwner, true, idPracownika, nazwiskoPracownika);
+                windowOwner.otwartyDialog = new DialogUsunPracownika(windowOwner, idPracownika, nazwiskoPracownika);
                 windowOwner.otwartyDialog.setVisible(true);
                 windowOwner.otwartyDialog.addWindowListener(new DialogClosedListener());
             }

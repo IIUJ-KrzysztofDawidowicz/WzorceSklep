@@ -21,8 +21,8 @@ import java.util.List;
  */
 public class HurtowniaDAO implements DataAccessObject<Hurtownia> {
 
-    public static final String tableNameAdres = "ADRESHURTOWNI";
-    public static final String tableNameHurtownia = "HURTOWNIA";
+    private static final String tableNameAdres = "ADRESHURTOWNI";
+    private static final String tableNameHurtownia = "HURTOWNIA";
     private final DatabaseAdapter adapter;
 
     public HurtowniaDAO(DatabaseAdapter adapter) {
@@ -93,24 +93,6 @@ public class HurtowniaDAO implements DataAccessObject<Hurtownia> {
         wynik.setValue("Telefon", hurtownia.telefon);
         wynik.setValue("Mail", hurtownia.mail);
 
-        return wynik;
-    }
-
-    private List<AdresHurtowni> convertToAdres(ResultSet set) throws SQLException {
-        List<AdresHurtowni> wynik = new LinkedList<AdresHurtowni>();
-        while (set.next())
-        {
-            AdresHurtowni adres = new AdresHurtowni();
-
-            adres.ulica = set.getString("Ulica");
-            adres.nrDomu = set.getInt("NrDomu");
-            adres.kodPocztowy = set.getString("Kod");
-            adres.miejscowosc = set.getString("Miejscowosc");
-            adres.poczta = set.getString("Poczta");
-            adres.kraj = set.getString("Kraj");
-
-            wynik.add(adres);
-        }
         return wynik;
     }
 

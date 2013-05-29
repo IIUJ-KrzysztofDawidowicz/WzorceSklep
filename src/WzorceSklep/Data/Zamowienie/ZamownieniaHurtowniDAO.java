@@ -21,8 +21,8 @@ import java.util.List;
  */
 public class ZamownieniaHurtowniDAO implements DataAccessObject<ZamowienieHurtowni> {
 
-    public static final String TABLE_NAME = "ZAMOWIENIEHURTOWNI";
-    private DatabaseAdapter adapter;
+    private static final String TABLE_NAME = "ZAMOWIENIEHURTOWNI";
+    private final DatabaseAdapter adapter;
     private final DataAccessObject<Hurtownia> hurtowniaDataAccessObject;
     private final DataAccessObject<Produkt> produktDataAccessObject;
 

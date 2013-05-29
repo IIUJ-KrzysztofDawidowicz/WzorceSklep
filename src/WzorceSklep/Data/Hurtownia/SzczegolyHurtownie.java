@@ -4,6 +4,7 @@
  */
 package WzorceSklep.Data.Hurtownia;
 
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,16 +15,12 @@ import java.sql.Statement;
  * @author Ariel
  */
 public class SzczegolyHurtownie extends javax.swing.JDialog {
-    Connection connection=null;
-    int idhurt;
     /**
      * Creates new form SzczegolyHurtownie
      */
-    public SzczegolyHurtownie(java.awt.Frame parent, boolean modal, Connection con, int idh) {
+    public SzczegolyHurtownie(Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        connection = con;
-        idhurt = idh;
     }
 
     /**
@@ -184,77 +181,6 @@ public class SzczegolyHurtownie extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /*
-         * Set the Nimbus look and feel
-         */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-         * default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SzczegolyHurtownie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SzczegolyHurtownie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SzczegolyHurtownie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SzczegolyHurtownie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /*
-         * Create and display the dialog
-         
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                SzczegolyHurtownie dialog = new SzczegolyHurtownie(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });*/
-    }
-    
-    public void wczytaj() throws SQLException
-    {
-        Statement stat = connection.createStatement();
-        ResultSet rs = stat.executeQuery("use Sklep;select ID_Hurtowni, Nazwa, Osoba_kontaktowa, Telefon, Mail from Hurtownie where ID_Hurtowni = " + idhurt);
-        ResultSet rs1 = stat.executeQuery("use Sklep;select ID_Hurtowni, Ulica, Nr_domu, Kod, Miejscowosc, Poczta, Kraj from Adres_Hurtowni where ID_Hurtowni = " + idhurt);
-        
-        while(rs.next())
-        {
-            id.setText(rs.getString("ID_Hurtowni"));
-            nazwa.setText(rs.getString("Nazwa"));
-            kontakt.setText(rs.getString("Osoba_kontaktowa"));
-            telefon.setText(rs.getString("Telefon"));
-            mail.setText(rs.getString("Mail"));
-            adres.setText(rs1.getString("Ulica") + " " + rs1.getString("Nr_domu"));
-            miasto.setText(rs1.getString("Kod") + " " + rs1.getString("Miejscowosc"));
-            poczta.setText(rs1.getString("Poczta"));
-            kraj.setText(rs1.getString("Kraj"));
-        }
-    
-    }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel adres;
     private javax.swing.JLabel id;

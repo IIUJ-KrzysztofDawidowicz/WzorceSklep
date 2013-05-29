@@ -21,13 +21,13 @@ import javax.swing.text.MaskFormatter;
  */
 public class DialogDodajKlienta extends javax.swing.JDialog 
 {
-    JFormattedTextField.AbstractFormatter format;
+    private JFormattedTextField.AbstractFormatter format;
 
     /**
      * Creates new form DialogDodajKlienta
      */
-    public DialogDodajKlienta(Frame parent, boolean modal) {
-        super(parent, modal);
+    public DialogDodajKlienta(Frame parent) {
+        super(parent, true);
         try
         {
             format = new MaskFormatter("##-###");
@@ -377,45 +377,14 @@ public class DialogDodajKlienta extends javax.swing.JDialog
         wypelnijPola.setVisible(false);
 
         Klient klient = new Klient();
-        klient.adres = new AdresOsoby();
-
-        String[] inputStrings = new String[11];
-        inputStrings[0] = imieField.getText();
-        klient.imie = imieField.getText();
-
-        inputStrings[1] = nazwiskoField.getText();
-        klient.nazwisko = nazwiskoField.getText();
-
-        inputStrings[2] = ulicaField.getText();
-        klient.adres.ulica = ulicaField.getText();
-
-        inputStrings[3] = kodPocztowyField.getText();
-        klient.adres.kodPocztowy = kodPocztowyField.getText();
-
-        inputStrings[4] = pocztaField.getText();
-        klient.adres.poczta = pocztaField.getText();
-
-        inputStrings[5] = miejscowoscField.getText();
-        klient.adres.miejscowosc=  miejscowoscField.getText();
-
-        inputStrings[6] = krajField.getText();
-        klient.adres.kraj = krajField.getText();
-
-        inputStrings[7] = mailField.getText();
-        klient.mail = mailField.getText();
+        loadDataFromTextFields(klient);
         
         //System.out.println(inputStrings[7]);
 
 
-        Integer[] inputInts = new Integer[3];
         try {
-            inputInts[0] = new Integer(telefonField.getText());
             klient.telefon = new BigDecimal(telefonField.getText());
-
-            inputInts[1] = new Integer(nrdomuField.getText());
             klient.adres.nrDomu = Integer.valueOf(nrdomuField.getText());
-
-            inputInts[2] = new Integer(nrlokaluField.getText());
             klient.adres.nrLokalu = Integer.valueOf(nrlokaluField.getText());
 
         } catch (Exception e) {
@@ -450,6 +419,18 @@ public class DialogDodajKlienta extends javax.swing.JDialog
             dispose();
 //        }
     }//GEN-LAST:event_utworzActionPerformed
+
+    private void loadDataFromTextFields(Klient klient) {
+        klient.adres = new AdresOsoby();
+        klient.imie = imieField.getText();
+        klient.nazwisko = nazwiskoField.getText();
+        klient.adres.ulica = ulicaField.getText();
+        klient.adres.kodPocztowy = kodPocztowyField.getText();
+        klient.adres.poczta = pocztaField.getText();
+        klient.adres.miejscowosc=  miejscowoscField.getText();
+        klient.adres.kraj = krajField.getText();
+        klient.mail = mailField.getText();
+    }
 
     /**
      * @param args the command line arguments

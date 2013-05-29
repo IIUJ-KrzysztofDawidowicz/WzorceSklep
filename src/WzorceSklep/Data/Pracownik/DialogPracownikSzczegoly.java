@@ -17,8 +17,8 @@ public class DialogPracownikSzczegoly extends javax.swing.JDialog
     /**
      * Creates new form DialogPracownikSzczegoly
      */
-    public DialogPracownikSzczegoly(Frame parent, boolean modal, int idPracownika) {
-        super(parent, modal);
+    public DialogPracownikSzczegoly(Frame parent, int idPracownika) {
+        super(parent, true);
         initComponents();
         main(idPracownika);
     }

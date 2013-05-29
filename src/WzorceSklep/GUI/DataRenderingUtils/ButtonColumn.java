@@ -29,14 +29,14 @@ import javax.swing.table.TableColumnModel;
 public class ButtonColumn extends AbstractCellEditor
 	implements TableCellRenderer, TableCellEditor, ActionListener, MouseListener
 {
-	private JTable table;
-	private Action action;
+	private final JTable table;
+	private final Action action;
 	private int mnemonic;
-	private Border originalBorder;
+	private final Border originalBorder;
 	private Border focusBorder;
 
-	private JButton renderButton;
-	private JButton editButton;
+	private final JButton renderButton;
+	private final JButton editButton;
 	private Object editorValue;
 	private boolean isButtonColumnEditor;
 
@@ -83,7 +83,7 @@ public class ButtonColumn extends AbstractCellEditor
 	 *
 	 *  @param focusBorder the foreground color
 	 */
-	public void setFocusBorder(Border focusBorder)
+	void setFocusBorder(Border focusBorder)
 	{
 		this.focusBorder = focusBorder;
 		editButton.setBorder( focusBorder );

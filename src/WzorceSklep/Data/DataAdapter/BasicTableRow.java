@@ -98,8 +98,8 @@ public class BasicTableRow implements TableRow
     }
     //</editor-fold>
 
-    protected final TableInfo tableInfo;
-    protected final Map<String,Object> values;
+    final TableInfo tableInfo;
+    final Map<String,Object> values;
 
     public String getTableName() {
         return tableInfo.tableName;

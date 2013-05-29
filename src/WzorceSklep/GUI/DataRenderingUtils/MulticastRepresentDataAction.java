@@ -24,11 +24,6 @@ public class MulticastRepresentDataAction implements RepresentDataAction {
         Collections.addAll(actions, dataActions);
     }
 
-    public void addAction(RepresentDataAction action)
-    {
-        actions.add(action);
-    }
-
     @Override
     public void execute() throws InvalidDataException, SQLException, ClassNotFoundException {
         for(RepresentDataAction action: actions)

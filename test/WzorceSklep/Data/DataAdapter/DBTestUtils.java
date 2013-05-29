@@ -15,7 +15,7 @@ class DBTestUtils {
     static final String[]   columnNames = new String[] {"ID", "Name"};
     static final Class[]    columnTypes = new Class[] {Integer.class, String.class};
 
-    public static TableInfo createTableInfo(String tableName, String[] columnNames, Class[] columnTypes) throws SQLException, ClassNotFoundException {
+    public static TableInfo createTableInfo(String tableName, String[] columnNames, Class[] columnTypes) throws SQLException {
         return TableInfo.getTableInfo(getMockResultSetMetaData(tableName, columnNames, columnTypes));
     }
 

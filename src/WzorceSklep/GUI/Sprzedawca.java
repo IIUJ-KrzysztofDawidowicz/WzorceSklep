@@ -32,8 +32,7 @@ import javax.swing.table.TableModel;
  */
 public class Sprzedawca extends javax.swing.JFrame {
 
-    JPanel okno;
-    Connection connection = null;
+    private JPanel okno;
     private RepresentDataAction refreshZamowieniaKlientAction;
     private RepresentDataAction refreshZamowieniaHurtowniAction;
     private RepresentDataAction refreshKlienciAction;
@@ -42,10 +41,9 @@ public class Sprzedawca extends javax.swing.JFrame {
     private final Map<JPanel, RepresentDataAction> refreshTableActions;
     private final Pracownik zalogowany;
 
-    public Sprzedawca(Connection con, Pracownik pracownik) {
+    public Sprzedawca(Pracownik pracownik) {
         zalogowany=pracownik;
-        connection = con;
-                
+
         initComponents();
         setInitialVisibility();
         initTableActions();

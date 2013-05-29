@@ -22,7 +22,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class ZamowienieKlientaDAO implements DataAccessObject<ZamowienieKlienta> {
-    public static final String TABLE_NAME = "ZAMOWIENIEKLIENTA";
+    private static final String TABLE_NAME = "ZAMOWIENIEKLIENTA";
     private final DatabaseAdapter adapter;
 
     public ZamowienieKlientaDAO(DatabaseAdapter databaseAdapter) {

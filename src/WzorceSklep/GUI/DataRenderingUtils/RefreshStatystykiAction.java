@@ -6,10 +6,8 @@ import WzorceSklep.GUI.RepresentDataAction;
 import java.io.Serializable;
 
 public class RefreshStatystykiAction implements Serializable, RepresentDataAction {
-    private final Admin admin;
 
-    public RefreshStatystykiAction(Admin admin) {
-        this.admin = admin;
+    public RefreshStatystykiAction() {
     }
 
     public void execute() {

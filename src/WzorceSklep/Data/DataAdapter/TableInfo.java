@@ -36,7 +36,7 @@ public class TableInfo
     private String[] columns;
     //</editor-fold>
 
-    TableInfo(ResultSetMetaData metaData) throws SQLException  {
+    private TableInfo(ResultSetMetaData metaData) throws SQLException  {
         tableName = metaData.getTableName(1);
         this.columns = new String[metaData.getColumnCount()];
         valueTypes = new HashMap<String, Class>();
@@ -84,8 +84,6 @@ public class TableInfo
     /**
      * Tworzy obiekt TableInfo na podstawie podanych metadanych.
      * Jeśli obiekt dla danej tabeli jest już w cache, jest on zwracany - nie jest .
-     * @param metaData
-     * @return
      * @throws SQLException Jeśli w bazie danych zaszedł błąd.
      */
     public static TableInfo getTableInfo(ResultSetMetaData metaData) throws SQLException {
@@ -95,10 +93,6 @@ public class TableInfo
         TableInfo tableInfo = new TableInfo(metaData);
         cache.put(tableName,tableInfo);
         return tableInfo;
-    }
-
-    public static boolean hasInfo(String tableName) {
-        return cache.containsKey(tableName);
     }
 
     String[] getColumns()

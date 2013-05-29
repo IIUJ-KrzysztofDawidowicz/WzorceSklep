@@ -14,10 +14,8 @@ public interface DatabaseAdapter
     ResultSet selectAll(String tableName) throws SQLException;
     ResultSet select(String tableName, String orderBy) throws SQLException;
 
-    public ResultSet select(String tableName, String lookFor, String orderBy) throws SQLException, ClassNotFoundException;
+    public ResultSet select(String tableName, String lookFor, String orderBy) throws SQLException;
     public void insert(TableRow nowy) throws SQLException;
-
-    void insert(List<TableRow> entityList) throws SQLException;
 
     public void update(TableRow nowy) throws SQLException;
 

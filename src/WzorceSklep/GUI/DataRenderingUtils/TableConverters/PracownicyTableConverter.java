@@ -14,16 +14,6 @@ import java.util.Map;
  */
 public class PracownicyTableConverter extends AbstractTableConverter<Pracownik> {
 
-    private final Action akcjaPracownikSzczegoly;
-    private final Action akcjaUsunPracownika;
-    private final JTable pracownicy_tabela;
-
-    public PracownicyTableConverter(Action akcjaPracownikSzczegoly, Action akcjaUsunPracownika, JTable pracownicy_tabela) {
-        this.akcjaPracownikSzczegoly = akcjaPracownikSzczegoly;
-        this.akcjaUsunPracownika = akcjaUsunPracownika;
-        this.pracownicy_tabela = pracownicy_tabela;
-    }
-
     @Override
     protected TableModel getEmptyTableModel(final int length)
     {

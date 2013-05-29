@@ -19,13 +19,11 @@ import javax.swing.JFormattedTextField;
  */
 public class DialogDodajProdukt extends javax.swing.JDialog {
 
-    JFormattedTextField.AbstractFormatter format;
-
     /**
      * Creates new form DialogDodajProdukt
      */
-    public DialogDodajProdukt(Frame parent, boolean modal) {
-        super(parent, modal);
+    public DialogDodajProdukt(Frame parent) {
+        super(parent, true);
         initComponents();
         wypelnijPola.setVisible(false);
         

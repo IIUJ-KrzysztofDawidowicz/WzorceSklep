@@ -74,7 +74,7 @@ public class Main
         public void Login(final Pracownik pracownik) {
             EventQueue.invokeLater(new Runnable() {
                 public void run() {
-                    new Sprzedawca(null, pracownik).setVisible(true);
+                    new Sprzedawca(pracownik).setVisible(true);
                 }
             });
         }
