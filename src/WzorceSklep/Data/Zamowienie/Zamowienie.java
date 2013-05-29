@@ -16,8 +16,10 @@ import java.util.Dictionary;
  */
 public abstract class Zamowienie implements DataEntity
 {
-    BigDecimal kwota;
-    Date dataZamowienia;
-    Date dataOdebrania;
-    public Dictionary<Produkt,Integer> produktyZamowione;
+    public BigDecimal kwota;
+    public Date dataZamowienia;
+    public Date dataOdebrania;
+    public Produkt produktZamowiony;
+    public int ilosc;
+    public int ID;
 }

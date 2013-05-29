@@ -63,7 +63,7 @@ public class TableInfo
         cache.put(tableName,this);
     }
 
-    public static String getColumnNameWithCheckedCase(String columnName, String tableName) throws SQLException {
+    public static String getColumnNameWithCheckedCase(String tableName, String columnName) throws SQLException {
         if(!getTableInfo(tableName).hasColumn(columnName))
         {
             if(getTableInfo(tableName).hasColumn(columnName.toUpperCase()))

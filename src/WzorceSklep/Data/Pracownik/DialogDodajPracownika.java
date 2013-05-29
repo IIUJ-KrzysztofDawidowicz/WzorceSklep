@@ -75,7 +75,7 @@ public class DialogDodajPracownika extends javax.swing.JDialog
             return;
         }
         try {
-            DataAccessObject<Pracownik> dao = DAOFactory.getPracownikDAO();
+            DataAccessObject<Pracownik> dao = new DAOFactory().getPracownikDAO();
             dao.insert(pracownik);
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -117,13 +117,12 @@ public class DialogDodajPracownika extends javax.swing.JDialog
     /**
      * Creates new form DialogDodajPracownika
      */
-    public DialogDodajPracownika(java.awt.Frame parent, boolean modal, Connection con)
+    public DialogDodajPracownika(java.awt.Frame parent, boolean modal)
     {
         super(parent, modal);
         try
         {
             format = new MaskFormatter("##-###");
-            connection=con;
             //final OknoDodajPracownika thisframe=this;
 
             /*

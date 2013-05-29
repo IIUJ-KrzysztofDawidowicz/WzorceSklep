@@ -6,6 +6,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -306,7 +307,7 @@
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="tabbed_zamowienia" alignment="0" pref="460" max="32767" attributes="0"/>
+                  <Component id="tabbed_zamowienia" alignment="0" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -524,15 +525,152 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="820" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="TelefonLabel" alignment="0" pref="367" max="32767" attributes="0"/>
+                              <Component id="MailLabel" alignment="0" max="32767" attributes="0"/>
+                              <Component id="LoginLabel" alignment="0" max="32767" attributes="0"/>
+                              <Component id="UmowaLabel" alignment="0" max="32767" attributes="0"/>
+                              <Component id="StatusLabel" alignment="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="IDLabel" max="32767" attributes="0"/>
+                                  <Component id="NazwiskoLabel" alignment="0" pref="367" max="32767" attributes="0"/>
+                                  <Component id="ImieLabel" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="22" pref="22" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="KodPocztowyLabel" min="-2" max="-2" attributes="0"/>
+                                          <Component id="PocztaLabel" min="-2" pref="190" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" attributes="0">
+                                          <Component id="KrajLabel" max="32767" attributes="0"/>
+                                          <Component id="MiejscowoscLabel" pref="203" max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Component id="UlicaLabel" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="440" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="IDLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="UlicaLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="KodPocztowyLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="MiejscowoscLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="PocztaLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="KrajLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="ImieLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="NazwiskoLabel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="TelefonLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="MailLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="LoginLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="UmowaLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="StatusLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="275" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
           </Layout>
+          <SubComponents>
+            <Component class="javax.swing.JLabel" name="IDLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="ID:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="ImieLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Imie:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="NazwiskoLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Nazwisko:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="TelefonLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Telefon:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="MailLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Mail:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="LoginLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Login:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="UmowaLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Umowa:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="StatusLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Status:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="UlicaLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ulica:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="KodPocztowyLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Kod Pocztowy:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="MiejscowoscLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Miejscowosc:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="PocztaLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Poczta:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JLabel" name="KrajLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Kraj:"/>
+              </Properties>
+            </Component>
+          </SubComponents>
         </Container>
       </SubComponents>
     </Container>

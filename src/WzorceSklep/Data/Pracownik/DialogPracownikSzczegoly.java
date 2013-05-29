@@ -7,25 +7,20 @@ package WzorceSklep.Data.Pracownik;
 import WzorceSklep.DAOFactory;
 import com.sun.media.sound.InvalidDataException;
 
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-/**
- *
- * @author Krzysztof
- */
-public class DialogPracownikSzczegoly extends javax.swing.JDialog 
+public class DialogPracownikSzczegoly extends javax.swing.JDialog
 {
-    Connection connection;
 
     /**
      * Creates new form DialogPracownikSzczegoly
      */
-    public DialogPracownikSzczegoly(java.awt.Frame parent, boolean modal, Connection con, int id) {
+    public DialogPracownikSzczegoly(Frame parent, boolean modal, int idPracownika) {
         super(parent, modal);
-        connection=con;
         initComponents();
-        main(id);
+        main(idPracownika);
     }
 
     /**
@@ -264,33 +259,16 @@ public class DialogPracownikSzczegoly extends javax.swing.JDialog
         dispose();
     }//GEN-LAST:event_okButtonActionPerformed
 
-    private void main(int id) 
+    private void main(int idPracownika)
     {
-        //String idString= Integer.toString(id);
         try
         {
-//             Statement stat = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-/*             ResultSet rs = stat.executeQuery("select * from Pracownicy P join Adres_Pracownicy A on P.ID_Pracownika=A.ID_Pracownika where P.ID_Pracownika="+idString);
-             rs.beforeFirst();
-             rs.next();
-             imie.setText(rs.getString("Imie"));
-             nazwisko.setText(rs.getString("Nazwisko"));
-             adres.setText("ul. "+rs.getString("Ulica")+ ", "+rs.getString("Nr_lokalu")+" m. "+rs.getString("Nr_domu"));
-             kodPocztowy.setText(rs.getString("Kod"));
-             poczta.setText(rs.getString("Poczta"));
-             miejscowosc.setText(rs.getString("Miejscowosc"));
-             telefon.setText(rs.getString("Telefon"));
-             kraj.setText(rs.getString("Kraj"));
-             mail.setText(rs.getString("Mail"));
-             umowa.setText(rs.getString("Umowa"));
-             login.setText(rs.getString("Login"));
-             status.setText(rs.getString("Status"));*/
             Pracownik pracownik = new Pracownik();
-            pracownik.ID = id;
-            pracownik = DAOFactory.getPracownikDAO().getDetails(id);
+            pracownik.ID = idPracownika;
+            pracownik = new DAOFactory().getPracownikDAO().getById(idPracownika);
             imie.setText(pracownik.imie);
             nazwisko.setText(pracownik.nazwisko);
-            adres.setText("ul. "+pracownik.adres.ulica+ ", "+pracownik.adres.nrLokalu+" m. "+pracownik.adres.nrDomu);
+            adres.setText(String.format("ul. %s, %d m. %d", pracownik.adres.ulica, pracownik.adres.nrLokalu, pracownik.adres.nrDomu));
             kodPocztowy.setText(pracownik.adres.kodPocztowy);
             poczta.setText(pracownik.adres.poczta);
             miejscowosc.setText(pracownik.adres.miejscowosc);

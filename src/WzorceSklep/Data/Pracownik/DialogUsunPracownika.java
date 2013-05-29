@@ -7,6 +7,7 @@ package WzorceSklep.Data.Pracownik;
 import WzorceSklep.DataAccessObject;
 import WzorceSklep.DAOFactory;
 
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -16,15 +17,13 @@ import java.sql.SQLException;
  */
 public class DialogUsunPracownika extends javax.swing.JDialog 
 {
-    Connection connection;
     int id;
 
     /**
      * Creates new form DialogUsunPracownika
      */
-    public DialogUsunPracownika(java.awt.Frame parent, boolean modal, Connection con, int id, String nazwisko) {
+    public DialogUsunPracownika(Frame parent, boolean modal, int id, String nazwisko) {
         super(parent, modal);
-        connection=con;
         this.id=id;
         initComponents();
         idnazwisko.setText(Integer.toString(id)+" "+nazwisko);
@@ -120,7 +119,7 @@ public class DialogUsunPracownika extends javax.swing.JDialog
 
     private void takButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_takButtonActionPerformed
         try {
-            DataAccessObject<Pracownik> dao = DAOFactory.getPracownikDAO();
+            DataAccessObject<Pracownik> dao = new DAOFactory().getPracownikDAO();
             dao.delete(id);
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -145,16 +144,16 @@ public class DialogUsunPracownika extends javax.swing.JDialog
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /*
+    /*public static void main(String args[]) {
+        *//*
          * Set the Nimbus look and feel
-         */
+         *//*
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
+        *//*
          * If Nimbus (introduced in Java SE 6) is not available, stay with the
          * default look and feel. For details see
          * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
+         *//*
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -173,10 +172,10 @@ public class DialogUsunPracownika extends javax.swing.JDialog
         }
         //</editor-fold>
 
-        /*
+        *//*
          * Create and display the dialog
-         */
-        /*java.awt.EventQueue.invokeLater(new Runnable() {
+         *//*
+        *//*java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
                 DialogUsunPracownika dialog = new DialogUsunPracownika(new javax.swing.JFrame(), true);
@@ -189,8 +188,8 @@ public class DialogUsunPracownika extends javax.swing.JDialog
                 });
                 dialog.setVisible(true);
             }
-        });*/
-    }
+        });*//*
+    }*/
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel czyjestespewienLabel;
     private javax.swing.JLabel idnazwisko;

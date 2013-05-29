@@ -6,8 +6,8 @@ package WzorceSklep.Data.Hurtownia;
 
 import WzorceSklep.DAOFactory;
 
+import java.awt.*;
 import java.math.BigDecimal;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.text.ParseException;
 import javax.swing.JFormattedTextField;
@@ -19,16 +19,15 @@ import javax.swing.text.MaskFormatter;
  */
 public class DialogDodajHurtownie extends javax.swing.JDialog {
     JFormattedTextField.AbstractFormatter format;
-    Connection connection=null;
+
     /**
      * Creates new form DialogDodajHurtownie
      */
-    public DialogDodajHurtownie(java.awt.Frame parent, boolean modal, Connection con) {
+    public DialogDodajHurtownie(Frame parent, boolean modal) {
         super(parent, modal);
         try
         {
             format = new MaskFormatter("##-###");
-            connection=con;
             //final OknoDodajPracownika thisframe=this;
             
             /*

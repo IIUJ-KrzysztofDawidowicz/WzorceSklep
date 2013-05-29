@@ -14,9 +14,7 @@ package WzorceSklep.GUI;
 import WzorceSklep.Data.Pracownik.PracownikDAO;
 import WzorceSklep.Data.DataAdapter.DataAdapterFactory;
 import WzorceSklep.Data.Pracownik.Pracownik;
-import WzorceSklep.GUI.Actions.LoginActions.LoginAdminAction;
-import WzorceSklep.GUI.Actions.LoginActions.LoginHurtownikAction;
-import WzorceSklep.GUI.Actions.LoginActions.LoginSprzedawcaAction;
+import WzorceSklep.Main;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,9 +29,9 @@ public class Login extends javax.swing.JFrame {
     private void initMap()
     {
         loginActions = new HashMap<Pracownik.Statusy, LoginAction>();
-        loginActions.put(Pracownik.Statusy.Admin, new LoginAdminAction());
-        loginActions.put(Pracownik.Statusy.Hurtownik, new LoginHurtownikAction());
-        loginActions.put(Pracownik.Statusy.Sprzedawca, new LoginSprzedawcaAction());
+        loginActions.put(Pracownik.Statusy.Admin, new Main.LoginAdminAction());
+        loginActions.put(Pracownik.Statusy.Hurtownik, new Main.LoginHurtownikAction());
+        loginActions.put(Pracownik.Statusy.Sprzedawca, new Main.LoginSprzedawcaAction());
     }
 
 

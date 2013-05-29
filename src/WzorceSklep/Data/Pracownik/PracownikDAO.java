@@ -31,7 +31,7 @@ public class PracownikDAO implements DataAccessObject<Pracownik> {
 
     @Override
     public List<Pracownik> select(String lookFor, String orderBy) throws SQLException, ClassNotFoundException {
-        orderBy = TableInfo.getColumnNameWithCheckedCase(orderBy, tableNamePracownik);
+        orderBy = TableInfo.getColumnNameWithCheckedCase(tableNamePracownik, orderBy);
         return convertToPracownik(adapter.select(tableNamePracownik, lookFor, orderBy));
     }
 
@@ -51,17 +51,18 @@ public class PracownikDAO implements DataAccessObject<Pracownik> {
 
     @Override
     public void delete(int id) throws SQLException {
+        adapter.delete(tableNameAdres, id);
         adapter.delete(tableNamePracownik, id);
     }
 
     @Override
     public List<Pracownik> select(String orderBy) throws SQLException {
-        orderBy = TableInfo.getColumnNameWithCheckedCase(orderBy, tableNamePracownik);
+        orderBy = TableInfo.getColumnNameWithCheckedCase(tableNamePracownik, orderBy);
         return convertToPracownik(adapter.select(tableNamePracownik, orderBy));
     }
 
     @Override
-    public Pracownik getDetails(int id) throws SQLException, InvalidDataException {
+    public Pracownik getById(int id) throws SQLException, InvalidDataException {
         Pracownik pracownik;
         {
             TableRow row = TableRowFactory.createTableRow(tableNamePracownik);
@@ -72,24 +73,32 @@ public class PracownikDAO implements DataAccessObject<Pracownik> {
             pracownik = list.get(0);
         }
         {
-            TableRow row = TableRowFactory.createTableRow(tableNameAdres);
-            row.setValue("ID", id);
-            List<AdresOsoby> list = convertToAdres(adapter.selectExactMatch(row));
-            if(list.isEmpty())
-                throw new InvalidDataException(String.format("Nie znaleziono adresu dla pracownika %s %s (id %s)", pracownik.imie, pracownik.nazwisko, pracownik.ID));
-            pracownik.adres = list.get(0);
+            getAdresByID(id, pracownik);
         }
         return pracownik;
     }
 
-    public Pracownik getByLogin(String login, String haslo) throws SQLException {
+    private void getAdresByID(int id, Pracownik pracownik) throws SQLException, InvalidDataException {
+        TableRow row = TableRowFactory.createTableRow(tableNameAdres);
+        row.setValue("ID", id);
+        List<AdresOsoby> list = convertToAdres(adapter.selectExactMatch(row));
+        if(list.isEmpty())
+            throw new InvalidDataException(String.format("Nie znaleziono adresu dla pracownika %s %s (id %s)", pracownik.imie, pracownik.nazwisko, pracownik.ID));
+        pracownik.adres = list.get(0);
+    }
+
+    public Pracownik getByLogin(String login, String haslo) throws SQLException, InvalidDataException {
         TableRow row = TableRowFactory.createTableRow(tableNamePracownik);
         row.setValue("Login", login);
         row.setValue("Password", haslo);
         List<Pracownik> list = convertToPracownik(adapter.selectExactMatch(row));
         if(list.size()<1)
             return null;
-        return list.get(0);
+
+        Pracownik pracownik = list.get(0);
+        getAdresByID(pracownik.ID, pracownik);
+
+        return pracownik;
     }
 
     private static TableRow convertPracownikToTableRow(Pracownik pracownik) throws SQLException {

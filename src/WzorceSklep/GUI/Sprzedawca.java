@@ -4,12 +4,26 @@
  */
 package WzorceSklep.GUI;
 
-import java.awt.Component;
+import WzorceSklep.DAOFactory;
+import WzorceSklep.Data.Klient.Klient;
+import WzorceSklep.Data.Pracownik.Pracownik;
+import WzorceSklep.Data.Produkt.Produkt;
+import WzorceSklep.Data.Zamowienie.ZamowienieHurtowni;
+import WzorceSklep.Data.Zamowienie.ZamowienieKlienta;
+import WzorceSklep.GUI.DataRenderingUtils.MulticastRepresentDataAction;
+import WzorceSklep.GUI.DataRenderingUtils.RefreshTableAction;
+import WzorceSklep.GUI.DataRenderingUtils.TableAccessors;
+import WzorceSklep.GUI.DataRenderingUtils.TableConverters.KlienciTableConverter;
+import WzorceSklep.GUI.DataRenderingUtils.TableConverters.ProduktyTableConverter;
+import WzorceSklep.GUI.DataRenderingUtils.TableConverters.ZamowianieKlientaTableConverter;
+import WzorceSklep.GUI.DataRenderingUtils.TableConverters.ZamowieniaHurtowniTableConverter;
+import com.sun.media.sound.InvalidDataException;
+
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import javax.swing.JFrame;
-import javax.swing.table.DefaultTableModel;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.*;
 import javax.swing.table.TableModel;
 
 /**
@@ -18,17 +32,52 @@ import javax.swing.table.TableModel;
  */
 public class Sprzedawca extends javax.swing.JFrame {
 
-    String Login;
-    int aktywne_okno;
-    Component okno;
+    JPanel okno;
     Connection connection = null;
-    final JFrame thisframe=this;
-    javax.swing.JDialog dialog;
-    public Sprzedawca(Connection con, String login) {
+    private RepresentDataAction refreshZamowieniaKlientAction;
+    private RepresentDataAction refreshZamowieniaHurtowniAction;
+    private RepresentDataAction refreshKlienciAction;
+    private RepresentDataAction refreshProduktyAction;
+    private final RepresentDataAction showMojeDane = new ShowMojeDaneAction();
+    private final Map<JPanel, RepresentDataAction> refreshTableActions;
+    private final Pracownik zalogowany;
+
+    public Sprzedawca(Connection con, Pracownik pracownik) {
+        zalogowany=pracownik;
         connection = con;
-        Login = login;
                 
         initComponents();
+        setInitialVisibility();
+        initTableActions();
+        refreshTableActions = getRefreshTableActions();
+    }
+
+    private void initTableActions() {
+        try {
+            refreshZamowieniaKlientAction = new RefreshTableAction<ZamowienieKlienta>(
+                    new ZamowianieKlientaTableConverter(),
+                    new DAOFactory().getZamowieniaKllientaDAO(),
+                    new ZamowienieKlientaTableAccessors());
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        try {
+            refreshZamowieniaHurtowniAction = new RefreshTableAction<ZamowienieHurtowni>(
+                    new ZamowieniaHurtowniTableConverter(),
+                    new DAOFactory().getZamownieniaHurtowniDAO(),
+                    new ZamowieniaHurtowniTableAccessors()
+            );
+            refreshKlienciAction = new RefreshTableAction<Klient>(
+                    new KlienciTableConverter(),
+                    new DAOFactory().getKlientDAO(),
+                    new KlienciTableAccesors());
+            refreshProduktyAction = new RefreshTableAction<Produkt>(new ProduktyTableConverter(), DAOFactory.getProduktyDAO(), new ProdktyTableAccessors());
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+    private void setInitialVisibility() {
         panel_Klienci.setVisible(false);
         panel_Moje_Dane.setVisible(false);
         panel_Produkty.setVisible(false);
@@ -37,193 +86,44 @@ public class Sprzedawca extends javax.swing.JFrame {
         Warstwy.moveToFront(okno);
     }
 
-        
-//-------------------------------------------------------------------------------------------------------------------
-    void show_panel(Component c){
+
+    //-------------------------------------------------------------------------------------------------------------------
+    void show_panel(JPanel c){
         Warstwy.moveToBack(okno);
         Warstwy.moveToFront(c);
         okno.setVisible(false);
         c.setVisible(true);
         okno = c;
+
+        refreshCurrentTable();
     }
-    
-//-------------------------------------------------------------------------------------------------------------------
-    void refresh_zamowienia_klient()
-    {
-        String nazwisko,szukaj,sortuj;
-        
-        szukaj = zam_klienci_szukaj_co.getText();
-        if(!szukaj.equals("")){
-            szukaj = " where  KImie like '%" + szukaj + "%' or KNazwisko like '%" + szukaj + "%' or Nazwa like '%" + szukaj
-                    + "%' or Typ like '%" + szukaj + "%' or Ilosc like '%" + szukaj + "%' or Data like '%" + szukaj
-                    + "%' or Kwota like '%" + szukaj + "%' or PImie like '%" + szukaj + "%' or PNazwisko like '%" + szukaj + "%'";   
-        }
-        
-        sortuj = zam_klienci_sortuj.getSelectedItem().toString();
-        if(sortuj.equals("Klient")){
-            sortuj = "KNazwisko";
-        }else if(sortuj.equals("Produkt")){
-            sortuj = "Nazwa";
-        }else if(sortuj.equals("Ilość")){
-            sortuj = "Ilosc";
-        }else if(sortuj.equals("Pracownik")){
-            sortuj = "PNazwisko";
-        }
-        
-        int i=0;
-        try
-        {
-            Statement stat = connection.createStatement();
-            ResultSet rs = stat.executeQuery("use Sklep;select count(*) from v_zamow_klient" + szukaj);
-            rs.next();
-            TableModel model=new DefaultTableModel(new String[]{
-                "Klient","Produkt","Typ","Ilość","Data","Kwota","Pracownik"            
-            }, rs.getInt(1))
-            {
-                @Override
-                public boolean isCellEditable(int rowIndex, int colIndex) {
-                    return false;   //Disallow the editing of any cell
-                }
-            };
-            rs = stat.executeQuery("use Sklep;select * from v_zamow_klient" + szukaj + " order by " + sortuj);
-            while(rs.next())
-            {
-                nazwisko=rs.getString("KNazwisko");
-                nazwisko+=" "+rs.getString("KImie");
-                model.setValueAt(nazwisko, i, 0);
-                
-                nazwisko=rs.getString("PNazwisko");
-                nazwisko+=" "+rs.getString("PImie");
-                
-                model.setValueAt(rs.getString("Nazwa"), i, 1);
-                model.setValueAt(rs.getString("Typ"), i, 2);
-                model.setValueAt(rs.getInt("Ilosc"), i, 3);
-                model.setValueAt(rs.getString("Data"), i, 4);
-                model.setValueAt(rs.getInt("Kwota"), i, 5);
-                model.setValueAt(nazwisko, i, 6);
-                
-                i++;
+
+    private void refreshCurrentTable() {
+        if(refreshTableActions.containsKey(okno))
+            try {
+                refreshTableActions.get(okno).execute();
+            } catch (InvalidDataException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (SQLException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
-            zam_klienci_table.setModel(model);
-            zam_klienci_szukaj_co.setText("");
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace(); 
-        }
     }
-//-------------------------------------------------------------------------------------------------------------------
-    void refresh_zamowienia_hurt()
-    {
-        String szukaj,sortuj;
-        
-        szukaj = zam_hurt_szukaj_co.getText();
-        if(!szukaj.equals("")){
-                szukaj = " where Hurtownia like '%" + szukaj + "%' or Nazwa like '%" + szukaj + "%' or Typ like '%" + szukaj
-                        + "%' or Ilosc like '%" + szukaj + "%' or Cena like '%" + szukaj
-                        + "%' or Data_zamowienia like '%" + szukaj + "%' or Data_odebrania like '%" + szukaj + "%'";
-        }
-        
-        sortuj = zam_hurt_sortuj.getSelectedItem().toString();
-        if(sortuj.equals("Produkt")){
-            sortuj = "Nazwa";
-        }else if(sortuj.equals("Ilość")){
-            sortuj = "Ilosc";
-        }else if(sortuj.equals("Kwota")){
-            sortuj = "Cena";
-        }else if(sortuj.equals("Data zamowienia")){
-            sortuj = "Data_zamowienia";
-        }else if(sortuj.equals("Data odebrania")){
-            sortuj = "Data_odebrania";
-        }
-        
-        int i=0;
-        try
-        {
-            Statement stat = connection.createStatement();
-            
-            ResultSet rs = stat.executeQuery("use Sklep;select count(*) from v_zamow_hurtownia" + szukaj);
-            rs.next();
-            
-            TableModel model=new DefaultTableModel(new String[]{
-                "Hurtownia","Produkt","Typ","Ilość","Kwota","Data zamowienia","Data odebrania"
-            }, rs.getInt(1))
-            {
-                @Override
-                public boolean isCellEditable(int rowIndex, int colIndex) {
-                    return false;   //Disallow the editing of any cell
-                }
-            };
-            
-            
-            rs = stat.executeQuery("use Sklep;select * from v_zamow_hurtownia" + szukaj + " order by " + sortuj);
-            while(rs.next())
-            {
-                model.setValueAt(rs.getString("Hurtownia"), i, 0);
-                model.setValueAt(rs.getString("Nazwa"), i, 1);
-                model.setValueAt(rs.getString("Typ"), i, 2);
-                model.setValueAt(rs.getInt("Ilosc"), i, 3);
-                model.setValueAt(rs.getInt("Cena"), i, 4);
-                model.setValueAt(rs.getString("Data_zamowienia"), i, 5);
-                model.setValueAt(rs.getString("Data_odebrania"), i, 6);
-                i++;
-            }
-            zam_hurt_table.setModel(model);
-            zam_hurt_szukaj_co.setText("");
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace(); 
-        }
+
+    private Map<JPanel, RepresentDataAction> getRefreshTableActions() {
+        Map<JPanel, RepresentDataAction> actionMap = new HashMap<JPanel, RepresentDataAction>();
+
+        actionMap.put(panel_Klienci, refreshKlienciAction);
+        actionMap.put(panel_Produkty, refreshProduktyAction);
+        actionMap.put(panel_Zamowienia, new MulticastRepresentDataAction(
+                refreshZamowieniaHurtowniAction, refreshZamowieniaKlientAction));
+        actionMap.put(panel_Moje_Dane, showMojeDane);
+
+        return actionMap;
     }
-//-------------------------------------------------------------------------------------------------------------------
-    void refresh_klienci() //Rysuje klienci_tabela
-    {
-        String nazwisko;
-        String order_by=klienci_sortuj.getSelectedItem().toString();
-        String search_by=klienci_szukaj_co.getText();
-        if(order_by.equals("ID")) order_by="ID_Klienta";
-        if(!search_by.isEmpty()) 
-            search_by=" where Imie like '%"+search_by+"%' or Nazwisko like '%"+search_by+"%' or Login like '%"+search_by+"%' or Telefon like '%"+search_by+"%'";
-        int indeks_tabeli=0;
-        int rowcount=0;
-        try
-        {
-            Statement stat = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rs = stat.executeQuery("use Sklep;select ID_Klienta, Imie, Nazwisko, Login, Telefon from Klienci"+search_by+" order by "+order_by);
-            if(rs.last())
-            {
-                rowcount=rs.getRow();
-                rs.beforeFirst();
-            }
-            TableModel model=new DefaultTableModel(new String[]{"ID","Nazwisko","login","Telefon"}, rowcount)
-            {
-                @Override
-                public boolean isCellEditable(int rowIndex, int colIndex) {
-                    return false;   //Disallow the editing of any cell
-                }
-            };
-            
-            while(rs.next())
-            {
-                nazwisko=rs.getString("Nazwisko");
-                nazwisko+=" "+rs.getString("Imie");
-                model.setValueAt(rs.getInt("ID_Klienta"), indeks_tabeli, 0);
-                model.setValueAt(nazwisko, indeks_tabeli, 1);
-                model.setValueAt(rs.getString("Login"), indeks_tabeli, 2);
-                model.setValueAt(rs.getString("Telefon"),indeks_tabeli,3);
-                indeks_tabeli++;
-            }
-            klienci_table.setModel(model);
-            klienci_szukaj_co.setText("");
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace(); 
-        }
-    }
-    
-    
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -267,6 +167,19 @@ public class Sprzedawca extends javax.swing.JFrame {
         zam_hurt_szukaj = new javax.swing.JButton();
         zam_hurt_sortuj = new javax.swing.JComboBox();
         panel_Moje_Dane = new javax.swing.JPanel();
+        IDLabel = new javax.swing.JLabel();
+        ImieLabel = new javax.swing.JLabel();
+        NazwiskoLabel = new javax.swing.JLabel();
+        TelefonLabel = new javax.swing.JLabel();
+        MailLabel = new javax.swing.JLabel();
+        LoginLabel = new javax.swing.JLabel();
+        UmowaLabel = new javax.swing.JLabel();
+        StatusLabel = new javax.swing.JLabel();
+        UlicaLabel = new javax.swing.JLabel();
+        KodPocztowyLabel = new javax.swing.JLabel();
+        MiejscowoscLabel = new javax.swing.JLabel();
+        PocztaLabel = new javax.swing.JLabel();
+        KrajLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -280,7 +193,7 @@ public class Sprzedawca extends javax.swing.JFrame {
             }
         });
 
-        Zamowienia.setText("Zamównienia");
+        Zamowienia.setText("Zam�wnienia");
         Zamowienia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ZamowieniaActionPerformed(evt);
@@ -438,14 +351,14 @@ public class Sprzedawca extends javax.swing.JFrame {
             }
         });
 
-        zam_klienci_sortuj.setModel(new javax.swing.DefaultComboBoxModel(new String[]  { "Klient","Produkt","Typ","Ilość","Data","Kwota","Pracownik" }));
+        zam_klienci_sortuj.setModel(new javax.swing.DefaultComboBoxModel(new String[]  { "Klient","Produkt","Typ","Ilo��","Data","Kwota","Pracownik" }));
         zam_klienci_sortuj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zam_klienci_sortujActionPerformed(evt);
             }
         });
 
-        zam_klienci_zamow.setText("Zamów");
+        zam_klienci_zamow.setText("Zam�w");
 
         javax.swing.GroupLayout zam_klienci_panelLayout = new javax.swing.GroupLayout(zam_klienci_panel);
         zam_klienci_panel.setLayout(zam_klienci_panelLayout);
@@ -504,7 +417,7 @@ public class Sprzedawca extends javax.swing.JFrame {
             }
         });
 
-        zam_hurt_sortuj.setModel(new javax.swing.DefaultComboBoxModel(new String[]  { "Hurtownia","Produkt","Typ","Ilość","Kwota","Data zamowienia","Data odebrania" }));
+        zam_hurt_sortuj.setModel(new javax.swing.DefaultComboBoxModel(new String[]  { "Hurtownia","Produkt","Typ","Ilo��","Kwota","Data zamowienia","Data odebrania" }));
         zam_hurt_sortuj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zam_hurt_sortujActionPerformed(evt);
@@ -552,21 +465,101 @@ public class Sprzedawca extends javax.swing.JFrame {
         );
         panel_ZamowieniaLayout.setVerticalGroup(
             panel_ZamowieniaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tabbed_zamowienia, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
+            .addComponent(tabbed_zamowienia)
         );
 
         panel_Zamowienia.setBounds(0, 0, 820, 460);
         Warstwy.add(panel_Zamowienia, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
+        IDLabel.setText("ID:");
+
+        ImieLabel.setText("Imie:");
+
+        NazwiskoLabel.setText("Nazwisko:");
+
+        TelefonLabel.setText("Telefon:");
+
+        MailLabel.setText("Mail:");
+
+        LoginLabel.setText("Login:");
+
+        UmowaLabel.setText("Umowa:");
+
+        StatusLabel.setText("Status:");
+
+        UlicaLabel.setText("Ulica:");
+
+        KodPocztowyLabel.setText("Kod Pocztowy:");
+
+        MiejscowoscLabel.setText("Miejscowosc:");
+
+        PocztaLabel.setText("Poczta:");
+
+        KrajLabel.setText("Kraj:");
+
         javax.swing.GroupLayout panel_Moje_DaneLayout = new javax.swing.GroupLayout(panel_Moje_Dane);
         panel_Moje_Dane.setLayout(panel_Moje_DaneLayout);
         panel_Moje_DaneLayout.setHorizontalGroup(
             panel_Moje_DaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 820, Short.MAX_VALUE)
+            .addGroup(panel_Moje_DaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panel_Moje_DaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_Moje_DaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(TelefonLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
+                        .addComponent(MailLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(LoginLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(UmowaLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(StatusLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(panel_Moje_DaneLayout.createSequentialGroup()
+                        .addGroup(panel_Moje_DaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(IDLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(NazwiskoLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
+                            .addComponent(ImieLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(22, 22, 22)
+                        .addGroup(panel_Moje_DaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panel_Moje_DaneLayout.createSequentialGroup()
+                                .addGroup(panel_Moje_DaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(KodPocztowyLabel)
+                                    .addComponent(PocztaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(panel_Moje_DaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(KrajLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(MiejscowoscLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)))
+                            .addComponent(UlicaLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
         );
         panel_Moje_DaneLayout.setVerticalGroup(
             panel_Moje_DaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 440, Short.MAX_VALUE)
+            .addGroup(panel_Moje_DaneLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panel_Moje_DaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(IDLabel)
+                    .addComponent(UlicaLabel))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(panel_Moje_DaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panel_Moje_DaneLayout.createSequentialGroup()
+                        .addGroup(panel_Moje_DaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(KodPocztowyLabel)
+                            .addComponent(MiejscowoscLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panel_Moje_DaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(PocztaLabel)
+                            .addComponent(KrajLabel)))
+                    .addGroup(panel_Moje_DaneLayout.createSequentialGroup()
+                        .addComponent(ImieLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(NazwiskoLabel)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(TelefonLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(MailLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(LoginLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(UmowaLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(StatusLabel)
+                .addContainerGap(275, Short.MAX_VALUE))
         );
 
         panel_Moje_Dane.setBounds(0, 0, 820, 440);
@@ -617,27 +610,23 @@ public class Sprzedawca extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void klienci_szukajMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_klienci_szukajMouseClicked
-        refresh_klienci();
-        klienci_szukaj_co.setText("");
+        refreshCurrentTable();
     }//GEN-LAST:event_klienci_szukajMouseClicked
 
     private void prod_szukajMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_prod_szukajMouseClicked
-        // TODO add your handling code here:
+        refreshCurrentTable();
     }//GEN-LAST:event_prod_szukajMouseClicked
 
     private void zam_klienci_szukajMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_zam_klienci_szukajMouseClicked
-        refresh_zamowienia_klient();
-        zam_klienci_szukaj_co.setText("");
+        refreshCurrentTable();
     }//GEN-LAST:event_zam_klienci_szukajMouseClicked
 
     private void zam_hurt_szukajMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_zam_hurt_szukajMouseClicked
-        refresh_zamowienia_hurt();
-        zam_hurt_szukaj_co.setText("");
+        refreshCurrentTable();
     }//GEN-LAST:event_zam_hurt_szukajMouseClicked
 
     private void KlienciActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KlienciActionPerformed
         show_panel(panel_Klienci);
-        refresh_klienci();
     }//GEN-LAST:event_KlienciActionPerformed
 
     private void ProduktyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProduktyActionPerformed
@@ -646,8 +635,6 @@ public class Sprzedawca extends javax.swing.JFrame {
 
     private void ZamowieniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ZamowieniaActionPerformed
         show_panel(panel_Zamowienia);
-        refresh_zamowienia_hurt();
-        refresh_zamowienia_klient();
     }//GEN-LAST:event_ZamowieniaActionPerformed
 
     private void Dane_OsoboweActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Dane_OsoboweActionPerformed
@@ -655,15 +642,15 @@ public class Sprzedawca extends javax.swing.JFrame {
     }//GEN-LAST:event_Dane_OsoboweActionPerformed
 
     private void zam_hurt_sortujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zam_hurt_sortujActionPerformed
-        refresh_zamowienia_hurt();
+        refreshCurrentTable();
     }//GEN-LAST:event_zam_hurt_sortujActionPerformed
 
     private void zam_klienci_sortujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zam_klienci_sortujActionPerformed
-        refresh_zamowienia_klient();
+        refreshCurrentTable();
     }//GEN-LAST:event_zam_klienci_sortujActionPerformed
 
     private void klienci_sortujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_klienci_sortujActionPerformed
-        refresh_klienci();
+        refreshCurrentTable();
     }//GEN-LAST:event_klienci_sortujActionPerformed
 
     /**
@@ -710,8 +697,21 @@ public class Sprzedawca extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Dane_Osobowe;
+    private javax.swing.JLabel IDLabel;
+    private javax.swing.JLabel ImieLabel;
     private javax.swing.JButton Klienci;
+    private javax.swing.JLabel KodPocztowyLabel;
+    private javax.swing.JLabel KrajLabel;
+    private javax.swing.JLabel LoginLabel;
+    private javax.swing.JLabel MailLabel;
+    private javax.swing.JLabel MiejscowoscLabel;
+    private javax.swing.JLabel NazwiskoLabel;
+    private javax.swing.JLabel PocztaLabel;
     private javax.swing.JButton Produkty;
+    private javax.swing.JLabel StatusLabel;
+    private javax.swing.JLabel TelefonLabel;
+    private javax.swing.JLabel UlicaLabel;
+    private javax.swing.JLabel UmowaLabel;
     private javax.swing.JLayeredPane Warstwy;
     private javax.swing.JButton Zamowienia;
     private javax.swing.JLabel jLabel1;
@@ -744,4 +744,113 @@ public class Sprzedawca extends javax.swing.JFrame {
     private javax.swing.JTable zam_klienci_table;
     private javax.swing.JButton zam_klienci_zamow;
     // End of variables declaration//GEN-END:variables
+
+    private class ShowMojeDaneAction implements RepresentDataAction {
+        @Override
+        public void execute() {
+            IDLabel.setText(Integer.valueOf(zalogowany.ID).toString());
+            ImieLabel.setText(zalogowany.imie);
+            NazwiskoLabel.setText(zalogowany.nazwisko);
+            TelefonLabel.setText(zalogowany.telefon.toString());
+            MailLabel.setText(zalogowany.mail);
+            LoginLabel.setText(zalogowany.login);
+            UmowaLabel.setText(zalogowany.umowa);
+            StatusLabel.setText(zalogowany.getStatusString());
+
+            UlicaLabel.setText(String.format("ul. %s m. %s/%s",
+                    zalogowany.adres.ulica, zalogowany.adres.nrDomu, zalogowany.adres.nrLokalu));
+            KodPocztowyLabel.setText(zalogowany.adres.kodPocztowy);
+            PocztaLabel.setText(zalogowany.adres.poczta);
+            MiejscowoscLabel.setText(zalogowany.adres.miejscowosc);
+            KrajLabel.setText(zalogowany.adres.kraj);
+        }
+    }
+
+    private class ZamowienieKlientaTableAccessors implements TableAccessors {
+        @Override
+        public String getOrderBy() {
+            return "ID";
+        }
+
+        @Override
+        public void emptyFields() {
+            zam_klienci_szukaj_co.setText("");
+        }
+
+        @Override
+        public void setTableModel(TableModel model) {
+            zam_klienci_table.setModel(model);
+        }
+
+        @Override
+        public String getLookFor() {
+            return zam_klienci_szukaj_co.getText();
+        }
+    }
+
+    private class ZamowieniaHurtowniTableAccessors implements TableAccessors {
+        @Override
+        public String getOrderBy() {
+            return "ID";
+        }
+
+        @Override
+        public void emptyFields() {
+            zam_hurt_szukaj_co.setText("");
+        }
+
+        @Override
+        public void setTableModel(TableModel model) {
+            zam_hurt_table.setModel(model);
+        }
+
+        @Override
+        public String getLookFor() {
+            return zam_hurt_szukaj_co.getText();
+        }
+    }
+
+    private class KlienciTableAccesors implements TableAccessors {
+        @Override
+        public String getOrderBy() {
+            return klienci_sortuj.getSelectedItem().toString();
+        }
+
+        @Override
+        public void emptyFields() {
+            klienci_szukaj_co.setText("");
+        }
+
+        @Override
+        public void setTableModel(TableModel model) {
+            klienci_table.setModel(model);
+        }
+
+        @Override
+        public String getLookFor() {
+            return klienci_szukaj_co.getText();
+        }
+    }
+
+    private class ProdktyTableAccessors implements TableAccessors {
+        @Override
+        public String getOrderBy() {
+            return prod_sortuj.getSelectedItem().toString();
+        }
+
+        @Override
+        public void emptyFields() {
+            prod_szukaj_co.setText("");
+        }
+
+        @Override
+        public void setTableModel(TableModel model) {
+            prod_table.setModel(model);
+        }
+
+        @Override
+        public String getLookFor() {
+            return prod_szukaj_co.getText();
+        }
+    }
 }

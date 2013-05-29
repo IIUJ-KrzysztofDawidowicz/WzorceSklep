@@ -10,6 +10,10 @@ import WzorceSklep.Data.Pracownik.Pracownik;
 import WzorceSklep.Data.Pracownik.PracownikDAO;
 import WzorceSklep.Data.Produkt.Produkt;
 import WzorceSklep.Data.Produkt.ProduktyDAO;
+import WzorceSklep.Data.Zamowienie.ZamowienieHurtowni;
+import WzorceSklep.Data.Zamowienie.ZamowienieKlienta;
+import WzorceSklep.Data.Zamowienie.ZamowienieKlientaDAO;
+import WzorceSklep.Data.Zamowienie.ZamownieniaHurtowniDAO;
 
 import java.sql.SQLException;
 
@@ -23,16 +27,8 @@ import java.sql.SQLException;
 public class DAOFactory {
 
 
-    private static DatabaseAdapter getDatabaseAdapter() throws SQLException {
+    public static DatabaseAdapter getDatabaseAdapter() throws SQLException {
         return DataAdapterFactory.getDatabaseAdapter();
-    }
-
-    public static DataAccessObject<Klient> getKlientDAO() throws SQLException {
-        return new KlientDAO(getDatabaseAdapter());
-    }
-
-    public static DataAccessObject<Pracownik> getPracownikDAO() throws SQLException {
-        return new PracownikDAO(getDatabaseAdapter());
     }
 
     public static DataAccessObject<Hurtownia> getHurtowniaDAO() throws SQLException {
@@ -41,5 +37,22 @@ public class DAOFactory {
 
     public static DataAccessObject<Produkt> getProduktyDAO() throws SQLException {
         return new ProduktyDAO(getDatabaseAdapter());
+    }
+
+    public DataAccessObject<ZamowienieKlienta> getZamowieniaKllientaDAO() throws SQLException {
+        return new ZamowienieKlientaDAO(getDatabaseAdapter());
+    }
+
+    public DataAccessObject<Pracownik> getPracownikDAO() throws SQLException {
+        return new PracownikDAO(getDatabaseAdapter());
+    }
+
+    public DataAccessObject<Klient> getKlientDAO() throws SQLException {
+        return new KlientDAO(getDatabaseAdapter());
+    }
+
+    public DataAccessObject<ZamowienieHurtowni> getZamownieniaHurtowniDAO() throws SQLException {
+        return new ZamownieniaHurtowniDAO(getDatabaseAdapter(),
+                getHurtowniaDAO(), getProduktyDAO());
     }
 }

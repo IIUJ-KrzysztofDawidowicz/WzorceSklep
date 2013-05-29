@@ -11,38 +11,44 @@
 
 package WzorceSklep.GUI;
 
-import WzorceSklep.GUI.Actions.AbstractActions.ActionPracownikSczegoly;
-import WzorceSklep.GUI.Actions.AbstractActions.ActionUsuwaniePracownika;
-import WzorceSklep.GUI.Actions.RefreshTableActions.*;
-import WzorceSklep.GUI.ButtonUtils.ButtonColumn;
-import WzorceSklep.GUI.ButtonUtils.ButtonRenderer;
+import WzorceSklep.DAOFactory;
 import WzorceSklep.Data.Hurtownia.DialogDodajHurtownie;
+import WzorceSklep.Data.Hurtownia.Hurtownia;
 import WzorceSklep.Data.Klient.DialogDodajKlienta;
+import WzorceSklep.Data.Klient.Klient;
 import WzorceSklep.Data.Pracownik.DialogDodajPracownika;
+import WzorceSklep.Data.Pracownik.DialogPracownikSzczegoly;
+import WzorceSklep.Data.Pracownik.DialogUsunPracownika;
+import WzorceSklep.Data.Pracownik.Pracownik;
 import WzorceSklep.Data.Produkt.DialogDodajProdukt;
+import WzorceSklep.Data.Produkt.Produkt;
+import WzorceSklep.Data.Zamowienie.ZamowienieHurtowni;
+import WzorceSklep.Data.Zamowienie.ZamowienieKlienta;
+import WzorceSklep.GUI.DataRenderingUtils.MulticastRepresentDataAction;
+import WzorceSklep.GUI.DataRenderingUtils.RefreshStatystykiAction;
+import WzorceSklep.GUI.DataRenderingUtils.RefreshTableAction;
+import WzorceSklep.GUI.DataRenderingUtils.TableAccessors;
+import WzorceSklep.GUI.DataRenderingUtils.TableConverters.*;
+import WzorceSklep.GUI.DataRenderingUtils.ButtonColumn;
+import com.sun.media.sound.InvalidDataException;
 
-import java.awt.Component;
+import javax.swing.*;
+import javax.swing.table.TableModel;
+import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.Connection;
+import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.*;
 
-/**
- *
- * @author user
- */
 public class Admin extends javax.swing.JFrame {
 
-    Component okno;
-    Connection connection = null;
-    javax.swing.JDialog dialog;
-    Action akcjaUsunPracownika = new ActionUsuwaniePracownika(this);
-    Action akcjaPracownikSzczegoly = new ActionPracownikSczegoly(this);
-    private final RefreshTableAction refreshZamowieniaKlientAction = new RefreshZamowieniaKlientAction();
-    private final RefreshTableAction refreshZamowieniaHurtowniAction = new RefreshZamowieniaHurtowniAction(this);
-    private final Map<JPanel, RefreshTableAction> refreshTableActions;
+    JPanel aktualnyPanel;
+    JDialog otwartyDialog;
+    Action akcjaUsunPracownika = new ActionUsuwaniePracownika();
+    Action akcjaPracownikSzczegoly = new ActionPracownikSczegoly();
+    private final Map<JPanel, RepresentDataAction> refreshTableActions;
 
     /** Creates new form Main */
     public Admin() { //Main (Coccenction connect,String login)
@@ -56,10 +62,66 @@ public class Admin extends javax.swing.JFrame {
         //declareUsuwaniePracownika();
 //        declarePracownikSzczegoly();
         setInitialComponentVisibility();
+
         refreshTableActions = initRefreshTableActions();
-        
-                
+
+
         //Koniec tworzenia guzikow w tabeli
+
+    }
+
+    void show_panel(JPanel noweOkno){
+        Warstwy.moveToBack(aktualnyPanel);
+        aktualnyPanel.setVisible(false);
+        aktualnyPanel = noweOkno;
+        Warstwy.moveToFront(aktualnyPanel);
+        aktualnyPanel.setVisible(true);
+        refreshCurrentWindow();
+    }
+
+    public void refreshCurrentWindow() {
+        try {
+            if (aktualnyPanel != null)
+                refreshTableActions.get(aktualnyPanel).execute();
+        } catch (InvalidDataException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+    private Map<JPanel, RepresentDataAction> initRefreshTableActions() {
+        Map<JPanel, RepresentDataAction> actionMap = new HashMap<JPanel, RepresentDataAction>();
+
+//        actionMap.put(panel_pracownicy, new RefreshPracownicyAction(this));
+        try {
+            RepresentDataAction refreshZamowieniaKlientAction = new RefreshTableAction<ZamowienieKlienta>(
+                    new ZamowianieKlientaTableConverter(),
+                    new DAOFactory().getZamowieniaKllientaDAO(),
+                    new ZamowienieKlientaTableAccessors());
+            RepresentDataAction refreshZamowieniaHurtowniAction = new RefreshTableAction<ZamowienieHurtowni>(
+                    new ZamowieniaHurtowniTableConverter(),
+                    new DAOFactory().getZamownieniaHurtowniDAO(),
+                    new ZamowieniaHurtowniTableAccessors());
+
+            actionMap.put(panel_pracownicy, new RefreshTableAction<Pracownik>(
+                    new PracownicyTableConverter(akcjaPracownikSzczegoly, akcjaUsunPracownika, pracownicy_tabela), new DAOFactory().getPracownikDAO(), new PracownicyTableAccessors()));
+            actionMap.put(panel_klienci, new RefreshTableAction<Klient>(
+                    new KlienciTableConverter(), new DAOFactory().getKlientDAO(), new KlienciTableAccesors()));
+            actionMap.put(panel_hurtowni, new RefreshTableAction<Hurtownia>(
+                    new HurtowniaTableConverter(), DAOFactory.getHurtowniaDAO(), new HurtowniaTableAccessors()));
+            actionMap.put(panel_produkty, new RefreshTableAction<Produkt>(
+                    new ProduktyTableConverter(), DAOFactory.getProduktyDAO(), new ProdktyTableAccessors()));
+            actionMap.put(panel_statystyka, new RefreshStatystykiAction(this));
+            actionMap.put(panel_zamowienia, new MulticastRepresentDataAction(
+                    refreshZamowieniaHurtowniAction, refreshZamowieniaKlientAction));
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+        return actionMap;
     }
 
     private void setInitialComponentVisibility() {
@@ -70,43 +132,16 @@ public class Admin extends javax.swing.JFrame {
         panel_klienci.setVisible(false);
         panel_pracownicy.setVisible(false);
         panel_hurtowni.setVisible(false);
-        okno = panel_hurtowni;
-        Warstwy.moveToFront(okno);
+        aktualnyPanel = panel_hurtowni;
+        Warstwy.moveToFront(aktualnyPanel);
         //!!Sam przyklad tworzenia tabeli z guzikami, zbedne w tym miejscu i czasie!!
         //Trzeba zrozumiec i dostosowac do naszych potrzeb plik ButtonRenderer
         //TableExample jest potrzebne tylko do debugu, mozna pozniej wywalic (klase, nie plik)
-        hurtownia_tabela.getColumn("Title 4").setCellRenderer(new ButtonRenderer());
+//        hurtownia_tabela.getColumn("Title 4").setCellRenderer(new ButtonRenderer());
     }
 
-    private Map<JPanel, RefreshTableAction> initRefreshTableActions() {
-        Map<JPanel, RefreshTableAction> actionMap = new HashMap<JPanel, RefreshTableAction>();
 
-        actionMap.put(panel_pracownicy, new RefreshPracownicyAction(this));
-        actionMap.put(panel_klienci, new RefreshKlienciAction(this));
-        actionMap.put(panel_hurtowni, new RefreshHurtownieAction(this));
-        actionMap.put(panel_produkty, new RefreshProduktyAction(this));
-        actionMap.put(panel_statystyka, new RefreshStatystykiAction(this));
-        actionMap.put(panel_zamowienia, refreshZamowieniaKlientAction);
-
-        return actionMap;
-    }
-    
-//-------------------------------------------------------------------------------------------------------------------
-    void show_panel(Component noweOkno){
-        Warstwy.moveToBack(okno);
-        okno.setVisible(false);
-        okno = noweOkno;
-        Warstwy.moveToFront(okno);
-        okno.setVisible(true);
-        refreshCurrentWindow();
-    }
-
-    public void refreshCurrentWindow() {
-        if (okno != null)
-            refreshTableActions.get(okno).refresh();
-    }
-
-    
+    //<editor-fold desc="GeneratedCode">
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -1209,9 +1244,6 @@ public class Admin extends javax.swing.JFrame {
 
     private void guzik_zamowieniaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guzik_zamowieniaMouseClicked
         show_panel(panel_zamowienia);
-        refreshZamowieniaHurtowniAction.refresh();
-        //refresh_zamowienia_klient();
-        refreshCurrentWindow();
     }//GEN-LAST:event_guzik_zamowieniaMouseClicked
 
     private void guzik_statystykaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guzik_statystykaMouseClicked
@@ -1254,9 +1286,9 @@ public class Admin extends javax.swing.JFrame {
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                dialog = new DialogDodajPracownika(Admin.this, true, connection);
-                dialog.setVisible(true);
-                dialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
+                otwartyDialog = new DialogDodajPracownika(Admin.this, true);
+                otwartyDialog.setVisible(true);
+                otwartyDialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
                 {
                     @Override
                     public void windowClosed(WindowEvent e) {
@@ -1291,9 +1323,9 @@ public class Admin extends javax.swing.JFrame {
     private void hurtownia_dodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hurtownia_dodajActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                dialog = new DialogDodajHurtownie(Admin.this, true, connection);
-                dialog.setVisible(true);
-                dialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
+                otwartyDialog = new DialogDodajHurtownie(Admin.this, true);
+                otwartyDialog.setVisible(true);
+                otwartyDialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
                 {
                     @Override
                     public void windowClosed(WindowEvent e) {
@@ -1306,15 +1338,14 @@ public class Admin extends javax.swing.JFrame {
 
     private void produkty_szukajMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_produkty_szukajMouseClicked
         refreshCurrentWindow();
-        produkty_szukaj_co.setText("");
     }//GEN-LAST:event_produkty_szukajMouseClicked
 
     private void produkty_dodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produkty_dodajActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                dialog = new DialogDodajProdukt(Admin.this, true);
-                dialog.setVisible(true);
-                dialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
+                otwartyDialog = new DialogDodajProdukt(Admin.this, true);
+                otwartyDialog.setVisible(true);
+                otwartyDialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
                 {
                     @Override
                     public void windowClosed(WindowEvent e) {
@@ -1326,20 +1357,20 @@ public class Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_produkty_dodajActionPerformed
 
     private void zam_sortuj_hurtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zam_sortuj_hurtActionPerformed
-        refreshZamowieniaHurtowniAction.refresh();
+        refreshCurrentWindow();
     }//GEN-LAST:event_zam_sortuj_hurtActionPerformed
 
     private void zam_sort_klientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zam_sort_klientActionPerformed
-        refreshZamowieniaKlientAction.refresh();
+        refreshCurrentWindow();
 
     }//GEN-LAST:event_zam_sort_klientActionPerformed
 
     private void dodajKlientaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dodajKlientaButtonActionPerformed
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                dialog = new DialogDodajKlienta(Admin.this, true, connection);
-                dialog.setVisible(true);
-                dialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
+                otwartyDialog = new DialogDodajKlienta(Admin.this, true);
+                otwartyDialog.setVisible(true);
+                otwartyDialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
                 {
                     @Override
                     public void windowClosed(WindowEvent e) {
@@ -1365,69 +1396,9 @@ public class Admin extends javax.swing.JFrame {
     private void pracownicy_sortujPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_pracownicy_sortujPropertyChange
        refreshCurrentWindow();
     }//GEN-LAST:event_pracownicy_sortujPropertyChange
+    //</editor-fold>
 
-    private void zamowenia_tabbedMouseClicked(java.awt.event.MouseEvent evt) {
-        refreshZamowieniaHurtowniAction.refresh();
-        refreshZamowieniaKlientAction.refresh();
-
-    }
-    
-/*    private void declareUsuwaniePracownika()
-    {
-        akcjaUsunPracownika=new AbstractAction() 
-            {
-                public void actionPerformed(ActionEvent e) 
-                {
-                    final int id=Integer.valueOf(pracownicy_tabela.getValueAt(Integer.valueOf(e.getActionCommand()), 0).toString()) ;
-                    final String nazwisko=pracownicy_tabela.getValueAt(Integer.valueOf(e.getActionCommand()), 1).toString();
-                    java.awt.EventQueue.invokeLater(new Runnable() {
-                        public void run() {
-                            dialog=new DialogUsunPracownika(thisframe, true, connection, id, nazwisko);
-                            dialog.setVisible(true);
-                            dialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
-                            {
-                                @Override
-                                public void windowClosed(WindowEvent e)
-                                {
-                                    refreshCurrentWindow();
-                                }
-                            });
-                        }
-                    });
-                }
-            };
-    }*/
-    
-/*    private void declarePracownikSzczegoly()
-    {
-        akcjaPracownikSzczegoly=new AbstractAction() 
-            {
-                public void actionPerformed(ActionEvent e) 
-                {
-                    final int id=Integer.valueOf(pracownicy_tabela.getValueAt(Integer.valueOf(e.getActionCommand()), 0).toString()) ;
-                    
-                    java.awt.EventQueue.invokeLater(new Runnable() {
-                        public void run() 
-                        {
-                            dialog=new DialogPracownikSzczegoly(thisframe, true, connection, id);
-                            dialog.setVisible(true);
-                        }
-                    });
-                }
-            };
-    }*/
-    /**
-    * @param args the command line arguments
-    *//*
-    public static void WzorceSklep(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Admin().setVisible(true);
-            }
-        });
-    }*/
-    private ButtonColumn usunPracownikaColumnn;
-    private ButtonColumn pracownikSzczegolyColumnn;
+    //<editor-fold desc="Swing components declarations.">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Hurtownie10;
     private javax.swing.JLabel Hurtownie11;
@@ -1533,145 +1504,234 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JButton zam_szukaj_klient;
     private javax.swing.JTabbedPane zamowenia_tabbed;
     // End of variables declaration//GEN-END:variables
+    //</editor-fold>
 
-    public JDialog getDialog() {
-        return dialog;
+    //<editor-fold desc="TableAccessors">
+
+    private class PracownicyTableAccessors implements TableAccessors
+    {
+        @Override
+        public String getOrderBy() {
+            return pracownicy_sortuj.getSelectedItem().toString();
+        }
+
+        @Override
+        public void emptyFields() {
+            pracownicy_szukaj_co.setText("");
+        }
+
+        @Override
+        public void setTableModel(TableModel model) {
+            pracownicy_tabela.setModel(model);
+            new ButtonColumn(pracownicy_tabela, akcjaPracownikSzczegoly, getColumnIndex(model,"Szczegóły"));
+            new ButtonColumn(pracownicy_tabela, akcjaUsunPracownika, getColumnIndex(model,"Usuń"));
+        }
+
+        private int getColumnIndex(TableModel model, String columnName) throws IllegalArgumentException {
+            for (int i = 0; i < model.getColumnCount(); i++) {
+                if(model.getColumnName(i).equals(columnName))
+                    return i;
+            }
+            throw new IllegalArgumentException(String.format("Kolumny %s nie ma w podanej tabeli.", columnName));
+        }
+
+        @Override
+        public String getLookFor() {
+            return pracownicy_szukaj_co.getText();
+        }
+
     }
 
-    public void setDialog(JDialog dialog) {
-        this.dialog = dialog;
+    private class HurtowniaTableAccessors implements Serializable, TableAccessors {
+
+        @Override
+        public String getOrderBy() {
+            return "ID";
+        }
+
+        @Override
+        public void emptyFields() {
+            hurtownia_szukaj_co.setText("");
+        }
+
+        @Override
+        public void setTableModel(TableModel model) {
+            hurtownia_tabela.setModel(model);
+        }
+
+        @Override
+        public String getLookFor() {
+            return hurtownia_szukaj_co.getText();
+        }
     }
 
-    public JComboBox getPracownicy_sortuj() {
-        return pracownicy_sortuj;
+    private class KlienciTableAccesors implements TableAccessors {
+        @Override
+        public String getOrderBy() {
+            return "ID";
+        }
+
+        @Override
+        public void emptyFields() {
+            klienci_szukaj_co.setText("");
+        }
+
+        @Override
+        public void setTableModel(TableModel model) {
+            klienci_tabela.setModel(model);
+        }
+
+        @Override
+        public String getLookFor() {
+            return klienci_szukaj_co.getText();
+        }
     }
 
-    public Action getAkcjaPracownikSzczegoly() {
-        return akcjaPracownikSzczegoly;
+    private class ProdktyTableAccessors implements TableAccessors {
+        @Override
+        public String getOrderBy() {
+            return "ID";
+        }
+
+        @Override
+        public void emptyFields() {
+            produkty_szukaj_co.setText("");
+        }
+
+        @Override
+        public void setTableModel(TableModel model) {
+            produkty_tabela.setModel(model);
+        }
+
+        @Override
+        public String getLookFor() {
+            return produkty_szukaj_co.getText();
+        }
     }
 
-    public JTable getPracownicy_tabela() {
-        return pracownicy_tabela;
+    private class ZamowienieKlientaTableAccessors implements TableAccessors {
+        @Override
+        public String getOrderBy() {
+            return "ID";
+        }
+
+        @Override
+        public void emptyFields() {
+            zam_szukaj_co_klient.setText("");
+        }
+
+        @Override
+        public void setTableModel(TableModel model) {
+            zam_klient_tab.setModel(model);
+        }
+
+        @Override
+        public String getLookFor() {
+            return "";
+        }
     }
 
-    public JTextField getPracownicy_szukaj_co() {
-        return pracownicy_szukaj_co;
+    private class ZamowieniaHurtowniTableAccessors implements TableAccessors {
+        @Override
+        public String getOrderBy() {
+            return "ID";
+        }
+
+        @Override
+        public void emptyFields()
+        {
+            zam_szukaj_co_hurt.setText("");
+        }
+
+        @Override
+        public void setTableModel(TableModel model) {
+            zam_hurt_tab.setModel(model);
+        }
+
+        @Override
+        public String getLookFor() {
+            return zam_szukaj_co_hurt.getText();
+        }
     }
 
-    public Action getAkcjaUsunPracownika() {
-        return akcjaUsunPracownika;
+    //</editor-fold>
+
+    //<editor-fold desc="AbstractActions">
+
+    private class ActionPracownikSczegoly extends AbstractAction
+    {
+        public static final int ID_COLUMN_INDEX = 0;
+
+        public void actionPerformed(ActionEvent e)
+        {
+            final int idPracownika= extractIDFromTable(e) ;
+            java.awt.EventQueue.invokeLater(new DialogPracownikSzczegolyLauncher(idPracownika));
+        }
+
+        private Integer extractIDFromTable(ActionEvent e) {
+            return (Integer) pracownicy_tabela.getValueAt(Integer.valueOf(e.getActionCommand()), ID_COLUMN_INDEX);
+        }
+
+        private class DialogPracownikSzczegolyLauncher implements Runnable
+        {
+            private final int idPracownika;
+
+            private DialogPracownikSzczegolyLauncher(int idPracownika) {
+                this.idPracownika = idPracownika;
+            }
+
+            public void run()
+            {
+                otwartyDialog = new DialogPracownikSzczegoly(Admin.this, true, idPracownika);
+                otwartyDialog.setVisible(true);
+            }
+        }
     }
 
-    public ButtonColumn getPracownikSzczegolyColumnn() {
-        return pracownikSzczegolyColumnn;
+    private class ActionUsuwaniePracownika extends AbstractAction
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            final int id= extractIDFromTable(e);
+            final String nazwisko= extractNazwiskoFromTable(e);
+            java.awt.EventQueue.invokeLater(new DialogUsunPracownikaLauncher(Admin.this, id, nazwisko));
+        }
+
+        private Integer extractIDFromTable(ActionEvent e) {
+            return (Integer) pracownicy_tabela.getValueAt(Integer.valueOf(e.getActionCommand()), 0);
+        }
+
+        private String extractNazwiskoFromTable(ActionEvent e) {
+            return pracownicy_tabela.getValueAt(Integer.valueOf(e.getActionCommand()), 1).toString();
+        }
+
+        private class DialogUsunPracownikaLauncher implements Runnable
+        {
+            private final Admin windowOwner;
+            private final String nazwiskoPracownika;
+            private final int idPracownika;
+
+            private DialogUsunPracownikaLauncher(Admin windowOwner, int idPracownika, String nazwiskoPracownika) {
+                this.windowOwner = windowOwner;
+                this.nazwiskoPracownika = nazwiskoPracownika;
+                this.idPracownika = idPracownika;
+            }
+
+            public void run() {
+                windowOwner.otwartyDialog = new DialogUsunPracownika(windowOwner, true, idPracownika, nazwiskoPracownika);
+                windowOwner.otwartyDialog.setVisible(true);
+                windowOwner.otwartyDialog.addWindowListener(new DialogClosedListener());
+            }
+
+            private class DialogClosedListener extends WindowAdapter
+            {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    windowOwner.refreshCurrentWindow();
+                }
+            }
+        }
     }
 
-    public void setPracownikSzczegolyColumnn(ButtonColumn pracownikSzczegolyColumnn) {
-        this.pracownikSzczegolyColumnn = pracownikSzczegolyColumnn;
-    }
-
-    public ButtonColumn getUsunPracownikaColumnn() {
-        return usunPracownikaColumnn;
-    }
-
-    public void setUsunPracownikaColumnn(ButtonColumn usunPracownikaColumnn) {
-        this.usunPracownikaColumnn = usunPracownikaColumnn;
-    }
-
-    public Connection getConnection() {
-        return connection;
-    }
-
-    public JComboBox getZam_sortuj_hurt() {
-        return zam_sortuj_hurt;
-    }
-
-    public JTextField getZam_szukaj_co_hurt() {
-        return zam_szukaj_co_hurt;
-    }
-
-    public JTable getZam_hurt_tab() {
-        return zam_hurt_tab;
-    }
-
-    public JTable getKlienci_tabela() {
-        return klienci_tabela;
-    }
-
-    public JComboBox getKlienci_sortuj() {
-        return klienci_sortuj;
-    }
-
-    public JTextField getKlienci_szukaj_co() {
-        return klienci_szukaj_co;
-    }
-
-    public JTextField getHurtownia_szukaj_co() {
-        return hurtownia_szukaj_co;
-    }
-
-    public JTable getHurtownia_tabela() {
-        return hurtownia_tabela;
-    }
-
-    public JTable getProdukty_tabela() {
-        return produkty_tabela;
-    }
-
-    public JTextField getProdukty_szukaj_co() {
-        return produkty_szukaj_co;
-    }
-
-    public JTable getStatystka_klienci_ogolem() {
-        return statystka_klienci_ogolem;
-    }
-
-    public JTable getStatystka_produkty_miesiecznie() {
-        return statystka_produkty_miesiecznie;
-    }
-
-    public JTable getStatystka_hurtownie_tygodniowo() {
-        return statystka_hurtownie_tygodniowo;
-    }
-
-    public JTable getStatystka_produkty_tygodniowo() {
-        return statystka_produkty_tygodniowo;
-    }
-
-    public JTable getStatystka_klienci_miesiecznie() {
-        return statystka_klienci_miesiecznie;
-    }
-
-    public JTable getStatystka_hurtownie_ogolem() {
-        return statystka_hurtownie_ogolem;
-    }
-
-    public JTable getStatystka_hurtownie_rocznie() {
-        return statystka_hurtownie_rocznie;
-    }
-
-    public JTable getStatystka_hurtownie_miesiecznie() {
-        return statystka_hurtownie_miesiecznie;
-    }
-
-    public JTable getStatystka_klienci_rocznie() {
-        return statystka_klienci_rocznie;
-    }
-
-    public JTable getStatystka_produkty_rocznie() {
-        return statystka_produkty_rocznie;
-    }
-
-    public JTable getStatystka_produkty_ogolem() {
-        return statystka_produkty_ogolem;
-    }
-
-    public JTable getStatystka_klienci_tygodniowo() {
-        return statystka_klienci_tygodniowo;
-    }
-
-    public JFrame getThisframe() {
-        return this;
-    }
-
+    //</editor-fold>
 }

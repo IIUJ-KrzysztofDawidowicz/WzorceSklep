@@ -1,4 +1,4 @@
-package WzorceSklep.GUI.ButtonUtils;
+package WzorceSklep.GUI.DataRenderingUtils;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -154,13 +154,9 @@ public class ButtonColumn extends AbstractCellEditor
 		}
 
 		if (hasFocus)
-		{
-			renderButton.setBorder( focusBorder );
-		}
+            renderButton.setBorder(focusBorder);
 		else
-		{
-			renderButton.setBorder( originalBorder );
-		}
+            renderButton.setBorder(originalBorder);
 
 //		renderButton.setText( (value == null) ? "" : value.toString() );
 		if (value == null)

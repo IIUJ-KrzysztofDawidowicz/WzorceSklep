@@ -79,12 +79,12 @@ public class ProduktyDAO implements DataAccessObject<Produkt> {
 
     @Override
     public List<Produkt> select(String orderBy) throws SQLException {
-        return convertToProduct(adapter.select(TABLE_NAME, TableInfo.getColumnNameWithCheckedCase(orderBy, TABLE_NAME)));
+        return convertToProduct(adapter.select(TABLE_NAME, TableInfo.getColumnNameWithCheckedCase(TABLE_NAME, orderBy)));
     }
 
     @Override
     public List<Produkt> select(String lookFor, String orderBy) throws SQLException, ClassNotFoundException {
-        return convertToProduct(adapter.select(TABLE_NAME, lookFor, TableInfo.getColumnNameWithCheckedCase(orderBy, TABLE_NAME)));
+        return convertToProduct(adapter.select(TABLE_NAME, lookFor, TableInfo.getColumnNameWithCheckedCase(TABLE_NAME, orderBy)));
     }
 
     @Override
@@ -104,7 +104,7 @@ public class ProduktyDAO implements DataAccessObject<Produkt> {
     }
 
     @Override
-    public Produkt getDetails(int id) throws SQLException, InvalidDataException {
+    public Produkt getById(int id) throws SQLException, InvalidDataException {
         TableRow row = TableRowFactory.createTableRow(TABLE_NAME);
         row.setValue("ID", id);
         List<Produkt> wynik = convertToProduct(adapter.selectExactMatch(row));

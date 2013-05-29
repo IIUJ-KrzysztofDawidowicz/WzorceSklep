@@ -7,6 +7,7 @@ package WzorceSklep.Data.Klient;
 import WzorceSklep.DAOFactory;
 import WzorceSklep.Data.AdresOsoby;
 
+import java.awt.*;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,17 +22,15 @@ import javax.swing.text.MaskFormatter;
 public class DialogDodajKlienta extends javax.swing.JDialog 
 {
     JFormattedTextField.AbstractFormatter format;
-    Connection connection=null;
 
     /**
      * Creates new form DialogDodajKlienta
      */
-    public DialogDodajKlienta(java.awt.Frame parent, boolean modal, Connection con) {
+    public DialogDodajKlienta(Frame parent, boolean modal) {
         super(parent, modal);
         try
         {
             format = new MaskFormatter("##-###");
-            connection=con;
         }
         catch(ParseException e)
         {
@@ -424,7 +423,7 @@ public class DialogDodajKlienta extends javax.swing.JDialog
             return;
         }
         try {
-            DAOFactory.getKlientDAO().insert(klient);
+            new DAOFactory().getKlientDAO().insert(klient);
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

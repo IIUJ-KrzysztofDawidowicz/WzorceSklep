@@ -14,12 +14,12 @@ import java.util.List;
  */
 public interface DataAccessObject<T extends DataEntity>
 {
-    public List<T> select(String orderBy) throws SQLException;
-    public List<T> select(String lookFor, String orderBy) throws SQLException, ClassNotFoundException;
+    public List<T> select(String orderBy) throws SQLException, InvalidDataException;
+    public List<T> select(String lookFor, String orderBy) throws SQLException, ClassNotFoundException, InvalidDataException;
 
     public void insert(T nowy) throws SQLException;
     public void update(T nowy) throws SQLException;
     public void delete(int id) throws SQLException;
 
-    T getDetails(int id) throws SQLException, InvalidDataException;
+    T getById(int id) throws SQLException, InvalidDataException;
 }

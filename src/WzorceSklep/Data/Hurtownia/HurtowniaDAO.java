@@ -31,7 +31,7 @@ public class HurtowniaDAO implements DataAccessObject<Hurtownia> {
 
     @Override
     public List<Hurtownia> select(String orderBy) throws SQLException {
-        orderBy = TableInfo.getColumnNameWithCheckedCase(orderBy, tableNameHurtownia);
+        orderBy = TableInfo.getColumnNameWithCheckedCase(tableNameHurtownia, orderBy);
         return convertToHurtownia(adapter.select(tableNameHurtownia, orderBy));
     }
 
@@ -60,7 +60,7 @@ public class HurtowniaDAO implements DataAccessObject<Hurtownia> {
     }
 
     @Override
-    public Hurtownia getDetails(int id) throws SQLException, InvalidDataException {
+    public Hurtownia getById(int id) throws SQLException, InvalidDataException {
         throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
     }
 

@@ -138,7 +138,7 @@ public class KlientDAO implements DataAccessObject<Klient> {
     }
 
     @Override
-    public Klient getDetails(int id) {
+    public Klient getById(int id) {
         throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
