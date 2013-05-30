@@ -38,7 +38,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
 
     @Override
     public ResultSet select(String tableName, String lookFor, String orderBy) throws SQLException {
-        validateOrderBy(tableName, orderBy);
+        orderBy = validateOrderBy(tableName, orderBy);
         String selectCommand = String.format("SELECT * from %s WHERE %s ORDER BY %s", tableName, createWhereClause(tableName, lookFor), orderBy);
 
         return getResultSet(selectCommand);
@@ -171,9 +171,13 @@ public class JavaDBAdapter implements DatabaseAdapter {
     }
 
 
-    private void validateOrderBy(String tableName, String orderBy) throws SQLException {
-        if(!TableInfo.getTableInfo(tableName).hasColumn(orderBy))
+    private String validateOrderBy(String tableName, String orderBy) throws SQLException {
+        if(!TableInfo.getTableInfo(tableName).hasColumn(orderBy)) {
+            if(TableInfo.getTableInfo(tableName).hasColumn(orderBy.toUpperCase()))
+                return orderBy.toUpperCase();
             throw new IllegalArgumentException(String.format("Próba sortowania po kolumnie %s która nie istinieje w tabeli %s", orderBy, tableName));
+        }
+        return orderBy;
     }
 
     @Override

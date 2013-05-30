@@ -1,7 +1,6 @@
-package WzorceSklep.Data.DataAdapter;
+package WzorceSklep.Data.Klient;
 
-import WzorceSklep.Data.Klient.KlientDAO;
-import WzorceSklep.Data.Klient.Klient;
+import WzorceSklep.Data.DataAdapter.TableRow;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -15,6 +14,10 @@ import java.math.BigDecimal;
  * To change this template use File | Settings | File Templates.
  */
 public class TestKlientDAO {
+
+    private final static String tableName = "KLIENT";
+    private final String adresTableName = "ADRESKLIENTA";
+    private TableDataConverter<Klient> tableDataConverter = new KlientTableDataConverter(tableName, adresTableName);
 
 /*
     @Test
@@ -42,7 +45,7 @@ public class TestKlientDAO {
         klient.telefon = new BigDecimal("1234556");
         klient.imie = "Jan";
         klient.nazwisko = "Kowalski";
-        TableRow tableRow = KlientDAO.convertToTableRow(klient);
+        TableRow tableRow = tableDataConverter.convertToTableRow(klient);
         Assert.assertEquals(klient.ID, (int)(Integer) tableRow.getValue("ID"));
         Assert.assertEquals(klient.imie, tableRow.getValue("Imie").toString());
         Assert.assertEquals(klient.nazwisko, tableRow.getValue("Nazwisko").toString());
