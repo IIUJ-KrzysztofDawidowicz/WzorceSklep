@@ -1,6 +1,6 @@
 package WzorceSklep.GUI.DataRenderingUtils;
 
-import WzorceSklep.DataAccessObject;
+import WzorceSklep.Data.TableDataGetter;
 import WzorceSklep.DataEntity;
 import WzorceSklep.GUI.RepresentDataAction;
 import com.sun.media.sound.InvalidDataException;
@@ -19,15 +19,15 @@ import java.util.List;
  */
 public class RefreshTableAction<T extends DataEntity> implements RepresentDataAction {
 
-    private final DataAccessObject<T>       dao;
+    private final TableDataGetter<T> tableDataGetter;
     private final TableAccessors            tableAccessors;
     private final AbstractTableConverter<T> tableConverter;
 
     public RefreshTableAction(AbstractTableConverter<T> tableConverter,
-                              DataAccessObject<T> dao,
+                              TableDataGetter<T> tableDataGetter,
                               TableAccessors tableAccessors)
     {
-        this.dao = dao;
+        this.tableDataGetter = tableDataGetter;
         this.tableAccessors = tableAccessors;
         this.tableConverter = tableConverter;
     }
@@ -38,9 +38,9 @@ public class RefreshTableAction<T extends DataEntity> implements RepresentDataAc
         String lookFor = tableAccessors.getLookFor();
         List<T> list;
         if (lookFor.isEmpty())
-            list = dao.select(order_by);
+            list = tableDataGetter.select(order_by);
         else
-            list = dao.select(lookFor, order_by);
+            list = tableDataGetter.select(lookFor, order_by);
 
         TableModel model = tableConverter.getTableModel(new ArrayList<T>(list));
         tableAccessors.setTableModel(model);

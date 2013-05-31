@@ -9,7 +9,6 @@ import WzorceSklep.Data.AdresOsoby;
 
 import java.awt.*;
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import javax.swing.JFormattedTextField;
@@ -383,9 +382,9 @@ public class DialogDodajKlienta extends javax.swing.JDialog
 
 
         try {
-            klient.telefon = new BigDecimal(telefonField.getText());
-            klient.adres.nrDomu = Integer.valueOf(nrdomuField.getText());
-            klient.adres.nrLokalu = Integer.valueOf(nrlokaluField.getText());
+            klient.setTelefon(new BigDecimal(telefonField.getText()));
+            klient.getAdres().nrDomu = Integer.valueOf(nrdomuField.getText());
+            klient.getAdres().nrLokalu = Integer.valueOf(nrlokaluField.getText());
 
         } catch (Exception e) {
             wypelnijPola.setVisible(true);
@@ -421,15 +420,15 @@ public class DialogDodajKlienta extends javax.swing.JDialog
     }//GEN-LAST:event_utworzActionPerformed
 
     private void loadDataFromTextFields(Klient klient) {
-        klient.adres = new AdresOsoby();
-        klient.imie = imieField.getText();
-        klient.nazwisko = nazwiskoField.getText();
-        klient.adres.ulica = ulicaField.getText();
-        klient.adres.kodPocztowy = kodPocztowyField.getText();
-        klient.adres.poczta = pocztaField.getText();
-        klient.adres.miejscowosc=  miejscowoscField.getText();
-        klient.adres.kraj = krajField.getText();
-        klient.mail = mailField.getText();
+        klient.setAdres(new AdresOsoby());
+        klient.setImie(imieField.getText());
+        klient.setNazwisko(nazwiskoField.getText());
+        klient.getAdres().ulica = ulicaField.getText();
+        klient.getAdres().kodPocztowy = kodPocztowyField.getText();
+        klient.getAdres().poczta = pocztaField.getText();
+        klient.getAdres().miejscowosc=  miejscowoscField.getText();
+        klient.getAdres().kraj = krajField.getText();
+        klient.setMail(mailField.getText());
     }
 
     /**

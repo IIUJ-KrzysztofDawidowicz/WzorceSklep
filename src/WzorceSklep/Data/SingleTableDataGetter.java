@@ -1,6 +1,8 @@
-package WzorceSklep.Data.Klient;
+package WzorceSklep.Data;
 
 import WzorceSklep.Data.DataAdapter.DatabaseAdapter;
+import WzorceSklep.Data.Klient.TableDataConverter;
+import WzorceSklep.Data.TableDataGetter;
 import WzorceSklep.DataEntity;
 
 import java.sql.SQLException;
@@ -18,11 +20,6 @@ public class SingleTableDataGetter<T extends DataEntity> implements TableDataGet
     }
 
     @Override
-    public List<T> getAll() throws SQLException {
-        return tableDataConverter.convertResultSet(adapter.selectAll(tableName));
-    }
-
-    @Override
     public List<T> select(String orderBy) throws SQLException {
         return tableDataConverter.convertResultSet(adapter.select(tableName, orderBy));
     }
@@ -30,5 +27,10 @@ public class SingleTableDataGetter<T extends DataEntity> implements TableDataGet
     @Override
     public List<T> select(String lookFor, String orderBy) throws SQLException {
         return tableDataConverter.convertResultSet(adapter.select(tableName, lookFor, orderBy));
+    }
+
+    @Override
+    public List<T> select() throws SQLException {
+        return tableDataConverter.convertResultSet(adapter.selectAll(tableName));
     }
 }

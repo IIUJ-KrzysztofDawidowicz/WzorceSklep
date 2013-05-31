@@ -226,7 +226,7 @@ public class Login extends javax.swing.JFrame {
             Pracownik pracownik = new PracownikDAO(DataAdapterFactory.getDatabaseAdapter()).getByLogin(login, haslo);
             if (pracownik != null) {
                 dispose();
-                loginActions.get(pracownik.status).Login(pracownik);
+                loginActions.get(pracownik.getStatus()).Login(pracownik);
             }
             else
                 ZleHaslo.setVisible(true);

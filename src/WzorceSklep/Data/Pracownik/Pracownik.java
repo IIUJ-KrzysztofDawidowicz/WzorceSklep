@@ -5,16 +5,45 @@ import WzorceSklep.Data.Klient.Osoba;
 public class Pracownik extends Osoba
 {
 
-    public Pracownik() {
-    }
-
     public void setStatusWithString(String status) {
         if(status.equals("Admin"))
-            this.status= Statusy.Admin;
+            this.setStatus(Statusy.Admin);
         else if(status.equals("Hurtownik"))
-            this.status = Statusy.Hurtownik;
+            this.setStatus(Statusy.Hurtownik);
         else if (status.equals("Sprzedawca"))
-            this.status = Statusy.Sprzedawca;
+            this.setStatus(Statusy.Sprzedawca);
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getUmowa() {
+        return umowa;
+    }
+
+    public void setUmowa(String umowa) {
+        this.umowa = umowa;
+    }
+
+    public Statusy getStatus() {
+        return status;
+    }
+
+    public void setStatus(Statusy status) {
+        this.status = status;
     }
 
     public enum Statusy
@@ -24,18 +53,18 @@ public class Pracownik extends Osoba
         Sprzedawca
     }
 
-    public String login;
-    public String password;
-    public String umowa;
-    public Statusy status;
+    private String login;
+    private String password;
+    private String umowa;
+    private Statusy status;
     public String getStatusString()
     {
         String status="";
-        if(this.status== Pracownik.Statusy.Admin)
+        if(this.getStatus() == Pracownik.Statusy.Admin)
             status="Admin";
-        else if(this.status == Pracownik.Statusy.Hurtownik)
+        else if(this.getStatus() == Pracownik.Statusy.Hurtownik)
             status="Hurtownik";
-        else if (this.status == Pracownik.Statusy.Sprzedawca)
+        else if (this.getStatus() == Pracownik.Statusy.Sprzedawca)
             status="Sprzedawca";
         return status;
     }

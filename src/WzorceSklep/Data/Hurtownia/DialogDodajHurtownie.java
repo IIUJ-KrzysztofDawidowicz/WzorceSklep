@@ -343,8 +343,8 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
 
 
         try {
-            hurtownia.telefon = new BigDecimal(telefonField.getText());
-            hurtownia.adres.nrDomu = Integer.valueOf(nrLokalu.getText());
+            hurtownia.setTelefon(new BigDecimal(telefonField.getText()));
+            hurtownia.getAdres().nrDomu = Integer.valueOf(nrLokalu.getText());
             DAOFactory.getHurtowniaDAO().insert(hurtownia);
         } catch (Exception e) {
             wypelnijPola.setVisible(true);
@@ -378,16 +378,16 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
 
     private Hurtownia loadDataFromTextFields() {
         Hurtownia hurtownia = new Hurtownia();
-        hurtownia.adres = new AdresHurtowni();
+        hurtownia.setAdres(new AdresHurtowni());
 
-        hurtownia.nazwa = Nazwa.getText();
-        hurtownia.osobaKontaktowa = Kontakt.getText();
-        hurtownia.mail = mailField.getText();
-        hurtownia.adres.ulica = ulicaField.getText();
-        hurtownia.adres.kodPocztowy = kodPocztowyField.getText();
-        hurtownia.adres.poczta = pocztaField.getText();
-        hurtownia.adres.miejscowosc = miejscowoscField.getText();
-        hurtownia.adres.kraj = krajField.getText();
+        hurtownia.setNazwa(Nazwa.getText());
+        hurtownia.setOsobaKontaktowa(Kontakt.getText());
+        hurtownia.setMail(mailField.getText());
+        hurtownia.getAdres().ulica = ulicaField.getText();
+        hurtownia.getAdres().kodPocztowy = kodPocztowyField.getText();
+        hurtownia.getAdres().poczta = pocztaField.getText();
+        hurtownia.getAdres().miejscowosc = miejscowoscField.getText();
+        hurtownia.getAdres().kraj = krajField.getText();
         return hurtownia;
     }
 

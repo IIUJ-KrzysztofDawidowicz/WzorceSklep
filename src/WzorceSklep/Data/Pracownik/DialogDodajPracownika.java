@@ -10,7 +10,6 @@ import WzorceSklep.Data.AdresOsoby;
 
 import java.awt.*;
 import java.math.BigDecimal;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
 import javax.swing.JFormattedTextField;
@@ -30,18 +29,18 @@ public class DialogDodajPracownika extends javax.swing.JDialog
         niezgodneHasla.setVisible(false);
         wypelnijPola.setVisible(false);
         pracownik = new Pracownik();
-        pracownik.adres = new AdresOsoby();
-        pracownik.imie = imieField.getText();
-        pracownik.nazwisko = nazwiskoField.getText();
-        pracownik.adres.ulica = ulicaField.getText();
-        pracownik.adres.kodPocztowy = kodPocztowyField.getText();
-        pracownik.adres.poczta = pocztaField.getText();
-        pracownik.adres.miejscowosc = miejscowoscField.getText();
-        pracownik.adres.kraj = krajField.getText();
-        pracownik.login = loginField.getText();
-        pracownik.password = new String((hasloField.getPassword()));
-        pracownik.mail = mailField.getText();
-        pracownik.umowa = umowaField.getText();
+        pracownik.setAdres(new AdresOsoby());
+        pracownik.setImie(imieField.getText());
+        pracownik.setNazwisko(nazwiskoField.getText());
+        pracownik.getAdres().ulica = ulicaField.getText();
+        pracownik.getAdres().kodPocztowy = kodPocztowyField.getText();
+        pracownik.getAdres().poczta = pocztaField.getText();
+        pracownik.getAdres().miejscowosc = miejscowoscField.getText();
+        pracownik.getAdres().kraj = krajField.getText();
+        pracownik.setLogin(loginField.getText());
+        pracownik.setPassword(new String((hasloField.getPassword())));
+        pracownik.setMail(mailField.getText());
+        pracownik.setUmowa(umowaField.getText());
         pracownik.setStatusWithString(statusField.getSelectedItem().toString());
 
 //        String[] inputStrings = new String[12];
@@ -62,9 +61,9 @@ public class DialogDodajPracownika extends javax.swing.JDialog
 
 //        Integer[] inputInts = new Integer[3];
         try {
-            pracownik.telefon = new BigDecimal(telefonField.getText());
-            pracownik.adres.nrDomu = Integer.valueOf(nrdomuField.getText());
-            pracownik.adres.nrLokalu = Integer.valueOf(nrlokaluField.getText());
+            pracownik.setTelefon(new BigDecimal(telefonField.getText()));
+            pracownik.getAdres().nrDomu = Integer.valueOf(nrdomuField.getText());
+            pracownik.getAdres().nrLokalu = Integer.valueOf(nrlokaluField.getText());
 //            inputInts[0] = new Integer(telefonField.getText());
 //            inputInts[1] = new Integer(nrdomuField.getText());
 //            inputInts[2] = new Integer(nrlokaluField.getText());

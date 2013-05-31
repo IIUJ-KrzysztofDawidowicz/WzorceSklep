@@ -4,6 +4,7 @@ import WzorceSklep.Data.DataAdapter.DatabaseAdapter;
 import WzorceSklep.Data.DataAdapter.TableInfo;
 import WzorceSklep.Data.DataAdapter.TableRow;
 import WzorceSklep.Data.DataAdapter.TableRowFactory;
+import WzorceSklep.Data.TableDataGetter;
 import WzorceSklep.DataAccessObject;
 import com.sun.media.sound.InvalidDataException;
 
@@ -19,7 +20,7 @@ import java.util.List;
  * Time: 08:32
  * To change this template use File | Settings | File Templates.
  */
-public class HurtowniaDAO implements DataAccessObject<Hurtownia> {
+public class HurtowniaDAO implements DataAccessObject<Hurtownia>, TableDataGetter<Hurtownia> {
 
     private static final String tableNameAdres = "ADRESHURTOWNI";
     private static final String tableNameHurtownia = "HURTOWNIA";
@@ -36,16 +37,21 @@ public class HurtowniaDAO implements DataAccessObject<Hurtownia> {
     }
 
     @Override
-    public List<Hurtownia> select(String lookFor, String orderBy) throws SQLException, ClassNotFoundException {
+    public List<Hurtownia> select(String lookFor, String orderBy) throws SQLException {
         throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
+    public List<Hurtownia> select() throws SQLException {
+        return convertToHurtownia(adapter.selectAll(tableNameHurtownia));
+    }
+
+    @Override
     public void insert(Hurtownia nowy) throws SQLException {
-        nowy.ID = adapter.getMaxValueForColumn(tableNameHurtownia, "ID")+1;
+        nowy.setID(adapter.getMaxValueForColumn(tableNameHurtownia, "ID")+1);
         TableRow row = convertToTableRow(nowy);
         adapter.insert(row);
-        row = convertAdresToTableRow(nowy.adres, nowy.ID);
+        row = convertAdresToTableRow(nowy.getAdres(), nowy.getID());
         adapter.insert(row);
     }
 
@@ -60,8 +66,13 @@ public class HurtowniaDAO implements DataAccessObject<Hurtownia> {
     }
 
     @Override
-    public Hurtownia getById(int id) throws SQLException, InvalidDataException {
-        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
+    public Hurtownia getById(int id) throws SQLException {
+        TableRow row = TableRowFactory.createTableRow(tableNameHurtownia);
+        row.setValue("ID", id);
+        List<Hurtownia> list = convertToHurtownia(adapter.selectExactMatch(row));
+        if(list.size()>0)
+            return list.get(0);
+        return null;
     }
 
     private List<Hurtownia> convertToHurtownia(ResultSet set) throws SQLException
@@ -72,11 +83,11 @@ public class HurtowniaDAO implements DataAccessObject<Hurtownia> {
         {
             Hurtownia hurtownia = new Hurtownia();
 
-            hurtownia.ID = set.getInt("ID");
-            hurtownia.nazwa = set.getString("Nazwa");
-            hurtownia.osobaKontaktowa = set.getString("OsobaKontaktowa");
-            hurtownia.telefon = set.getBigDecimal("Telefon");
-            hurtownia.mail = set.getString("Mail");
+            hurtownia.setID(set.getInt("ID"));
+            hurtownia.setNazwa(set.getString("Nazwa"));
+            hurtownia.setOsobaKontaktowa(set.getString("OsobaKontaktowa"));
+            hurtownia.setTelefon(set.getBigDecimal("Telefon"));
+            hurtownia.setMail(set.getString("Mail"));
 
             wynik.add(hurtownia);
         }
@@ -87,11 +98,11 @@ public class HurtowniaDAO implements DataAccessObject<Hurtownia> {
     private TableRow convertToTableRow(Hurtownia hurtownia) throws SQLException {
         TableRow wynik = TableRowFactory.createTableRow(tableNameHurtownia);
 
-        wynik.setValue("ID", hurtownia.ID);
-        wynik.setValue("Nazwa", hurtownia.nazwa);
-        wynik.setValue("OsobaKontaktowa", hurtownia.osobaKontaktowa);
-        wynik.setValue("Telefon", hurtownia.telefon);
-        wynik.setValue("Mail", hurtownia.mail);
+        wynik.setValue("ID", hurtownia.getID());
+        wynik.setValue("Nazwa", hurtownia.getNazwa());
+        wynik.setValue("OsobaKontaktowa", hurtownia.getOsobaKontaktowa());
+        wynik.setValue("Telefon", hurtownia.getTelefon());
+        wynik.setValue("Mail", hurtownia.getMail());
 
         return wynik;
     }

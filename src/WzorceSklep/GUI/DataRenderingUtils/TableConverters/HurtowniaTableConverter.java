@@ -18,11 +18,11 @@ public class HurtowniaTableConverter extends AbstractTableConverter<Hurtownia> {
     protected Object[] mapDataToColumns(Hurtownia hurtownia) {
         Object[] wynik = new Object[columnNames.length];
 
-        wynik[0] = hurtownia.ID;
-        wynik[1] = hurtownia.nazwa;
-        wynik[2] = hurtownia.osobaKontaktowa;
-        wynik[3] = hurtownia.telefon;
-        wynik[4] = hurtownia.mail;
+        wynik[0] = hurtownia.getID();
+        wynik[1] = hurtownia.getNazwa();
+        wynik[2] = hurtownia.getOsobaKontaktowa();
+        wynik[3] = hurtownia.getTelefon();
+        wynik[4] = hurtownia.getMail();
 
         return wynik;
     }

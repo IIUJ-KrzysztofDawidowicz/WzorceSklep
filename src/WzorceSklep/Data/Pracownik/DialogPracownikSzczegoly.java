@@ -8,7 +8,6 @@ import WzorceSklep.DAOFactory;
 import com.sun.media.sound.InvalidDataException;
 
 import java.awt.*;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 public class DialogPracownikSzczegoly extends javax.swing.JDialog
@@ -264,23 +263,21 @@ public class DialogPracownikSzczegoly extends javax.swing.JDialog
         try
         {
             Pracownik pracownik = new Pracownik();
-            pracownik.ID = idPracownika;
+            pracownik.setID(idPracownika);
             pracownik = new DAOFactory().getPracownikDAO().getById(idPracownika);
-            imie.setText(pracownik.imie);
-            nazwisko.setText(pracownik.nazwisko);
-            adres.setText(String.format("ul. %s, %d m. %d", pracownik.adres.ulica, pracownik.adres.nrLokalu, pracownik.adres.nrDomu));
-            kodPocztowy.setText(pracownik.adres.kodPocztowy);
-            poczta.setText(pracownik.adres.poczta);
-            miejscowosc.setText(pracownik.adres.miejscowosc);
-            telefon.setText(pracownik.telefon.toPlainString());
-            kraj.setText(pracownik.adres.kraj);
-            mail.setText(pracownik.mail);
-            umowa.setText(pracownik.umowa);
-            login.setText(pracownik.login);
+            imie.setText(pracownik.getImie());
+            nazwisko.setText(pracownik.getNazwisko());
+            adres.setText(String.format("ul. %s, %d m. %d", pracownik.getAdres().ulica, pracownik.getAdres().nrLokalu, pracownik.getAdres().nrDomu));
+            kodPocztowy.setText(pracownik.getAdres().kodPocztowy);
+            poczta.setText(pracownik.getAdres().poczta);
+            miejscowosc.setText(pracownik.getAdres().miejscowosc);
+            telefon.setText(pracownik.getTelefon().toPlainString());
+            kraj.setText(pracownik.getAdres().kraj);
+            mail.setText(pracownik.getMail());
+            umowa.setText(pracownik.getUmowa());
+            login.setText(pracownik.getLogin());
             status.setText(pracownik.getStatusString());
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (InvalidDataException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }

@@ -19,7 +19,8 @@ import WzorceSklep.GUI.DataRenderingUtils.TableConverters.ZamowianieKlientaTable
 import WzorceSklep.GUI.DataRenderingUtils.TableConverters.ZamowieniaHurtowniTableConverter;
 import com.sun.media.sound.InvalidDataException;
 
-import java.sql.Connection;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,7 @@ import javax.swing.table.TableModel;
  */
 public class Sprzedawca extends javax.swing.JFrame {
 
+    private final DAOFactory daoFactory = new DAOFactory();
     private JPanel okno;
     private RepresentDataAction refreshZamowieniaKlientAction;
     private RepresentDataAction refreshZamowieniaHurtowniAction;
@@ -40,6 +42,7 @@ public class Sprzedawca extends javax.swing.JFrame {
     private final RepresentDataAction showMojeDane = new ShowMojeDaneAction();
     private final Map<JPanel, RepresentDataAction> refreshTableActions;
     private final Pracownik zalogowany;
+    private JDialog otwartyDialog;
 
     public Sprzedawca(Pracownik pracownik) {
         zalogowany=pracownik;
@@ -54,7 +57,7 @@ public class Sprzedawca extends javax.swing.JFrame {
         try {
             refreshZamowieniaKlientAction = new RefreshTableAction<ZamowienieKlienta>(
                     new ZamowianieKlientaTableConverter(),
-                    new DAOFactory().getZamowieniaKllientaDAO(),
+                    daoFactory.getZamowieniaKllientaGetter(),
                     new ZamowienieKlientaTableAccessors());
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -62,14 +65,15 @@ public class Sprzedawca extends javax.swing.JFrame {
         try {
             refreshZamowieniaHurtowniAction = new RefreshTableAction<ZamowienieHurtowni>(
                     new ZamowieniaHurtowniTableConverter(),
-                    new DAOFactory().getZamownieniaHurtowniDAO(),
+                    daoFactory.getZamownieniaHurtowniGetter(),
                     new ZamowieniaHurtowniTableAccessors()
             );
             refreshKlienciAction = new RefreshTableAction<Klient>(
                     new KlienciTableConverter(),
-                    new DAOFactory().getKlientDAO(),
+                    daoFactory.getKlientGetter(),
                     new KlienciTableAccesors());
-            refreshProduktyAction = new RefreshTableAction<Produkt>(new ProduktyTableConverter(), DAOFactory.getProduktyDAO(), new ProdktyTableAccessors());
+            refreshProduktyAction = new RefreshTableAction<Produkt>(
+                    new ProduktyTableConverter(), DAOFactory.getProduktyGetter(), new ProdktyTableAccessors());
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
@@ -357,6 +361,11 @@ public class Sprzedawca extends javax.swing.JFrame {
         });
 
         zam_klienci_zamow.setText("Zam�w");
+        zam_klienci_zamow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zam_klienci_zamowActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout zam_klienci_panelLayout = new javax.swing.GroupLayout(zam_klienci_panel);
         zam_klienci_panel.setLayout(zam_klienci_panelLayout);
@@ -651,6 +660,23 @@ public class Sprzedawca extends javax.swing.JFrame {
         refreshCurrentTable();
     }//GEN-LAST:event_klienci_sortujActionPerformed
 
+    private void zam_klienci_zamowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zam_klienci_zamowActionPerformed
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                otwartyDialog = new DodajZamowienieKlientaDialog(zalogowany, daoFactory);
+                otwartyDialog.setVisible(true);
+                otwartyDialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
+                {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        refreshCurrentTable();
+                    }
+                });
+            }
+        });
+    }//GEN-LAST:event_zam_klienci_zamowActionPerformed
+
+
     /**
      * @param args the command line arguments
      */
@@ -746,21 +772,21 @@ public class Sprzedawca extends javax.swing.JFrame {
     private class ShowMojeDaneAction implements RepresentDataAction {
         @Override
         public void execute() {
-            IDLabel.setText(Integer.valueOf(zalogowany.ID).toString());
-            ImieLabel.setText(zalogowany.imie);
-            NazwiskoLabel.setText(zalogowany.nazwisko);
-            TelefonLabel.setText(zalogowany.telefon.toString());
-            MailLabel.setText(zalogowany.mail);
-            LoginLabel.setText(zalogowany.login);
-            UmowaLabel.setText(zalogowany.umowa);
+            IDLabel.setText(Integer.valueOf(zalogowany.getID()).toString());
+            ImieLabel.setText(zalogowany.getImie());
+            NazwiskoLabel.setText(zalogowany.getNazwisko());
+            TelefonLabel.setText(zalogowany.getTelefon().toString());
+            MailLabel.setText(zalogowany.getMail());
+            LoginLabel.setText(zalogowany.getLogin());
+            UmowaLabel.setText(zalogowany.getUmowa());
             StatusLabel.setText(zalogowany.getStatusString());
 
             UlicaLabel.setText(String.format("ul. %s m. %s/%s",
-                    zalogowany.adres.ulica, zalogowany.adres.nrDomu, zalogowany.adres.nrLokalu));
-            KodPocztowyLabel.setText(zalogowany.adres.kodPocztowy);
-            PocztaLabel.setText(zalogowany.adres.poczta);
-            MiejscowoscLabel.setText(zalogowany.adres.miejscowosc);
-            KrajLabel.setText(zalogowany.adres.kraj);
+                    zalogowany.getAdres().ulica, zalogowany.getAdres().nrDomu, zalogowany.getAdres().nrLokalu));
+            KodPocztowyLabel.setText(zalogowany.getAdres().kodPocztowy);
+            PocztaLabel.setText(zalogowany.getAdres().poczta);
+            MiejscowoscLabel.setText(zalogowany.getAdres().miejscowosc);
+            KrajLabel.setText(zalogowany.getAdres().kraj);
         }
     }
 

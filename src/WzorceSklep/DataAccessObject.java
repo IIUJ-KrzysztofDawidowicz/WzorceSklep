@@ -21,5 +21,5 @@ public interface DataAccessObject<T extends DataEntity>
     public void update(T nowy) throws SQLException;
     public void delete(int id) throws SQLException;
 
-    T getById(int id) throws SQLException, InvalidDataException;
+    T getById(int id) throws SQLException;
 }

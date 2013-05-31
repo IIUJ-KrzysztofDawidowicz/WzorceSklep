@@ -57,6 +57,8 @@ public class JavaDBAdapter implements DatabaseAdapter {
 
     @Override
     public ResultSet select(String tableName, String orderBy) throws SQLException {
+        if(orderBy.equals(""))
+            return selectAll(tableName);
         validateOrderBy(tableName, orderBy);
         String selectCommand = String.format("SELECT * from %s ORDER BY %s", tableName, orderBy);
 
@@ -115,22 +117,21 @@ public class JavaDBAdapter implements DatabaseAdapter {
     @Override
     public void insert(TableRow nowy) throws SQLException {
         Connection connection = DriverManager.getConnection(url,properties);
-        String[] processedValues = proceesValuesForStatement(nowy.getValues(), nowy.getColumns());
+        String[] processedValues = proceesValuesForStatement(nowy.getValues());
         String sql = String.format("INSERT INTO %s (%s) VALUES (%s)",
                 nowy.getTableName(),
                 StringUtils.join(nowy.getColumns(), ", "),
                 StringUtils.join(processedValues, ", ")
         );
-        PreparedStatement statement = connection.prepareStatement(sql);
-        statement.execute();
+        executeArbitraryStatement(sql);
     }
 
-    private static String[] proceesValuesForStatement(Object[] values, String[] columns) throws UnsupportedOperationException {
+    private static String[] proceesValuesForStatement(Object[] values) throws UnsupportedOperationException {
         String[] wynik = new String[values.length];
         for (int i = 0; i < wynik.length; i++) {
             if(values[i] == null)
-                throw new UnsupportedOperationException("TableRow nie jest wypełniony. Brakuje wartości dla " + columns[i]);
-            if(values[i].getClass()==String.class)
+                wynik[i] = "NULL";
+            else if(values[i].getClass()==String.class)
                 wynik[i] = String.format("'%s'", values[i]);
             else
                 wynik[i] = values[i].toString();
@@ -150,7 +151,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
 
     private static String createSetClause(TableRow entity) {
         String[] columns = entity.getColumns();
-        String[] values = proceesValuesForStatement(entity.getValues(), columns);
+        String[] values = proceesValuesForStatement(entity.getValues());
         List<String> clauses = new LinkedList<String>();
         for (int i = 0; i < columns.length; i++) {
             if(!columns[i].equals("ID"))
@@ -192,7 +193,11 @@ public class JavaDBAdapter implements DatabaseAdapter {
     public void executeArbitraryStatement(String command) throws SQLException {
         Connection connection = DriverManager.getConnection(url, properties);
         Statement statement = connection.createStatement();
-        statement.execute(command);
+        try {
+            statement.execute(command);
+        } catch (SQLException e) {
+            throw new SQLException("Błąd przy próbie wykonania polecenia " + command, e);
+        }
     }
 
 }

@@ -22,8 +22,8 @@ public class Main
 {
     public static void main(String[] args)
     {
-        startProgram();
 //        executeStatement();
+        startProgram();
     }
 
     private static void startProgram() {

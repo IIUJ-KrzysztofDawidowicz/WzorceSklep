@@ -6,10 +6,7 @@ import WzorceSklep.Data.DataAdapter.TableRowFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class KlientTableDataConverter implements TableDataConverter<Klient> {
 
@@ -22,17 +19,17 @@ public class KlientTableDataConverter implements TableDataConverter<Klient> {
     }
 
     @Override
-    public Map<String, TableRow> convertToTableRows(Klient dataEntity) throws SQLException {
-        Map<String, TableRow> wynik = new HashMap<String, TableRow>();
+    public List<TableRow> convertToTableRows(Klient dataEntity) throws SQLException {
+        List<TableRow> wynik = new ArrayList<TableRow>(2);
 
-        wynik.put(klientTableName, convertToTableRow(dataEntity));
-        wynik.put(adresTableName, convertAdresToTableRow(dataEntity.adres));
+        wynik.add(convertToTableRow(dataEntity));
+        wynik.add(convertAdresToTableRow(dataEntity.getAdres()));
 
         return wynik;
     }
 
     @Override
-    public TableRow convertToTableRow(Klient klient) {
+    public TableRow convertToTableRow(Klient klient) throws SQLException {
         TableRow tableRow = null;
         try {
             tableRow = TableRowFactory.createTableRow(klientTableName);
@@ -40,11 +37,11 @@ public class KlientTableDataConverter implements TableDataConverter<Klient> {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         if (tableRow != null) {
-            tableRow.setValue("ID", klient.ID);
-            tableRow.setValue("Imie", klient.imie);
-            tableRow.setValue("Nazwisko", klient.nazwisko);
-            tableRow.setValue("Mail", klient.mail);
-            tableRow.setValue("Telefon", klient.telefon);
+            tableRow.setValue("ID", klient.getID());
+            tableRow.setValue("Imie", klient.getImie());
+            tableRow.setValue("Nazwisko", klient.getNazwisko());
+            tableRow.setValue("Mail", klient.getMail());
+            tableRow.setValue("Telefon", klient.getTelefon());
         }
         return tableRow;
     }
@@ -55,11 +52,11 @@ public class KlientTableDataConverter implements TableDataConverter<Klient> {
 
         while (set.next()) {
             Klient klient = new Klient();
-            klient.ID = set.getInt("ID");
-            klient.imie = set.getString("Imie");
-            klient.nazwisko = set.getString("Nazwisko");
-            klient.telefon = set.getBigDecimal("Telefon");
-            klient.mail = set.getString("Mail");
+            klient.setID(set.getInt("ID"));
+            klient.setImie(set.getString("Imie"));
+            klient.setNazwisko(set.getString("Nazwisko"));
+            klient.setTelefon(set.getBigDecimal("Telefon"));
+            klient.setMail(set.getString("Mail"));
             wynik.add(klient);
         }
 

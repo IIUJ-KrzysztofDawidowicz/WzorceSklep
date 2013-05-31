@@ -4,6 +4,7 @@ import WzorceSklep.Data.DataAdapter.DatabaseAdapter;
 import WzorceSklep.Data.DataAdapter.TableInfo;
 import WzorceSklep.Data.DataAdapter.TableRow;
 import WzorceSklep.Data.DataAdapter.TableRowFactory;
+import WzorceSklep.Data.TableDataGetter;
 import WzorceSklep.DataAccessObject;
 import com.sun.media.sound.InvalidDataException;
 
@@ -20,11 +21,16 @@ import java.util.List;
  * Time: 18:06
  * To change this template use File | Settings | File Templates.
  */
-public class ProduktyDAO implements DataAccessObject<Produkt> {
+public class ProduktyDAO implements DataAccessObject<Produkt>, TableDataGetter<Produkt> {
 
 
     private static final String TABLE_NAME = "PRODUKT";
     private final DatabaseAdapter adapter;
+
+    @Override
+    public List<Produkt> select(String orderBy) throws SQLException {
+        return convertToProduct(adapter.select(TABLE_NAME, TableInfo.getColumnNameWithCheckedCase(TABLE_NAME, orderBy)));
+    }
 
     public ProduktyDAO(DatabaseAdapter databaseAdapter) {
         adapter = databaseAdapter;
@@ -64,13 +70,13 @@ public class ProduktyDAO implements DataAccessObject<Produkt> {
     }
 
     @Override
-    public List<Produkt> select(String orderBy) throws SQLException {
-        return convertToProduct(adapter.select(TABLE_NAME, TableInfo.getColumnNameWithCheckedCase(TABLE_NAME, orderBy)));
+    public List<Produkt> select(String lookFor, String orderBy) throws SQLException {
+        return convertToProduct(adapter.select(TABLE_NAME, lookFor, TableInfo.getColumnNameWithCheckedCase(TABLE_NAME, orderBy)));
     }
 
     @Override
-    public List<Produkt> select(String lookFor, String orderBy) throws SQLException, ClassNotFoundException {
-        return convertToProduct(adapter.select(TABLE_NAME, lookFor, TableInfo.getColumnNameWithCheckedCase(TABLE_NAME, orderBy)));
+    public List<Produkt> select() throws SQLException {
+        return convertToProduct(adapter.selectAll(TABLE_NAME));
     }
 
     @Override
@@ -90,7 +96,7 @@ public class ProduktyDAO implements DataAccessObject<Produkt> {
     }
 
     @Override
-    public Produkt getById(int id) throws SQLException, InvalidDataException {
+    public Produkt getById(int id) throws SQLException {
         TableRow row = TableRowFactory.createTableRow(TABLE_NAME);
         row.setValue("ID", id);
         List<Produkt> wynik = convertToProduct(adapter.selectExactMatch(row));

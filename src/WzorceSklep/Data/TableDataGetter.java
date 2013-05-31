@@ -1,5 +1,6 @@
-package WzorceSklep.Data.Klient;
+package WzorceSklep.Data;
 
+import WzorceSklep.Data.Klient.Klient;
 import WzorceSklep.DataEntity;
 
 import java.sql.SQLException;
@@ -13,9 +14,10 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface TableDataGetter<T extends DataEntity> {
-    List<T> getAll() throws SQLException;
 
     List<T> select(String orderBy) throws SQLException;
 
     List<T> select(String lookFor, String orderBy) throws SQLException;
+
+    List<T> select() throws SQLException;
 }

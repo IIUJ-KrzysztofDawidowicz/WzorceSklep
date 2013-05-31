@@ -20,7 +20,7 @@ public class ZamowieniaHurtowniTableConverter extends AbstractTableConverter<Zam
     protected Object[] mapDataToColumns(ZamowienieHurtowni zamowienie) {
         Object[] wynik = new Object[columnNames.length];
 
-        wynik[0] = zamowienie.zamawiajacy.nazwa;
+        wynik[0] = zamowienie.zamawiajacy.getNazwa();
         wynik[1] = zamowienie.produktZamowiony.nazwa;
         wynik[2] = zamowienie.produktZamowiony.typ;
         wynik[3] = zamowienie.ilosc;

@@ -22,14 +22,11 @@ import WzorceSklep.Data.Pracownik.DialogUsunPracownika;
 import WzorceSklep.Data.Pracownik.Pracownik;
 import WzorceSklep.Data.Produkt.DialogDodajProdukt;
 import WzorceSklep.Data.Produkt.Produkt;
+import WzorceSklep.GUI.DataRenderingUtils.TableConverters.StatystykiHurtownieTableConverter;
 import WzorceSklep.Data.Zamowienie.ZamowienieHurtowni;
 import WzorceSklep.Data.Zamowienie.ZamowienieKlienta;
-import WzorceSklep.GUI.DataRenderingUtils.MulticastRepresentDataAction;
-import WzorceSklep.GUI.DataRenderingUtils.RefreshStatystykiAction;
-import WzorceSklep.GUI.DataRenderingUtils.RefreshTableAction;
-import WzorceSklep.GUI.DataRenderingUtils.TableAccessors;
+import WzorceSklep.GUI.DataRenderingUtils.*;
 import WzorceSklep.GUI.DataRenderingUtils.TableConverters.*;
-import WzorceSklep.GUI.DataRenderingUtils.ButtonColumn;
 import com.sun.media.sound.InvalidDataException;
 
 import javax.swing.*;
@@ -39,11 +36,14 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Admin extends javax.swing.JFrame {
 
+    private final DAOFactory daoFactory = new DAOFactory();
     private JPanel aktualnyPanel;
     private JDialog otwartyDialog;
     private final Action akcjaUsunPracownika = new ActionUsuwaniePracownika();
@@ -99,22 +99,23 @@ public class Admin extends javax.swing.JFrame {
         try {
             RepresentDataAction refreshZamowieniaKlientAction = new RefreshTableAction<ZamowienieKlienta>(
                     new ZamowianieKlientaTableConverter(),
-                    new DAOFactory().getZamowieniaKllientaDAO(),
+                    daoFactory.getZamowieniaKllientaGetter(),
                     new ZamowienieKlientaTableAccessors());
             RepresentDataAction refreshZamowieniaHurtowniAction = new RefreshTableAction<ZamowienieHurtowni>(
                     new ZamowieniaHurtowniTableConverter(),
-                    new DAOFactory().getZamownieniaHurtowniDAO(),
+                    daoFactory.getZamownieniaHurtowniGetter(),
                     new ZamowieniaHurtowniTableAccessors());
+            MulticastRepresentDataAction refreshStatystykiAction = getRefreshStatystykiAction();
 
             actionMap.put(panel_pracownicy, new RefreshTableAction<Pracownik>(
-                    new PracownicyTableConverter(), new DAOFactory().getPracownikDAO(), new PracownicyTableAccessors()));
+                    new PracownicyTableConverter(), daoFactory.getPracownikGetter(), new PracownicyTableAccessors()));
             actionMap.put(panel_klienci, new RefreshTableAction<Klient>(
-                    new KlienciTableConverter(), new DAOFactory().getKlientDAO(), new KlienciTableAccesors()));
+                    new KlienciTableConverter(), daoFactory.getKlientGetter(), new KlienciTableAccesors()));
             actionMap.put(panel_hurtowni, new RefreshTableAction<Hurtownia>(
-                    new HurtowniaTableConverter(), DAOFactory.getHurtowniaDAO(), new HurtowniaTableAccessors()));
+                    new HurtowniaTableConverter(), DAOFactory.getHurtowniaGetter(), new HurtowniaTableAccessors()));
             actionMap.put(panel_produkty, new RefreshTableAction<Produkt>(
-                    new ProduktyTableConverter(), DAOFactory.getProduktyDAO(), new ProdktyTableAccessors()));
-            actionMap.put(panel_statystyka, new RefreshStatystykiAction());
+                    new ProduktyTableConverter(), DAOFactory.getProduktyGetter(), new ProdktyTableAccessors()));
+            actionMap.put(panel_statystyka, refreshStatystykiAction);
             actionMap.put(panel_zamowienia, new MulticastRepresentDataAction(
                     refreshZamowieniaHurtowniAction, refreshZamowieniaKlientAction));
         } catch (SQLException e) {
@@ -122,6 +123,37 @@ public class Admin extends javax.swing.JFrame {
         }
 
         return actionMap;
+    }
+
+    private MulticastRepresentDataAction getRefreshStatystykiAction() throws SQLException {
+        Collection<RepresentDataAction> actionCollection = new ArrayList<RepresentDataAction>();
+        RepresentDataAction action;
+        JTable[][] tables =
+                {
+                        {statystka_produkty_ogolem, statystka_produkty_tygodniowo, statystka_produkty_miesiecznie, statystka_produkty_rocznie},
+                        {statystka_hurtownie_ogolem, statystka_hurtownie_tygodniowo, statystka_hurtownie_miesiecznie, statystka_hurtownie_rocznie},
+                        {statystka_klienci_ogolem, statystka_klienci_tygodniowo, statystka_klienci_miesiecznie, statystka_klienci_rocznie}
+                };
+        String[][] tableNames =
+                {
+                        {"STATYSTYKAPRODUKTY", "STATYSTYKAPRODUKTYTYDZIEN","StatystykaProduktyMiesiac","StatystykaProduktyRok",},
+                        {"StatystykaHurtownia","StatystykaHurtowniaTydzien","StatystykaHurtowniaMiesiac","StatystykaHurtowniaRok"},
+                        {"StatystykaKlient","StatystykaKlientTydzien","StatystykaKlientMiesiac","StatystykaKlientRok"}
+                };
+        AbstractTableConverter[] converters = {new StatystykiProduktyTableConverter(), new StatystykiHurtownieTableConverter(), new StatystykiKlienciTableConverter()};
+        for (int i = 0; i < tables.length; i++)
+        {
+            for (int j = 0; j < tables[i].length; j++) {
+                action = new RefreshTableAction(
+                        converters[i],
+                        daoFactory.getStatystykiGetter(tableNames[i][j]),
+                        new StatystykiTableAccssors(tables[i][j])
+                );
+                actionCollection.add(action);
+            }
+        }
+        return new MulticastRepresentDataAction(
+                actionCollection.toArray(new RepresentDataAction[actionCollection.size()]));
     }
 
     private void setInitialComponentVisibility() {
@@ -1730,6 +1762,35 @@ public class Admin extends javax.swing.JFrame {
                     windowOwner.refreshCurrentWindow();
                 }
             }
+        }
+    }
+
+    private class StatystykiTableAccssors implements TableAccessors {
+
+        private StatystykiTableAccssors(JTable table) {
+            this.table = table;
+        }
+
+        private JTable table;
+
+        @Override
+        public String getOrderBy() {
+            return "";
+        }
+
+        @Override
+        public void emptyFields() {
+
+        }
+
+        @Override
+        public void setTableModel(TableModel model) {
+            table.setModel(model);
+        }
+
+        @Override
+        public String getLookFor() {
+            return "";
         }
     }
 

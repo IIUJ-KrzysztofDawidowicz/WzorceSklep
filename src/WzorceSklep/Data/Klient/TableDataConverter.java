@@ -16,9 +16,9 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public interface TableDataConverter<T extends DataEntity> {
-    Map<String, TableRow> convertToTableRows(T dataEntity) throws SQLException;
+    List<TableRow> convertToTableRows(T dataEntity) throws SQLException;
 
-    TableRow convertToTableRow(T dataEntity);
+    TableRow convertToTableRow(T dataEntity) throws SQLException;
 
     List<T> convertResultSet(ResultSet set) throws SQLException;
 }

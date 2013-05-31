@@ -4,12 +4,24 @@ import WzorceSklep.DataEntity;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Konwertuje tablicę obiektów DataEntity na TableModel do wyświetlenia.
  */
 public abstract class AbstractTableConverter<T extends DataEntity> {
+
+    protected final Map<String,Integer> index;
+
+    protected AbstractTableConverter() {
+        String[] colmunNames = getColumnNames();
+        index = new HashMap<String, Integer>();
+        for (int i = 0; i < colmunNames.length; i++) {
+            index.put(colmunNames[i], i);
+        }
+    }
 
     public TableModel getTableModel(List<T> data)
     {

@@ -1,12 +1,13 @@
 package WzorceSklep.Data.Klient;
 
+import WzorceSklep.Data.SingleTableDataGetter;
+import WzorceSklep.Data.TableDataGetter;
 import WzorceSklep.DataAccessObject;
 import WzorceSklep.Data.DataAdapter.DatabaseAdapter;
 import WzorceSklep.Data.DataAdapter.*;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +16,7 @@ import java.util.Map;
  * Time: 22:58
  * To change this template use File | Settings | File Templates.
  */
-public class KlientDAO implements DataAccessObject<Klient> {
+public class KlientDAO implements DataAccessObject<Klient>, TableDataGetter<Klient> {
     private final DatabaseAdapter adapter;
 
     private final static String tableName = "KLIENT";
@@ -41,11 +42,15 @@ public class KlientDAO implements DataAccessObject<Klient> {
     }
 
     @Override
+    public List<Klient> select() throws SQLException {
+        return tableDataGetter.select();
+    }
+
+    @Override
     public void insert(Klient nowy) throws SQLException {
-        nowy.ID = nowy.adres.ID = adapter.getMaxValueForColumn(tableName, "ID")+1;
-        Map<String, TableRow> rows = tableDataConverter.convertToTableRows(nowy);
-        adapter.insert(rows.get(tableNameAdres));
-        adapter.insert(rows.get(tableName));
+        nowy.setID(nowy.getAdres().ID = adapter.getMaxValueForColumn(tableName, "ID")+1);
+        for (TableRow row: tableDataConverter.convertToTableRows(nowy))
+            adapter.insert(row);
     }
 
     @Override

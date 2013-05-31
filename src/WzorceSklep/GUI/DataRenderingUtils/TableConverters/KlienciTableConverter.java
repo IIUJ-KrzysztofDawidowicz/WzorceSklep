@@ -13,22 +13,17 @@ public class KlienciTableConverter extends AbstractTableConverter<Klient>
 {
 
     private final static String[] columnNames;
-    private final static Map<String,Integer> index;
 
     static {
         columnNames = new String[]{"ID", "Nazwisko", "Mail", "Telefon"};
-        index = new HashMap<String, Integer>();
-        for (int i = 0; i < columnNames.length; i++) {
-            index.put(columnNames[i], i);
-        }
     }
 
     protected Object[] mapDataToColumns(Klient klient) {
         Object[] wynik = new Object[columnNames.length];
-        wynik[index.get("ID")] = klient.ID;
-        wynik[index.get("Nazwisko")] = String.format("%s %s", klient.imie, klient.nazwisko);
-        wynik[index.get("Mail")] = klient.mail;
-        wynik[index.get("Telefon")] = klient.telefon;
+        wynik[index.get("ID")] = klient.getID();
+        wynik[index.get("Nazwisko")] = String.format("%s %s", klient.getImie(), klient.getNazwisko());
+        wynik[index.get("Mail")] = klient.getMail();
+        wynik[index.get("Telefon")] = klient.getTelefon();
         return wynik;
     }
 

@@ -40,16 +40,16 @@ public class TestKlientDAO {
     public void testConvertToDataRow() throws Exception
     {
         Klient klient = new Klient();
-        klient.ID = 1;
-        klient.mail = "mail";
-        klient.telefon = new BigDecimal("1234556");
-        klient.imie = "Jan";
-        klient.nazwisko = "Kowalski";
+        klient.setID(1);
+        klient.setMail("mail");
+        klient.setTelefon(new BigDecimal("1234556"));
+        klient.setImie("Jan");
+        klient.setNazwisko("Kowalski");
         TableRow tableRow = tableDataConverter.convertToTableRow(klient);
-        Assert.assertEquals(klient.ID, (int)(Integer) tableRow.getValue("ID"));
-        Assert.assertEquals(klient.imie, tableRow.getValue("Imie").toString());
-        Assert.assertEquals(klient.nazwisko, tableRow.getValue("Nazwisko").toString());
-        Assert.assertEquals(klient.mail, tableRow.getValue("Mail").toString());
+        Assert.assertEquals(klient.getID(), (int)(Integer) tableRow.getValue("ID"));
+        Assert.assertEquals(klient.getImie(), tableRow.getValue("Imie").toString());
+        Assert.assertEquals(klient.getNazwisko(), tableRow.getValue("Nazwisko").toString());
+        Assert.assertEquals(klient.getMail(), tableRow.getValue("Mail").toString());
     }
 
     /*private static DatabaseAdapter getDatabaseAdapter() throws SQLException {

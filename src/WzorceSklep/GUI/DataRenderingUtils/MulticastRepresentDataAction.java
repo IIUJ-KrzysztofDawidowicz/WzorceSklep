@@ -26,7 +26,15 @@ public class MulticastRepresentDataAction implements RepresentDataAction {
 
     @Override
     public void execute() throws InvalidDataException, SQLException, ClassNotFoundException {
-        for(RepresentDataAction action: actions)
-            action.execute();
+        try {
+            for(RepresentDataAction action: actions)
+                action.execute();
+        } catch (InvalidDataException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 }

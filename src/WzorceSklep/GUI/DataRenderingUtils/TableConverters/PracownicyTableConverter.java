@@ -3,7 +3,6 @@ package WzorceSklep.GUI.DataRenderingUtils.TableConverters;
 import WzorceSklep.Data.Pracownik.Pracownik;
 import WzorceSklep.GUI.DataRenderingUtils.AbstractTableConverter;
 
-import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.util.HashMap;
@@ -31,10 +30,10 @@ public class PracownicyTableConverter extends AbstractTableConverter<Pracownik> 
     protected Object[] mapDataToColumns(Pracownik object) {
         Object[] wynik = new Object[columnNames.length];
 
-        wynik[index.get("ID")] = object.ID;
-        wynik[index.get("Nazwisko")] = String.format("%s %s", object.imie, object.nazwisko);
-        wynik[index.get("login")] = object.login;
-        wynik[index.get("Telefon")] = object.telefon;
+        wynik[index.get("ID")] = object.getID();
+        wynik[index.get("Nazwisko")] = String.format("%s %s", object.getImie(), object.getNazwisko());
+        wynik[index.get("login")] = object.getLogin();
+        wynik[index.get("Telefon")] = object.getTelefon();
         wynik[index.get("Szczegóły")] = "Szczegóły";
         wynik[index.get("Usuń")] = "Usuń";
 
@@ -47,12 +46,4 @@ public class PracownicyTableConverter extends AbstractTableConverter<Pracownik> 
     }
 
     private static final String[] columnNames = new String[]{"ID","Nazwisko","login","Telefon", "Szczegóły", "Usuń"};
-    private static final Map<String, Integer> index;
-    static
-    {
-        index = new HashMap<String, Integer>();
-        for (int i = 0; i < columnNames.length; i++) {
-            index.put(columnNames[i], i);
-        }
-    }
 }
