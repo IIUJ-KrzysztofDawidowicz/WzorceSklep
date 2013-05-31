@@ -8,6 +8,7 @@ import WzorceSklep.DAOFactory;
 import WzorceSklep.Data.Klient.Klient;
 import WzorceSklep.Data.Pracownik.Pracownik;
 import WzorceSklep.Data.Produkt.Produkt;
+import WzorceSklep.Data.Zamowienie.NoweZamowienieKlientaDialog;
 import WzorceSklep.Data.Zamowienie.ZamowienieHurtowni;
 import WzorceSklep.Data.Zamowienie.ZamowienieKlienta;
 import WzorceSklep.GUI.DataRenderingUtils.MulticastRepresentDataAction;
@@ -19,8 +20,6 @@ import WzorceSklep.GUI.DataRenderingUtils.TableConverters.ZamowianieKlientaTable
 import WzorceSklep.GUI.DataRenderingUtils.TableConverters.ZamowieniaHurtowniTableConverter;
 import com.sun.media.sound.InvalidDataException;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -661,7 +660,8 @@ public class Sprzedawca extends javax.swing.JFrame {
     }//GEN-LAST:event_klienci_sortujActionPerformed
 
     private void zam_klienci_zamowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zam_klienci_zamowActionPerformed
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        NoweZamowienieKlientaDialog.main(zalogowany, daoFactory);
+/*        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 otwartyDialog = new DodajZamowienieKlientaDialog(zalogowany, daoFactory);
                 otwartyDialog.setVisible(true);
@@ -673,7 +673,7 @@ public class Sprzedawca extends javax.swing.JFrame {
                     }
                 });
             }
-        });
+        });*/
     }//GEN-LAST:event_zam_klienci_zamowActionPerformed
 
 
