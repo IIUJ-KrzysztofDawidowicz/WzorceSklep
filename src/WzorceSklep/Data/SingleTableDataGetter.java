@@ -19,14 +19,14 @@ public class SingleTableDataGetter<T extends DataEntity> implements TableDataGet
 
     @Override
     public List<T> select(String orderBy) throws SQLException {
-        if(orderBy.equals(""))
+        if(orderBy==null||orderBy.equals(""))
             return select();
         return resultSetConverter.convertResultSet(adapter.select(tableName, orderBy));
     }
 
     @Override
     public List<T> select(String lookFor, String orderBy) throws SQLException {
-        if(lookFor.equals(""))
+        if(lookFor==null||lookFor.equals(""))
             return select(orderBy);
         return resultSetConverter.convertResultSet(adapter.select(tableName, lookFor, orderBy));
     }

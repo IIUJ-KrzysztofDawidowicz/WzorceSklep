@@ -1,7 +1,6 @@
 package WzorceSklep.Data.Zamowienie;
 
-import WzorceSklep.Data.DataAdapter.TableRow;
-import WzorceSklep.Data.TableDataConverter;
+import WzorceSklep.Data.ResultSetConverter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,16 +14,7 @@ import java.util.List;
  * Time: 19:10
  * To change this template use File | Settings | File Templates.
  */
-public class ZamowienieKlientaViewTableDataConverter implements TableDataConverter<ZamowienieKlienta> {
-    @Override
-    public List<TableRow> convertToTableRows(ZamowienieKlienta dataEntity) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public TableRow convertToTableRow(ZamowienieKlienta dataEntity) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
-    }
+public class ZamowienieKlientaResultSetConverter implements ResultSetConverter<ZamowienieKlienta> {
 
     @Override
     public List<ZamowienieKlienta> convertResultSet(ResultSet set) throws SQLException {

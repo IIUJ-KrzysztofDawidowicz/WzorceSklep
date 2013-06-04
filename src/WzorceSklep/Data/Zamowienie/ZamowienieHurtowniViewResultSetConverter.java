@@ -27,6 +27,7 @@ public class ZamowienieHurtowniViewResultSetConverter implements ResultSetConver
             zamowienieHurtowni.getProduktZamowiony().nazwa= set.getString("NazwaProduktu");
             zamowienieHurtowni.getProduktZamowiony().typ=set.getString("TypProduktu");
             zamowienieHurtowni.setIlosc(set.getInt("Ilosc"));
+            zamowienieHurtowni.setKwota(set.getBigDecimal("Kwota"));
             zamowienieHurtowni.setDataZamowienia(set.getDate("DataZamowienia"));
             zamowienieHurtowni.setDataOdebrania(set.getDate("DataOdebrania"));
 

@@ -692,6 +692,8 @@ public class Sprzedawca extends RefreshableJFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //<editor-fold desc="Events">
+
     private void klienci_szukajMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_klienci_szukajMouseClicked
         refreshCurrentWindow();
     }//GEN-LAST:event_klienci_szukajMouseClicked
@@ -776,7 +778,10 @@ public class Sprzedawca extends RefreshableJFrame {
     private void zam_hurt_sortujPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_zam_hurt_sortujPropertyChange
         refreshCurrentWindow();
     }//GEN-LAST:event_zam_hurt_sortujPropertyChange
+    //</editor-fold>
 
+
+    //<editor-fold desc="Variables declarations">
 
     /**
      * @param args the command line arguments
@@ -875,6 +880,7 @@ public class Sprzedawca extends RefreshableJFrame {
     private javax.swing.JTextField zam_klienci_szukaj_co;
     private javax.swing.JTable zam_klienci_table;
     // End of variables declaration//GEN-END:variables
+    //</editor-fold>
 
     private class ShowMojeDaneAction implements RepresentDataAction {
         @Override
@@ -939,11 +945,13 @@ public class Sprzedawca extends RefreshableJFrame {
 
         private ZamowieniaHurtowniTableAccessors() {
             orderBy = new HashMap<String, String>();
-            orderBy.put("", "ID");
-            orderBy.put("Dostawca", "HurtowniaID");
-            orderBy.put("Produkt", "ProduktID");
-            orderBy.put("Typ", "Typ");
-            orderBy.put("Data zamówienia", "DataZamowienie");
+            orderBy.put("", "");
+            orderBy.put("Dostawca", "NazwaHurtowni");
+            orderBy.put("Produkt", "NazwaProduktu");
+            orderBy.put("Typ", "TypProduktu");
+            orderBy.put("Ilość", "Ilosc");
+            orderBy.put("Kwota", "Kwota");
+            orderBy.put("Data zamówienia", "DataZamowienia");
             orderBy.put("Data odebrania", "DataOdebrania");
         }
 

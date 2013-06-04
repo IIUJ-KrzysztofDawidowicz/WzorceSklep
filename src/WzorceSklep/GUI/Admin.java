@@ -42,6 +42,11 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import static WzorceSklep.DAOFactory.STATYSTYKA_HURTOWNIA;
+import static WzorceSklep.DAOFactory.STATYSTYKA_KLIENT;
+import static WzorceSklep.DAOFactory.STATYSTYKA_PRODUKTY;
+import static WzorceSklep.Util.showErrorDialog;
+
 public class Admin extends RefreshableJFrame {
 
     private final DAOFactory daoFactory = new DAOFactory();
@@ -103,37 +108,37 @@ public class Admin extends RefreshableJFrame {
         Map<JPanel, RepresentDataAction> actionMap = new HashMap<JPanel, RepresentDataAction>();
         panelNames = new HashMap<JPanel, String>();
 
-//        actionMap.put(panel_pracownicy, new RefreshPracownicyAction(this));
         try {
-            RepresentDataAction refreshZamowieniaKlientAction = new RefreshTableAction<ZamowienieKlienta>(
+            RepresentDataAction refreshZamowieniaKlientAction = new RefreshTableAction<ZamowienieKlienta>(      //Zamówienia Klienta
                     new ZamowianieKlientaTableConverter(),
                     daoFactory.getZamowieniaKllientaGetter(),
                     new ZamowienieKlientaTableAccessors());
-            RepresentDataAction refreshZamowieniaHurtowniAction = new RefreshTableAction<ZamowienieHurtowni>(
+            RepresentDataAction refreshZamowieniaHurtowniAction = new RefreshTableAction<ZamowienieHurtowni>(   //Zamówienia Hurtowni
                     new ZamowieniaHurtowniTableConverter(),
                     daoFactory.getZamownieniaHurtowniGetter(),
                     new ZamowieniaHurtowniTableAccessors());
             MulticastRepresentDataAction refreshStatystykiAction = getRefreshStatystykiAction();
 
-            actionMap.put(panel_pracownicy, new RefreshTableAction<Pracownik>(
+            actionMap.put(panel_pracownicy, new RefreshTableAction<Pracownik>(                                  //Pracownicy
                     new PracownicyTableConverter(), daoFactory.getPracownikGetter(), new PracownicyTableAccessors()));
             panelNames.put(panel_pracownicy, "Pracownicy");
-            actionMap.put(panel_klienci, new RefreshTableAction<Klient>(
+            actionMap.put(panel_klienci, new RefreshTableAction<Klient>(                                        //Pracownicy
                     new KlienciTableConverter(), daoFactory.getKlientGetter(), new KlienciTableAccesors()));
             panelNames.put(panel_klienci, "Klienci");
-            actionMap.put(panel_hurtowni, new RefreshTableAction<Hurtownia>(
+            actionMap.put(panel_hurtowni, new RefreshTableAction<Hurtownia>(                                    //Klienci
                     new HurtowniaTableConverter(), DAOFactory.getHurtowniaGetter(), new HurtowniaTableAccessors()));
             panelNames.put(panel_hurtowni, "Dostawcy");
-            actionMap.put(panel_produkty, new RefreshTableAction<Produkt>(
+            actionMap.put(panel_produkty, new RefreshTableAction<Produkt>(                                      //Produkty
                     new ProduktyTableConverter(), DAOFactory.getProduktyGetter(), new ProduktyTableAccessors()));
             panelNames.put(panel_produkty, "Produkty");
             actionMap.put(panel_statystyka, refreshStatystykiAction);
             panelNames.put(panel_statystyka, "Statystyki");
-            actionMap.put(panel_zamowienia, new MulticastRepresentDataAction(
+            actionMap.put(panel_zamowienia, new MulticastRepresentDataAction(                                   //Zamówienia
                     refreshZamowieniaHurtowniAction, refreshZamowieniaKlientAction));
             panelNames.put(panel_zamowienia, "Zamówienia");
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            showErrorDialog(this, e);
         }
 
         return actionMap;
@@ -149,19 +154,15 @@ public class Admin extends RefreshableJFrame {
                         {statystka_hurtownie_ogolem, statystka_hurtownie_tygodniowo, statystka_hurtownie_miesiecznie, statystka_hurtownie_rocznie},
                         {statystka_klienci_ogolem, statystka_klienci_tygodniowo, statystka_klienci_miesiecznie, statystka_klienci_rocznie}
                 };
-        String[][] tableNames =
-                {
-                        {"STATYSTYKAPRODUKTY", "STATYSTYKAPRODUKTYTYDZIEN","StatystykaProduktyMiesiac","StatystykaProduktyRok",},
-                        {"StatystykaHurtownia","StatystykaHurtowniaTydzien","StatystykaHurtowniaMiesiac","StatystykaHurtowniaRok"},
-                        {"StatystykaKlient","StatystykaKlientTydzien","StatystykaKlientMiesiac","StatystykaKlientRok"}
-                };
+        String[] tableNames = {STATYSTYKA_PRODUKTY, STATYSTYKA_HURTOWNIA, STATYSTYKA_KLIENT};
+        String[] suffix = {"", "Tydzien", "Miesiac","Rok"};
         AbstractTableConverter[] converters = {new StatystykiProduktyTableConverter(), new StatystykiHurtownieTableConverter(), new StatystykiKlienciTableConverter()};
         for (int i = 0; i < tables.length; i++)
         {
             for (int j = 0; j < tables[i].length; j++) {
                 action = new RefreshTableAction(
                         converters[i],
-                        daoFactory.getStatystykiGetter(tableNames[i][j]),
+                        daoFactory.getStatystykiGetter(tableNames[i] + suffix[j]),
                         new StatystykiTableAccssors(tables[i][j])
                 );
                 actionCollection.add(action);
@@ -430,7 +431,7 @@ public class Admin extends RefreshableJFrame {
             }
         });
 
-        guzik_zamowienia.setText("Zam�wienia");
+        guzik_zamowienia.setText("Zamówienia");
         guzik_zamowienia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 guzik_zamowieniaMouseClicked(evt);
@@ -440,7 +441,7 @@ public class Admin extends RefreshableJFrame {
         SklepLabel.setFont(new java.awt.Font("Segoe Script", 3, 24)); // NOI18N
         SklepLabel.setText("Sklep");
 
-        guzik_statystyka.setText("Statystyka sprzeda�y");
+        guzik_statystyka.setText("Statystyka sprzedaży");
         guzik_statystyka.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 guzik_statystykaMouseClicked(evt);
@@ -484,7 +485,7 @@ public class Admin extends RefreshableJFrame {
             }
         });
 
-        hurtownia_dodaj.setText("Dodaj dostawc�");
+        hurtownia_dodaj.setText("Dodaj dostawcę");
         hurtownia_dodaj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 hurtownia_dodajActionPerformed(evt);
@@ -660,7 +661,7 @@ public class Admin extends RefreshableJFrame {
             }
         });
 
-        zam_sort_klient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Klient","Produkt","Typ","Ilo��","Data","Kwota","Pracownik" }));
+        zam_sort_klient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Klient","Produkt","Typ","Ilość","Data","Kwota","Pracownik" }));
         zam_sort_klient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zam_sort_klientActionPerformed(evt);
@@ -713,7 +714,7 @@ public class Admin extends RefreshableJFrame {
         ));
         jScrollPane6.setViewportView(zam_hurt_tab);
 
-        jLabel3.setText("Szukaj weg�ug: ");
+        jLabel3.setText("Szukaj według: ");
 
         zam_szukaj_hurt.setText("Szukaj");
         zam_szukaj_hurt.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -727,7 +728,7 @@ public class Admin extends RefreshableJFrame {
             }
         });
 
-        zam_sortuj_hurt.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Dostawca","Produkt","Typ","Ilo��","Kwota","Data zamowienia","Data odebrania" }));
+        zam_sortuj_hurt.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Dostawca","Produkt","Typ","Ilość","Kwota","Data zamowienia","Data odebrania" }));
         zam_sortuj_hurt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zam_sortuj_hurtActionPerformed(evt);
@@ -812,7 +813,7 @@ public class Admin extends RefreshableJFrame {
         ));
         jScrollPane66.setViewportView(statystka_produkty_ogolem);
 
-        Hurtownie8.setText("Dostawcy");
+        Hurtownie8.setText("Hurtownie");
 
         Produkty8.setText("Produkty");
 
@@ -869,7 +870,7 @@ public class Admin extends RefreshableJFrame {
 
         jTabbedPane1.addTab("Ogółem", staty_ogolem);
 
-        Hurtownie9.setText("Dostawcy");
+        Hurtownie9.setText("Hurtownie");
 
         statystka_hurtownie_tygodniowo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -956,7 +957,7 @@ public class Admin extends RefreshableJFrame {
 
         Produkty10.setText("Produkty");
 
-        Hurtownie10.setText("Dostawcy");
+        Hurtownie10.setText("Hurtownie");
 
         statystka_klienci_miesiecznie.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1037,7 +1038,7 @@ public class Admin extends RefreshableJFrame {
                 .addGap(0, 37, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Miesi�cznie", staty_miesiecznie);
+        jTabbedPane1.addTab("Miesięcznie", staty_miesiecznie);
 
         statystka_produkty_rocznie.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1052,7 +1053,7 @@ public class Admin extends RefreshableJFrame {
         ));
         jScrollPane74.setViewportView(statystka_produkty_rocznie);
 
-        Hurtownie11.setText("Dostawcy");
+        Hurtownie11.setText("Hurtownie");
 
         Klienci11.setText("Klienci");
 
@@ -1803,9 +1804,25 @@ public class Admin extends RefreshableJFrame {
     }
 
     private class ZamowieniaHurtowniTableAccessors implements TableAccessors {
+
+        private final Map<String, String> orderBy;
+
+        private ZamowieniaHurtowniTableAccessors() {
+            orderBy = new HashMap<String, String>();
+            /*"", "Dostawca","Produkt","Typ","Ilość","Kwota","Data zamowienia","Data odebrania"*/
+            orderBy.put("", "");
+            orderBy.put("Dostawca", "NazwaHurtowni");
+            orderBy.put("Produkt", "NazwaProduktu");
+            orderBy.put("Typ", "TypProduktu");
+            orderBy.put("Ilość", "Ilosc");
+            orderBy.put("Kwota", "Kwota");
+            orderBy.put("Data zamówienia", "DataZamowienia");
+            orderBy.put("Data odebrania", "DataOdebrania");
+        }
+
         @Override
         public String getOrderBy() {
-            return "ID";
+            return orderBy.get(zam_sortuj_hurt.getSelectedItem().toString());
         }
 
         @Override

@@ -28,7 +28,11 @@ import java.sql.SQLException;
 public class DAOFactory {
 
 
-    public static final String STATYSTYKA_PRODUKTY_TABLE_NAME = "STATYSTYKAPRODUKTY";
+    public static final String STATYSTYKA_PRODUKTY = "StatystykaProdukty";
+    public static final String ZAMOWIENIA_KLIENTA_VIEW = "ZamowieniaKlientaView";
+    public static final String ZAMOWIENIA_HURTOWNI_VIEW = "ZamowieniaHurtowniView";
+    public static final String STATYSTYKA_HURTOWNIA = "StatystykaHurtownia";
+    public static final String STATYSTYKA_KLIENT = "StatystykaKlient";
 
     public static DatabaseAdapter getDatabaseAdapter() throws SQLException {
         return DataAdapterFactory.getDatabaseAdapter();
@@ -61,11 +65,11 @@ public class DAOFactory {
 
     public TableDataGetter<? extends Statystyki> getStatystykiGetter(String tableName) throws SQLException {
         ResultSetConverter dataConverter;
-        if(tableName.toUpperCase().startsWith("STATYSTYKAPRODUKTY"))
+        if(tableName.startsWith(STATYSTYKA_PRODUKTY))
             dataConverter = new StatystykiProduktyDataConverter(tableName);
-        else if(tableName.toUpperCase().startsWith("StatystykaHurtownia".toUpperCase()))
+        else if(tableName.startsWith(STATYSTYKA_HURTOWNIA))
             dataConverter = new StatystykiHurtowniaDataConverter(tableName);
-        else if(tableName.toUpperCase().startsWith("StatystykaKlient".toUpperCase()))
+        else if(tableName.startsWith(STATYSTYKA_KLIENT))
             dataConverter = new StatystykaKlientDataConverter(tableName);
         else
             throw new IllegalArgumentException(tableName + " nie jest rozpoznawaną tabelą.");
@@ -73,11 +77,11 @@ public class DAOFactory {
     }
 
     public TableDataGetter<ZamowienieKlienta> getZamowieniaKllientaGetter() throws SQLException {
-        return new SingleTableDataGetter<ZamowienieKlienta>(new ZamowienieKlientaViewTableDataConverter(), getDatabaseAdapter(), "ZamowieniaKlientaView");
+        return new SingleTableDataGetter<ZamowienieKlienta>(new ZamowienieKlientaResultSetConverter(), getDatabaseAdapter(), ZAMOWIENIA_KLIENTA_VIEW);
     }
 
     public TableDataGetter<ZamowienieHurtowni> getZamownieniaHurtowniGetter() throws SQLException {
-        return new SingleTableDataGetter<ZamowienieHurtowni>(new ZamowienieHurtowniViewResultSetConverter(), getDatabaseAdapter(), "ZamowieniaHurtowniView");
+        return new SingleTableDataGetter<ZamowienieHurtowni>(new ZamowienieHurtowniViewResultSetConverter(), getDatabaseAdapter(), ZAMOWIENIA_HURTOWNI_VIEW);
 /*
         return new ZamownieniaHurtowniDAO(getDatabaseAdapter(),
                 getHurtowniaDAO(), getProduktyDAO());
