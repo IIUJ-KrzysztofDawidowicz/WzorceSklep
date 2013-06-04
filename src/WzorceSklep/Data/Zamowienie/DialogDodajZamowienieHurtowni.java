@@ -1,47 +1,45 @@
-/*
+package WzorceSklep.Data.Zamowienie;/*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package WzorceSklep.Data.Zamowienie;
 
 import WzorceSklep.DAOFactory;
-import WzorceSklep.Data.Klient.Klient;
-import WzorceSklep.Data.Pracownik.Pracownik;
+import WzorceSklep.Data.Hurtownia.Hurtownia;
 import WzorceSklep.Data.Produkt.Produkt;
 import WzorceSklep.GUI.RefreshableJFrame;
+import WzorceSklep.Util;
 import org.joda.time.DateTime;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
  * @author KrzysztofD
  */
-public class NoweZamowienieKlientaDialog extends javax.swing.JDialog {
+public class DialogDodajZamowienieHurtowni extends javax.swing.JDialog {
 
-    private Pracownik pracownik;
-    private Klient[] klienci;
     private Produkt[] produkty;
+    private Hurtownia[] hurtownie;
     private DAOFactory daoFactory;
 
     /**
-     * Creates new form NoweZamowienieKlientaDialog
+     * Creates new form DialogDodajZamowienieHurtowni
      */
-    public NoweZamowienieKlientaDialog(Frame parent, Pracownik pracownik, DAOFactory daoFactory) {
+    public DialogDodajZamowienieHurtowni(Frame parent, DAOFactory daoFactory) {
         super(parent, true);
-        this.pracownik = pracownik;
         this.daoFactory = daoFactory;
         initComponents();
         try {
             setComboBoxContents();
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            Util.showErrorDialog(this,e);
         }
-        ProduktyComboBoxPropertyChange(null);
     }
 
     /**
@@ -53,43 +51,48 @@ public class NoweZamowienieKlientaDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        KlientComboBox = new javax.swing.JComboBox();
-        jLabel2 = new javax.swing.JLabel();
         ProduktyComboBox = new javax.swing.JComboBox();
+        jLabel2 = new javax.swing.JLabel();
+        KlientComboBox = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         IloscSpinner = new javax.swing.JSpinner(new SpinnerNumberModel(1,1,1,1));
-        CancelButton = new javax.swing.JButton();
         OKButton = new javax.swing.JButton();
+        CancelButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jLabel1.setText("Wybierz klienta:");
-
-        KlientComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel2.setText("Wybierz produkt:");
-
         ProduktyComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        ProduktyComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ProduktyComboBoxActionPerformed(evt);
+            }
+        });
         ProduktyComboBox.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 ProduktyComboBoxPropertyChange(evt);
             }
         });
 
-        jLabel3.setText("Ilo��:");
+        jLabel2.setText("Wybierz produkt:");
 
-        CancelButton.setText("Cancel");
-        CancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CancelButtonActionPerformed(evt);
-            }
-        });
+        KlientComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel1.setText("Wybierz dostawc�:");
+
+        jLabel3.setText("Ilo��:");
 
         OKButton.setText("OK");
         OKButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 OKButtonActionPerformed(evt);
+            }
+        });
+
+        CancelButton.setText("Cancel");
+        CancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CancelButtonActionPerformed(evt);
             }
         });
 
@@ -100,12 +103,12 @@ public class NoweZamowienieKlientaDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
                     .addComponent(KlientComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(ProduktyComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel2)
-                            .addGap(185, 185, 185)))
+                        .addComponent(jLabel2)
+                        .addGap(185, 185, 185)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -144,31 +147,31 @@ public class NoweZamowienieKlientaDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void ProduktyComboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_ProduktyComboBoxPropertyChange
+        setSpinner();
+    }//GEN-LAST:event_ProduktyComboBoxPropertyChange
+
+    private void setSpinner() {
+        int selectedIndex = ProduktyComboBox.getSelectedIndex();
+        if(IloscSpinner==null || produkty==null || selectedIndex<0) return;
+        SpinnerModel model = new SpinnerNumberModel(1, 1, produkty[selectedIndex].ilosc, 1);
+        IloscSpinner.setModel(model);
+    }
+
     private void OKButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OKButtonActionPerformed
         insertNewZamowienie();
         dispose();
     }//GEN-LAST:event_OKButtonActionPerformed
 
-    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
-        dispose();
-    }//GEN-LAST:event_CancelButtonActionPerformed
-
-    private void ProduktyComboBoxPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_ProduktyComboBoxPropertyChange
-        int selectedIndex = ProduktyComboBox.getSelectedIndex();
-        if(IloscSpinner==null || produkty==null || selectedIndex<0) return;
-        SpinnerModel model = new SpinnerNumberModel(1, 1, produkty[selectedIndex].ilosc, 1);
-        IloscSpinner.setModel(model);
-    }//GEN-LAST:event_ProduktyComboBoxPropertyChange
-
     private void insertNewZamowienie() {
-        ZamowienieKlienta zamowienieKlienta = new ZamowienieKlienta();
-        zamowienieKlienta.tworzacy = pracownik;
-        zamowienieKlienta.zamawiajacy = klienci[KlientComboBox.getSelectedIndex()];
-        zamowienieKlienta.setProduktZamowiony(produkty[ProduktyComboBox.getSelectedIndex()]);
-        zamowienieKlienta.setDataZamowienia(new Date(new DateTime().getMillis()));
-        zamowienieKlienta.setIlosc((Integer) IloscSpinner.getValue());
+        ZamowienieHurtowni zamowienieHurtowni = new ZamowienieHurtowni();
+        zamowienieHurtowni.setZamawiajacy(hurtownie[KlientComboBox.getSelectedIndex()]);
+        zamowienieHurtowni.setProduktZamowiony(produkty[ProduktyComboBox.getSelectedIndex()]);
+        zamowienieHurtowni.setDataZamowienia(new Date(new DateTime().getMillis()));
+        zamowienieHurtowni.setIlosc((Integer) IloscSpinner.getValue());
+        zamowienieHurtowni.setKwota(zamowienieHurtowni.getProduktZamowiony().cena.multiply(new BigDecimal(zamowienieHurtowni.getIlosc())));
         try {
-            daoFactory.getZamowieniaKllientaDAO().insert(zamowienieKlienta);
+            daoFactory.getZamownieniaHurtowniDAO().insert(zamowienieHurtowni);
             dispose();
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
@@ -178,12 +181,12 @@ public class NoweZamowienieKlientaDialog extends javax.swing.JDialog {
     private void setComboBoxContents() throws SQLException {
         KlientComboBox.removeAllItems();
         ProduktyComboBox.removeAllItems();
-        List<Klient> klientList = daoFactory.getKlientGetter().select();
+        List<Hurtownia> hurtowniaList = daoFactory.getHurtowniaGetter().select();
         List<Produkt> produktList = daoFactory.getProduktGetter().select();
-        klienci = klientList.toArray(new Klient[klientList.size()]);
+        hurtownie = hurtowniaList.toArray(new Hurtownia[hurtowniaList.size()]);
         produkty = produktList.toArray(new Produkt[produktList.size()]);
-        for (Klient klient : klientList) {
-            String name = klient.getName();
+        for (Hurtownia hurtownia : hurtowniaList) {
+            String name = hurtownia.getName();
             KlientComboBox.addItem(name);
         }
         for (Produkt produkt : produktList) {
@@ -191,12 +194,21 @@ public class NoweZamowienieKlientaDialog extends javax.swing.JDialog {
             ProduktyComboBox.addItem(name);
         }
     }
-    public static void show(final Pracownik pracownik, final DAOFactory factory, final RefreshableJFrame parent) {
+
+    private void CancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CancelButtonActionPerformed
+        dispose();
+    }//GEN-LAST:event_CancelButtonActionPerformed
+
+    private void ProduktyComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProduktyComboBoxActionPerformed
+        setSpinner();
+    }//GEN-LAST:event_ProduktyComboBoxActionPerformed
+
+    public static void show(final RefreshableJFrame parent, final DAOFactory daoFactory) {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                NoweZamowienieKlientaDialog dialog = new NoweZamowienieKlientaDialog(parent, pracownik, factory);
+                DialogDodajZamowienieHurtowni dialog = new DialogDodajZamowienieHurtowni(parent, daoFactory);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosed(java.awt.event.WindowEvent e) {

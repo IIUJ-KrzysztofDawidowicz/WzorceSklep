@@ -5,32 +5,43 @@
 package WzorceSklep.Data.Hurtownia;
 
 import WzorceSklep.DAOFactory;
+import WzorceSklep.GUI.RefreshableJFrame;
+import WzorceSklep.Util;
 
-import java.awt.*;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import javax.swing.JFormattedTextField;
+import javax.swing.*;
 import javax.swing.text.MaskFormatter;
+import java.awt.*;
+import java.text.ParseException;
 
 /**
  *
  * @author Ariel
  */
 public class DialogDodajHurtownie extends javax.swing.JDialog {
+    public static final String POCZTA_PLACEHOLDER = "Poczta";
+    public static final String IMIE_PLACEHOLDER = "Imię";
+    public static final String MAIL_PLACEHOLDER = "Mail";
+    public static final String KRAJ_PLACEHOLDER = "Kraj";
+    public static final String MIEJSCOWOŚĆ_PLACEHOLDER = "Miejscowość";
+    public static final String TELEFON_PLACEHOLDER = "Telefon";
+    public static final String NAZWISKO_PLACEHOLDER = "Nazwisko";
+    public static final String NR_DOMU_PLACEHOLDER = "Nr domu";
     private JFormattedTextField.AbstractFormatter format;
+    private DAOFactory daoFactory;
 
     /**
      * Creates new form DialogDodajHurtownie
      */
-    public DialogDodajHurtownie(Frame parent) {
+    private DialogDodajHurtownie(Frame parent, DAOFactory daoFactory) {
         super(parent, true);
+        this.daoFactory = daoFactory;
         try
         {
             format = new MaskFormatter("##-###");
             //final OknoDodajPracownika thisframe=this;
-            
+
             /*
-            * addWindowListener(new WindowAdapter() 
+            * addWindowListener(new WindowAdapter()
                 {
                 @Override
                     public void windowClosing(WindowEvent e)
@@ -125,7 +136,7 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
             }
         });
 
-        miejscowoscField.setText("Miejscowość");
+        miejscowoscField.setText("Miejscowo��");
         miejscowoscField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 miejscowoscFieldFocusGained(evt);
@@ -155,7 +166,7 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
             }
         });
 
-        utworz.setText("Dodaj");
+        utworz.setText("Zapisz");
         utworz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 utworzActionPerformed(evt);
@@ -184,7 +195,7 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
 
         wypelnijPola.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         wypelnijPola.setForeground(new java.awt.Color(255, 0, 0));
-        wypelnijPola.setText("Wypełnij wszystkie pola!");
+        wypelnijPola.setText("Niepoprawne lub niekompletne dane - popraw!");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -260,6 +271,21 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private Hurtownia loadDataFromTextFields() {
+        Hurtownia hurtownia = new Hurtownia();
+        hurtownia.setAdres(new AdresHurtowni());
+
+        hurtownia.setNazwa(Nazwa.getText());
+        hurtownia.setOsobaKontaktowa(Kontakt.getText());
+        hurtownia.setMail(mailField.getText());
+        hurtownia.getAdres().setUlica(ulicaField.getText());
+        hurtownia.getAdres().setKodPocztowy(kodPocztowyField.getText());
+        hurtownia.getAdres().setPoczta(pocztaField.getText());
+        hurtownia.getAdres().setMiejscowosc(miejscowoscField.getText());
+        hurtownia.getAdres().setKraj(krajField.getText());
+        return hurtownia;
+    }
+
     private void kodPocztowyFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_kodPocztowyFieldFocusGained
         kodPocztowyField.selectAll();
     }//GEN-LAST:event_kodPocztowyFieldFocusGained
@@ -270,7 +296,7 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
 
     private void pocztaFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pocztaFieldFocusLost
         if (pocztaField.getText().equals("")) {
-            pocztaField.setText("Poczta");
+            pocztaField.setText(POCZTA_PLACEHOLDER);
         }
     }//GEN-LAST:event_pocztaFieldFocusLost
 
@@ -280,7 +306,7 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
 
     private void NazwaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_NazwaFocusLost
         if (Nazwa.getText().equals("")) {
-            Nazwa.setText("Imię");
+            Nazwa.setText(IMIE_PLACEHOLDER);
         }
     }//GEN-LAST:event_NazwaFocusLost
 
@@ -290,7 +316,7 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
 
     private void mailFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mailFieldFocusLost
         if (mailField.getText().equals("")) {
-            mailField.setText("Mail");
+            mailField.setText(MAIL_PLACEHOLDER);
         }
     }//GEN-LAST:event_mailFieldFocusLost
 
@@ -300,7 +326,7 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
 
     private void krajFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_krajFieldFocusLost
         if (krajField.getText().equals("")) {
-            krajField.setText("Kraj");
+            krajField.setText(KRAJ_PLACEHOLDER);
         }
     }//GEN-LAST:event_krajFieldFocusLost
 
@@ -310,7 +336,7 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
 
     private void miejscowoscFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_miejscowoscFieldFocusLost
         if (miejscowoscField.getText().equals("")) {
-            miejscowoscField.setText("Miejscowość");
+            miejscowoscField.setText(MIEJSCOWOŚĆ_PLACEHOLDER);
         }
     }//GEN-LAST:event_miejscowoscFieldFocusLost
 
@@ -320,7 +346,7 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
 
     private void telefonFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_telefonFieldFocusLost
         if (telefonField.getText().equals("")) {
-            telefonField.setText("Telefon");
+            telefonField.setText(TELEFON_PLACEHOLDER);
         }
     }//GEN-LAST:event_telefonFieldFocusLost
 
@@ -330,12 +356,17 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
 
     private void KontaktFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_KontaktFocusLost
         if (Kontakt.getText().equals("")) {
-            Kontakt.setText("Nazwisko");
+            Kontakt.setText(NAZWISKO_PLACEHOLDER);
         }
     }//GEN-LAST:event_KontaktFocusLost
 
     private void utworzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_utworzActionPerformed
 
+        if(nieWypelnione())
+        {
+            wypelnijPola.setVisible(true);
+            return;
+        }
         wypelnijPola.setVisible(false);
         Hurtownia hurtownia = loadDataFromTextFields();
 
@@ -343,11 +374,14 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
 
 
         try {
-            hurtownia.setTelefon(new BigDecimal(telefonField.getText()));
-            hurtownia.getAdres().nrDomu = Integer.valueOf(nrLokalu.getText());
-            DAOFactory.getHurtowniaDAO().insert(hurtownia);
+            hurtownia.setTelefon(telefonField.getText());
+            if (!nrLokalu.getText().equals("") && ! nrLokalu.getText().equals(NR_DOMU_PLACEHOLDER)) {
+                hurtownia.getAdres().setNrDomu(Integer.valueOf(nrLokalu.getText()));
+            }
+            daoFactory.getHurtowniaDAO().insert(hurtownia);
         } catch (Exception e) {
             wypelnijPola.setVisible(true);
+            Util.showErrorDialog(this, e);
             return;
         }
 
@@ -376,19 +410,12 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
         }*/
     }//GEN-LAST:event_utworzActionPerformed
 
-    private Hurtownia loadDataFromTextFields() {
-        Hurtownia hurtownia = new Hurtownia();
-        hurtownia.setAdres(new AdresHurtowni());
-
-        hurtownia.setNazwa(Nazwa.getText());
-        hurtownia.setOsobaKontaktowa(Kontakt.getText());
-        hurtownia.setMail(mailField.getText());
-        hurtownia.getAdres().ulica = ulicaField.getText();
-        hurtownia.getAdres().kodPocztowy = kodPocztowyField.getText();
-        hurtownia.getAdres().poczta = pocztaField.getText();
-        hurtownia.getAdres().miejscowosc = miejscowoscField.getText();
-        hurtownia.getAdres().kraj = krajField.getText();
-        return hurtownia;
+    private boolean nieWypelnione() {
+        return Nazwa.getText().equals(NAZWISKO_PLACEHOLDER) || Nazwa.getText().equals("") ||
+                mailField.getText().equals(MAIL_PLACEHOLDER) || mailField.getText().equals("")||
+                telefonField.getText().equals(TELEFON_PLACEHOLDER) || telefonField.getText().equals("")||
+                krajField.getText().equals(KRAJ_PLACEHOLDER) || krajField.getText().equals("")||
+                !kodPocztowyField.isEditValid();
     }
 
     private void nrLokaluFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nrLokaluFocusGained
@@ -397,7 +424,7 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
 
     private void nrLokaluFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nrLokaluFocusLost
         if (nrLokalu.getText().equals("")) {
-            nrLokalu.setText("Nr lokalu");
+            nrLokalu.setText(NR_DOMU_PLACEHOLDER);
         }
     }//GEN-LAST:event_nrLokaluFocusLost
 
@@ -411,54 +438,23 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_ulicaFieldFocusLost
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /*
-         * Set the Nimbus look and feel
-         */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /*
-         * If Nimbus (introduced in Java SE 6) is not available, stay with the
-         * default look and feel. For details see
-         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogDodajHurtownie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogDodajHurtownie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogDodajHurtownie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogDodajHurtownie.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    public static void show(final RefreshableJFrame parent, final DAOFactory daoFactory) {
 
-        /*
-         * Create and display the dialog
          
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                DialogDodajHurtownie dialog = new DialogDodajHurtownie(new javax.swing.JFrame(), true);
+                DialogDodajHurtownie dialog = new DialogDodajHurtownie(parent, daoFactory);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
 
                     @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
+                    public void windowClosed(java.awt.event.WindowEvent e) {
+                        parent.refreshCurrentWindow();
                     }
                 });
                 dialog.setVisible(true);
             }
-        });*/
+        });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Kontakt;

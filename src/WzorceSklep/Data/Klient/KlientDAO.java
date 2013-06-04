@@ -1,6 +1,7 @@
 package WzorceSklep.Data.Klient;
 
 import WzorceSklep.Data.SingleTableDataGetter;
+import WzorceSklep.Data.TableDataConverter;
 import WzorceSklep.Data.TableDataGetter;
 import WzorceSklep.DataAccessObject;
 import WzorceSklep.Data.DataAdapter.DatabaseAdapter;
@@ -27,7 +28,7 @@ public class KlientDAO implements DataAccessObject<Klient>, TableDataGetter<Klie
 
     public KlientDAO(DatabaseAdapter adapter) {
         this.adapter = adapter;
-        tableDataConverter = new KlientTableDataConverter(tableName, tableNameAdres);
+        tableDataConverter = new KlientTableDataConverter(tableName, tableNameAdres, adapter);
         tableDataGetter = new SingleTableDataGetter<Klient>(tableDataConverter, this.adapter, tableName);
     }
 
@@ -48,14 +49,17 @@ public class KlientDAO implements DataAccessObject<Klient>, TableDataGetter<Klie
 
     @Override
     public void insert(Klient nowy) throws SQLException {
-        nowy.setID(nowy.getAdres().ID = adapter.getMaxValueForColumn(tableName, "ID")+1);
+        int id = adapter.getMaxValueForColumn(tableName, "ID") + 1;
+        nowy.getAdres().setID(id);
+        nowy.setID(id);
         for (TableRow row: tableDataConverter.convertToTableRows(nowy))
             adapter.insert(row);
     }
 
     @Override
     public void update(Klient nowy) throws SQLException {
-        adapter.update(tableDataConverter.convertToTableRow(nowy));
+        for (TableRow row: tableDataConverter.convertToTableRows(nowy))
+            adapter.update(row);
     }
 
     @Override

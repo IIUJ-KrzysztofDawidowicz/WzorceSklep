@@ -3,6 +3,9 @@ package WzorceSklep.GUI.DataRenderingUtils.TableConverters;
 import WzorceSklep.Data.Hurtownia.Hurtownia;
 import WzorceSklep.GUI.DataRenderingUtils.AbstractTableConverter;
 
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 /**
  * Created with IntelliJ IDEA.
  * User: KrzysztofD
@@ -12,7 +15,18 @@ import WzorceSklep.GUI.DataRenderingUtils.AbstractTableConverter;
  */
 public class HurtowniaTableConverter extends AbstractTableConverter<Hurtownia> {
 
-    private final static String[] columnNames = new String[]{"ID", "Nazwa", "Osoba kontaktowa", "Telefon", "Mail"};
+    private final static String[] columnNames = new String[]{"ID", "Nazwa", "Osoba kontaktowa", "Telefon", "Mail", "Edytuj"};
+
+    @Override
+    protected TableModel getEmptyTableModel(int length) {
+        return new DefaultTableModel(columnNames, length)
+        {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column>=5;
+            }
+        };
+    }
 
     @Override
     protected Object[] mapDataToColumns(Hurtownia hurtownia) {
@@ -23,6 +37,7 @@ public class HurtowniaTableConverter extends AbstractTableConverter<Hurtownia> {
         wynik[2] = hurtownia.getOsobaKontaktowa();
         wynik[3] = hurtownia.getTelefon();
         wynik[4] = hurtownia.getMail();
+        wynik[5] = "Edytuj";
 
         return wynik;
     }

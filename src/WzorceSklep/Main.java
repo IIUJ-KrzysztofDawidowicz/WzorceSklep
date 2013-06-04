@@ -1,7 +1,5 @@
 package WzorceSklep;
 
-import WzorceSklep.Data.DataAdapter.DataAdapterFactory;
-import WzorceSklep.Data.DataAdapter.DatabaseAdapter;
 import WzorceSklep.Data.Pracownik.Pracownik;
 import WzorceSklep.GUI.Admin;
 import WzorceSklep.GUI.LoginAction;
@@ -9,7 +7,6 @@ import WzorceSklep.GUI.Sprzedawca;
 
 import java.awt.*;
 import java.io.Serializable;
-import java.sql.SQLException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,26 +19,37 @@ public class Main
 {
     public static void main(String[] args)
     {
+/*        String select = "select * from pracownik";
+
+        try {
+            Class.forName("org.hsqldb.jdbc.JDBCDriver");
+            String path = "C:\\Users\\KrzysztofD\\Dropbox\\IO\\WzorceSklep";
+            path = getAbsolutePathOfCurrentDirectory();
+            Connection connection =
+                    DriverManager.getConnection(
+                            "jdbc:hsqldb:file:" + path,
+                            "SA", "");
+            connection.prepareStatement(select).executeQuery();
+        } catch (SQLException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }*/
 //        executeStatement();
         startProgram();
     }
 
     private static void startProgram() {
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Admin().setVisible(true);
+            }
+        });*/
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new WzorceSklep.GUI.Login().setVisible(true);
             }
         });
-    }
-
-    private static void executeStatement() {
-        String sql = "";
-        try {
-            DatabaseAdapter adapter = DataAdapterFactory.getDatabaseAdapter();
-            adapter.executeArbitraryStatement(sql);
-        } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
     }
 
     public static class LoginAdminAction implements Serializable, LoginAction {

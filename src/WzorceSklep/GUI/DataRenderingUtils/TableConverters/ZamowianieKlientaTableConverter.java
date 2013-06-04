@@ -23,11 +23,11 @@ public class ZamowianieKlientaTableConverter extends AbstractTableConverter<Zamo
         Object[] wynik = new Object[getColumnNames().length];
 
         wynik[0] = zamowienieKlienta.zamawiajacy.getName();
-        wynik[1] = zamowienieKlienta.produktZamowiony.nazwa;
-        wynik[2] = zamowienieKlienta.produktZamowiony.typ;
-        wynik[3] = zamowienieKlienta.ilosc;
-        wynik[4] = zamowienieKlienta.dataZamowienia;
-        wynik[5] = zamowienieKlienta.kwota;
+        wynik[1] = zamowienieKlienta.getProduktZamowiony().nazwa;
+        wynik[2] = zamowienieKlienta.getProduktZamowiony().typ;
+        wynik[3] = zamowienieKlienta.getIlosc();
+        wynik[4] = zamowienieKlienta.getDataZamowienia();
+        wynik[5] = zamowienieKlienta.getKwota();
         wynik[6] = String.format("%s %s", zamowienieKlienta.tworzacy.getImie(), zamowienieKlienta.tworzacy.getNazwisko());
 
         return wynik;

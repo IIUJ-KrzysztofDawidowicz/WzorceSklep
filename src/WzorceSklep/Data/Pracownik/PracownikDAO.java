@@ -11,6 +11,7 @@ import WzorceSklep.Data.AdresOsoby;
 import com.sun.media.sound.InvalidDataException;
 import javafx.util.Pair;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,8 @@ import java.util.List;
  */
 public class PracownikDAO implements DataAccessObject<Pracownik>, TableDataGetter<Pracownik> {
     private final DatabaseAdapter adapter;
-    private final static String tableNamePracownik = "PRACOWNIK";
-    private final static String tableNameAdres = "ADRESPRACOWNIKA";
+    private final static String tableNamePracownik = "Pracownik";
+    private final static String tableNameAdres = "AdresPracownika";
     private final PracownikTableDataConverter tableDataConverter = new PracownikTableDataConverter(tableNamePracownik, tableNameAdres);
 
     public PracownikDAO(DatabaseAdapter databaseAdapter) {
@@ -63,7 +64,8 @@ public class PracownikDAO implements DataAccessObject<Pracownik>, TableDataGette
 
     @Override
     public void update(Pracownik nowy) throws SQLException {
-        adapter.update(tableDataConverter.convertToTableRow(nowy));
+        for(TableRow row: tableDataConverter.convertToTableRows(nowy))
+            adapter.update(row);
     }
 
     @Override
@@ -103,7 +105,7 @@ public class PracownikDAO implements DataAccessObject<Pracownik>, TableDataGette
         row.setValue("ID", zAdresem.getID());
         List<AdresOsoby> list = tableDataConverter.convertToAdres(adapter.selectExactMatch(row));
         if(list.isEmpty())
-            return null;
+            return new AdresOsoby();
         return list.get(0);
     }
 
@@ -111,7 +113,8 @@ public class PracownikDAO implements DataAccessObject<Pracownik>, TableDataGette
         TableRow row = TableRowFactory.createTableRow(tableNamePracownik);
         row.setValue("Login", login);
         row.setValue("Password", haslo);
-        List<Pracownik> list = tableDataConverter.convertResultSet(adapter.selectExactMatch(row));
+        ResultSet set = adapter.selectExactMatch(row);
+        List<Pracownik> list = tableDataConverter.convertResultSet(set);
         if(list.size()<1)
             return null;
         Pracownik pracownik = list.get(0);

@@ -1,37 +1,27 @@
 package WzorceSklep.Data.DataAdapter;
 
+import WzorceSklep.Util;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.*;
 import java.util.*;
 
 /**
- * Łączy się z JavaDB z użyciem JDBC.
+ * Created with IntelliJ IDEA.
+ * User: KrzysztofD
+ * Date: 31.05.13
+ * Time: 20:35
+ * To change this template use File | Settings | File Templates.
  */
-public class JavaDBAdapter implements DatabaseAdapter {
+public class HSQLDBAdapter implements DatabaseAdapter {
+
     private final Properties properties;
     private final String url;
 
-    public JavaDBAdapter(String dbName, Properties properties) throws SQLException {
+    public HSQLDBAdapter(String dbName, Properties properties) throws ClassNotFoundException, SQLException {
         this.properties = properties;
-        try {
-            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        setDBSystemDir();
-
-        url = String.format("jdbc:derby:%s;", dbName);
-        DriverManager.getConnection(url, properties);
-    }
-
-    private void setDBSystemDir() {
-        // Decide on the db system directory: <userhome>/.addressbook/
-        //String userHomeDir = System.getProperty("user.home", ".");
-        String systemDir = "C:\\Users\\MirekD\\Dropbox\\IO\\WzorceSklep";
-
-        // Set the db system directory.
-        System.setProperty("derby.system.home", systemDir);
+        Class.forName("org.hsqldb.jdbcDriver");
+        url = "jdbc:hsqldb:file:" + Util.getAbsolutePathOfCurrentDirectory();
     }
 
     @Override
@@ -45,7 +35,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
     private static String createWhereClause(String tableName, String lookFor) throws SQLException {
         TableInfo tableInfo = TableInfo.getTableInfo(tableName);
         String[] columns = tableInfo.getColumns();
-        List<String> clauses = new LinkedList<String>();
+        List<String> clauses = new ArrayList<String>();
         for (String column : columns) {
             if (tableInfo.getValueType(column) == String.class)
                 clauses.add(String.format("%s like '%%%s%%'", column, lookFor));
@@ -81,16 +71,12 @@ public class JavaDBAdapter implements DatabaseAdapter {
     }
 
     private String createExactMatchClause(TableRow toMatch) {
-        String[] columns = toMatch.getColumns();
-        Object[] values = toMatch.getValues();
+        Map<String, Object> valueMap = removeColumnsWithNullValues(toMatch);
+        String[] values = proceesValuesForStatement(valueMap.values().toArray());
+        String[] columns = valueMap.keySet().toArray(new String[valueMap.size()]);
         List<String> clauses = new LinkedList<String>();
         for (int i = 0; i < columns.length; i++) {
-            if(values[i]==null)
-                continue;
-            if(values[i].getClass()==String.class)
-                clauses.add(String.format("%s = '%s'", columns[i], values[i]));
-            else
-                clauses.add(String.format("%s = %s", columns[i], values[i]));
+            clauses.add(String.format("%s = %s", columns[i], values[i]));
         }
         return StringUtils.join(clauses, " AND ");
     }
@@ -104,7 +90,8 @@ public class JavaDBAdapter implements DatabaseAdapter {
     private ResultSet getResultSet(String selectCommand) throws SQLException {
         ResultSet rs;
         try {
-            rs = getStatement().executeQuery(selectCommand);
+            Connection conn = DriverManager.getConnection(url, properties);
+            rs = conn.prepareStatement(selectCommand).executeQuery();
         } catch (SQLException e) {
             throw new IllegalArgumentException("Błąd przy próbie odczytu danych z tabeli (komenda " + selectCommand
                     + "), prawdopodobnie nieprawidłowa nazwa.", e);
@@ -114,20 +101,13 @@ public class JavaDBAdapter implements DatabaseAdapter {
 
     @Override
     public void insert(TableRow nowy) throws SQLException {
-        Map<String, Object> valueMap = nowy.getValueMap();
-        for(Iterator<Map.Entry<String,Object>> iterator = valueMap.entrySet().iterator();
-                iterator.hasNext();)
-        {
-            Map.Entry<String,Object> entry = iterator.next();
-            if(entry.getValue()==null)
-                iterator.remove();
-        }
-        String[] processedValues = proceesValuesForStatement(valueMap.values().toArray());
+        Map<String, Object> valueMap = removeColumnsWithNullValues(nowy);
+        String[] values = proceesValuesForStatement(valueMap.values().toArray());
         String[] columns = valueMap.keySet().toArray(new String[valueMap.size()]);
         String sql = String.format("INSERT INTO %s (%s) VALUES (%s)",
                 nowy.getTableName(),
                 StringUtils.join(columns, ", "),
-                StringUtils.join(processedValues, ", ")
+                StringUtils.join(values, ", ")
         );
         executeArbitraryStatement(sql);
     }
@@ -152,18 +132,31 @@ public class JavaDBAdapter implements DatabaseAdapter {
                 nowy.getTableName(),
                 createSetClause(nowy),
                 nowy.getValue("ID"));
-        getStatement().execute(command);
+        executeArbitraryStatement(command);
     }
 
     private static String createSetClause(TableRow entity) {
-        String[] columns = entity.getColumns();
-        String[] values = proceesValuesForStatement(entity.getValues());
+        Map<String, Object> valueMap = removeColumnsWithNullValues(entity);
+        String[] values = proceesValuesForStatement(valueMap.values().toArray());
+        String[] columns = valueMap.keySet().toArray(new String[valueMap.size()]);
         List<String> clauses = new LinkedList<String>();
         for (int i = 0; i < columns.length; i++) {
             if(!columns[i].equals("ID"))
                 clauses.add(String.format("%s = %s", columns[i], values[i]));
         }
         return StringUtils.join(clauses, ", ");
+    }
+
+    private static Map<String, Object> removeColumnsWithNullValues(TableRow entity) {
+        Map<String, Object> valueMap = entity.getValueMap();
+        for(Iterator<Map.Entry<String,Object>> iterator = valueMap.entrySet().iterator();
+            iterator.hasNext();)
+        {
+            Map.Entry<String,Object> entry = iterator.next();
+            if(entry.getValue()==null)
+                iterator.remove();
+        }
+        return valueMap;
     }
 
     @Override
@@ -173,7 +166,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
     }
 
     private Statement getStatement() throws SQLException {
-        Connection conn = DriverManager.getConnection(url);
+        Connection conn = DriverManager.getConnection(url, properties);
         return conn.createStatement();
     }
 
@@ -205,5 +198,4 @@ public class JavaDBAdapter implements DatabaseAdapter {
             throw new SQLException("Błąd przy próbie wykonania polecenia " + command, e);
         }
     }
-
 }

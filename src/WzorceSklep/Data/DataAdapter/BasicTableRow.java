@@ -1,6 +1,7 @@
 package WzorceSklep.Data.DataAdapter;
 
 
+import org.apache.commons.collections.map.CaseInsensitiveMap;
 import org.apache.commons.lang3.StringUtils;
 
 import java.sql.SQLException;
@@ -18,7 +19,7 @@ public class BasicTableRow implements TableRow
         tableInfo = TableInfo.getTableInfo(tableName);
         if(tableInfo==null)
             throw new SQLException(String.format("Table %s not found.", tableName));
-        values = new LinkedHashMap<String, Object>();
+        values = new CaseInsensitiveMap();
         for(String columnName: getColumns())
             values.put(columnName, null);
     }
@@ -57,11 +58,7 @@ public class BasicTableRow implements TableRow
     @Override
     public void setValue(String columnName, Object value)
     {
-//        try
-//        {
-//            value.getClass().cast(tableInfo.getValueType(columnName).newInstance());
-//        }
-//        catch (ClassCastException e)
+        if(value==null) return;
         if(!tableInfo.getValueType(columnName).equals(value.getClass()))
         {
             throw new IllegalArgumentException("Próba przypisania wartości typu " + value.getClass()
@@ -108,6 +105,11 @@ public class BasicTableRow implements TableRow
     @Override
     public TableInfo getTableInfo() {
         return tableInfo;
+    }
+
+    @Override
+    public Map<String, Object> getValueMap() {
+        return new LinkedHashMap<String, Object>(values);
     }
 
 }

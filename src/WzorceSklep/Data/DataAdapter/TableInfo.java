@@ -1,5 +1,7 @@
 package WzorceSklep.Data.DataAdapter;
 
+import org.apache.commons.collections.map.CaseInsensitiveMap;
+
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -11,7 +13,7 @@ import java.util.Map;
 public class TableInfo
 {
 
-    private final static Map<String,TableInfo> cache = new HashMap<String, TableInfo>();
+    private final static Map<String,TableInfo> cache = new CaseInsensitiveMap();
     /**
      * Mapuje nazwy do typów prymitywnych - wszystkie inne klasy można dostać z Class.forName.
      * Używany do tworzenia valueTypes.
@@ -39,7 +41,7 @@ public class TableInfo
     private TableInfo(ResultSetMetaData metaData) throws SQLException  {
         tableName = metaData.getTableName(1);
         this.columns = new String[metaData.getColumnCount()];
-        valueTypes = new HashMap<String, Class>();
+        valueTypes = new CaseInsensitiveMap();
         Class columnType = null;
         String columnTypeName;
         for (int i = 0;i< this.columns.length;i++)

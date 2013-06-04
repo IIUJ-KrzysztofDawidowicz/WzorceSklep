@@ -3,8 +3,6 @@ package WzorceSklep.Data.Hurtownia;
 import WzorceSklep.Data.ZAdresem;
 import WzorceSklep.DataEntity;
 
-import java.math.BigDecimal;
-
 /**
  * Created with IntelliJ IDEA.
  * User: KrzysztofD
@@ -16,9 +14,14 @@ public class Hurtownia implements DataEntity, ZAdresem<AdresHurtowni> {
     private int ID;
     private String nazwa;
     private String osobaKontaktowa;
-    private BigDecimal telefon;
+    private String telefon;
     private String mail;
     private AdresHurtowni adres;
+
+    public Hurtownia()
+    {
+        adres = new AdresHurtowni();
+    }
 
     public int getID() {
         return ID;
@@ -26,6 +29,7 @@ public class Hurtownia implements DataEntity, ZAdresem<AdresHurtowni> {
 
     public void setID(int ID) {
         this.ID = ID;
+        adres.setID(ID);
     }
 
     public String getNazwa() {
@@ -44,11 +48,11 @@ public class Hurtownia implements DataEntity, ZAdresem<AdresHurtowni> {
         this.osobaKontaktowa = osobaKontaktowa;
     }
 
-    public BigDecimal getTelefon() {
+    public String getTelefon() {
         return telefon;
     }
 
-    public void setTelefon(BigDecimal telefon) {
+    public void setTelefon(String telefon) {
         this.telefon = telefon;
     }
 

@@ -2,7 +2,7 @@ package WzorceSklep.Data.Statystyki;
 
 import WzorceSklep.Data.DataAdapter.TableRow;
 import WzorceSklep.Data.DataAdapter.TableRowFactory;
-import WzorceSklep.Data.Klient.TableDataConverter;
+import WzorceSklep.Data.TableDataConverter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

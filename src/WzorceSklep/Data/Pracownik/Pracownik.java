@@ -1,9 +1,14 @@
 package WzorceSklep.Data.Pracownik;
 
+import WzorceSklep.Data.AdresOsoby;
 import WzorceSklep.Data.Klient.Osoba;
 
 public class Pracownik extends Osoba
 {
+    public Pracownik()
+    {
+        setAdres(new AdresOsoby());
+    }
 
     public void setStatusWithString(String status) {
         if(status.equals("Admin"))

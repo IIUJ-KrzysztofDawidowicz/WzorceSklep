@@ -14,4 +14,10 @@ public class ZamowienieKlienta extends Zamowienie
 {
     public Klient zamawiajacy;
     public Pracownik tworzacy;
+
+    public ZamowienieKlienta()
+    {
+        zamawiajacy=new Klient();
+        tworzacy = new Pracownik();
+    }
 }

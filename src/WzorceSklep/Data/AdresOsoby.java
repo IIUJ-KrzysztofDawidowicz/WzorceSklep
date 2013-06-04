@@ -9,5 +9,13 @@ package WzorceSklep.Data;
  */
 public class AdresOsoby extends Adres
 {
-    public int nrLokalu;
+    private Integer nrLokalu;
+
+    public Integer getNrLokalu() {
+        return nrLokalu;
+    }
+
+    public void setNrLokalu(Integer nrLokalu) {
+        this.nrLokalu = nrLokalu;
+    }
 }

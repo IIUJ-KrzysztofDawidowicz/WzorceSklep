@@ -1,6 +1,6 @@
 package WzorceSklep;
 
-import com.sun.media.sound.InvalidDataException;
+import WzorceSklep.Data.TableDataGetter;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -12,10 +12,10 @@ import java.util.List;
  * Time: 08:47
  * To change this template use File | Settings | File Templates.
  */
-public interface DataAccessObject<T extends DataEntity>
+public interface DataAccessObject<T extends DataEntity> extends TableDataGetter<T>
 {
-    public List<T> select(String orderBy) throws SQLException, InvalidDataException;
-    public List<T> select(String lookFor, String orderBy) throws SQLException, ClassNotFoundException, InvalidDataException;
+    public List<T> select(String orderBy) throws SQLException;
+    public List<T> select(String lookFor, String orderBy) throws SQLException;
 
     public void insert(T nowy) throws SQLException;
     public void update(T nowy) throws SQLException;

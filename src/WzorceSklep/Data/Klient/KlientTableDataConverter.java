@@ -1,8 +1,11 @@
 package WzorceSklep.Data.Klient;
 
 import WzorceSklep.Data.AdresOsoby;
+import WzorceSklep.Data.DataAdapter.DatabaseAdapter;
 import WzorceSklep.Data.DataAdapter.TableRow;
 import WzorceSklep.Data.DataAdapter.TableRowFactory;
+import WzorceSklep.Data.TableDataConverter;
+import WzorceSklep.Util;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,10 +15,12 @@ public class KlientTableDataConverter implements TableDataConverter<Klient> {
 
     private final String klientTableName;
     private final String adresTableName;
+    private DatabaseAdapter adapter;
 
-    public KlientTableDataConverter(String klientTableName, String adresTableName) {
+    public KlientTableDataConverter(String klientTableName, String adresTableName, DatabaseAdapter adapter) {
         this.klientTableName = klientTableName;
         this.adresTableName = adresTableName;
+        this.adapter = adapter;
     }
 
     @Override
@@ -52,12 +57,36 @@ public class KlientTableDataConverter implements TableDataConverter<Klient> {
 
         while (set.next()) {
             Klient klient = new Klient();
+
             klient.setID(set.getInt("ID"));
             klient.setImie(set.getString("Imie"));
             klient.setNazwisko(set.getString("Nazwisko"));
-            klient.setTelefon(set.getBigDecimal("Telefon"));
+            klient.setTelefon(set.getString("Telefon"));
             klient.setMail(set.getString("Mail"));
+            klient.setAdres(getAdres(klient.getID()));
+
             wynik.add(klient);
+        }
+
+        return wynik;
+    }
+
+    private AdresOsoby getAdres(int id) throws SQLException {
+        AdresOsoby wynik = new AdresOsoby();
+
+        TableRow row = TableRowFactory.createTableRow(adresTableName);
+        row.setValue("ID", id);
+        ResultSet rs = adapter.selectExactMatch(row);
+        if(rs.next())
+        {
+            wynik.setID(id);
+            wynik.setNrLokalu(Util.convertZeroToNullElseSameValue(rs.getInt("NrLokalu")));
+            wynik.setKodPocztowy(rs.getString("Kod"));
+            wynik.setKraj(rs.getString("Kraj"));
+            wynik.setMiejscowosc(rs.getString("Miejscowosc"));
+            wynik.setNrDomu(Util.convertZeroToNullElseSameValue(rs.getInt("NrDomu")));
+            wynik.setPoczta(rs.getString("Poczta"));
+            wynik.setUlica(rs.getString("Ulica"));
         }
 
         return wynik;
@@ -65,14 +94,14 @@ public class KlientTableDataConverter implements TableDataConverter<Klient> {
 
     private TableRow convertAdresToTableRow(AdresOsoby adres) throws SQLException {
         TableRow wynik = TableRowFactory.createTableRow(adresTableName);
-        wynik.setValue("ID", adres.ID);
-        wynik.setValue("Ulica", adres.ulica);
-        wynik.setValue("NrDomu", adres.nrDomu);
-        wynik.setValue("NrLokalu", adres.nrLokalu);
-        wynik.setValue("Kod", adres.kodPocztowy);
-        wynik.setValue("Miejscowosc", adres.miejscowosc);
-        wynik.setValue("Poczta", adres.poczta);
-        wynik.setValue("Kraj", adres.kraj);
+        wynik.setValue("ID", adres.getID());
+        wynik.setValue("Ulica", adres.getUlica());
+        wynik.setValue("NrDomu", adres.getNrDomu());
+        wynik.setValue("NrLokalu", adres.getNrLokalu());
+        wynik.setValue("Kod", adres.getKodPocztowy());
+        wynik.setValue("Miejscowosc", adres.getMiejscowosc());
+        wynik.setValue("Poczta", adres.getPoczta());
+        wynik.setValue("Kraj", adres.getKraj());
         return wynik;
     }
 }

@@ -4,16 +4,14 @@
  */
 package WzorceSklep.Data.Pracownik;
 
-import WzorceSklep.DataAccessObject;
 import WzorceSklep.DAOFactory;
 import WzorceSklep.Data.AdresOsoby;
+import WzorceSklep.DataAccessObject;
 
-import java.awt.*;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.text.ParseException;
-import javax.swing.JFormattedTextField;
+import javax.swing.*;
 import javax.swing.text.MaskFormatter;
+import java.awt.*;
+import java.text.ParseException;
 
 /**
  *
@@ -21,8 +19,20 @@ import javax.swing.text.MaskFormatter;
  */
 public class DialogDodajPracownika extends javax.swing.JDialog 
 {
+    public static final String UMOWA_PLACEHOLDER = "Umowa";
+    public static final String LOGIN_PLACEHOLDER = "Login";
     private JFormattedTextField.AbstractFormatter format;
     private Pracownik pracownik;
+    public static final String MIEJSCOWOSC_PLACEHOLDER = "Miejscowość";
+    public static final String IMIE_PLACEHOLDER = "Imię";
+    public static final String MAIL_PLACEHOLDER = "Mail";
+    public static final String KRAJ_PLACEHOLDER = "Kraj";
+    public static final String ULICA_PLACEHOLDER = "Ulica";
+    public static final String NAZWISKO_PLACEHOLDER = "Nazwisko";
+    public static final String NR_LOKALU_PLACEHOLDER = "Nr lokalu";
+    public static final String NR_DOMU_PLACEHOLDER = "Nr domu";
+    public static final String POCZTA_PLACEHOLDER = "Poczta";
+    public static final String TELEFON_PLACEHOLDER = "Telefon";
 
     private void utworzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_utworzActionPerformed
 
@@ -30,13 +40,24 @@ public class DialogDodajPracownika extends javax.swing.JDialog
         wypelnijPola.setVisible(false);
         pracownik = new Pracownik();
         pracownik.setAdres(new AdresOsoby());
-        pracownik.setImie(imieField.getText());
+        if (!imieField.getText().equals(IMIE_PLACEHOLDER)) {
+            pracownik.setImie(imieField.getText());
+        }
         pracownik.setNazwisko(nazwiskoField.getText());
-        pracownik.getAdres().ulica = ulicaField.getText();
-        pracownik.getAdres().kodPocztowy = kodPocztowyField.getText();
-        pracownik.getAdres().poczta = pocztaField.getText();
-        pracownik.getAdres().miejscowosc = miejscowoscField.getText();
-        pracownik.getAdres().kraj = krajField.getText();
+        pracownik.getAdres().setKodPocztowy(kodPocztowyField.getText());
+        if (!ulicaField.getText().equals(ULICA_PLACEHOLDER)) {
+            pracownik.getAdres().setUlica(ulicaField.getText());
+        }
+        if (miejscowoscField.getText().equals(MIEJSCOWOSC_PLACEHOLDER)) {
+            pracownik.getAdres().setMiejscowosc(miejscowoscField.getText());
+        }
+        if (!pocztaField.getText().equals(POCZTA_PLACEHOLDER)) {
+            pracownik.getAdres().setPoczta(pocztaField.getText());
+        }
+        else {
+            pracownik.getAdres().setPoczta(pracownik.getAdres().getMiejscowosc());
+        }
+        pracownik.getAdres().setKraj(krajField.getText());
         pracownik.setLogin(loginField.getText());
         pracownik.setPassword(new String((hasloField.getPassword())));
         pracownik.setMail(mailField.getText());
@@ -61,9 +82,15 @@ public class DialogDodajPracownika extends javax.swing.JDialog
 
 //        Integer[] inputInts = new Integer[3];
         try {
-            pracownik.setTelefon(new BigDecimal(telefonField.getText()));
-            pracownik.getAdres().nrDomu = Integer.valueOf(nrdomuField.getText());
-            pracownik.getAdres().nrLokalu = Integer.valueOf(nrlokaluField.getText());
+            pracownik.setTelefon(telefonField.getText());
+            if (!nrdomuField.getText().equals(NR_DOMU_PLACEHOLDER)) {
+                pracownik.getAdres().setNrDomu(Integer.valueOf(nrdomuField.getText()));
+            }
+            if (!nrlokaluField.getText().equals(NR_LOKALU_PLACEHOLDER)) {
+                pracownik.getAdres().setNrLokalu(Integer.valueOf(nrlokaluField.getText()));
+            }
+            DataAccessObject<Pracownik> dao = new DAOFactory().getPracownikDAO();
+            dao.insert(pracownik);
 //            inputInts[0] = new Integer(telefonField.getText());
 //            inputInts[1] = new Integer(nrdomuField.getText());
 //            inputInts[2] = new Integer(nrlokaluField.getText());
@@ -71,13 +98,8 @@ public class DialogDodajPracownika extends javax.swing.JDialog
             wypelnijPola.setVisible(true);
             hasloField.setText("");
             powtorzField.setText("");
+            e.printStackTrace();
             return;
-        }
-        try {
-            DataAccessObject<Pracownik> dao = new DAOFactory().getPracownikDAO();
-            dao.insert(pracownik);
-        } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         dispose();
 /*        try {
@@ -291,7 +313,7 @@ public class DialogDodajPracownika extends javax.swing.JDialog
             }
         });
 
-        umowaField.setText("Umowa");
+        umowaField.setText(UMOWA_PLACEHOLDER);
         umowaField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 umowaFieldFocusGained(evt);
@@ -303,13 +325,14 @@ public class DialogDodajPracownika extends javax.swing.JDialog
 
         wypelnijPola.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         wypelnijPola.setForeground(new java.awt.Color(255, 0, 0));
-        wypelnijPola.setText("Wypełnij wszystkie pola!");
+        wypelnijPola.setText("Wprowadzone dane są niepoprawne lub niekompletne.");
 
         loginField.setText("Login");
         loginField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 loginFieldFocusGained(evt);
             }
+
             public void focusLost(java.awt.event.FocusEvent evt) {
                 loginFieldFocusLost(evt);
             }
@@ -339,14 +362,14 @@ public class DialogDodajPracownika extends javax.swing.JDialog
 
         statusLabel.setText("Status:");
 
-        statusField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Admin", "Sprzedawca", "Magazynier" }));
+        statusField.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Admin", "Sprzedawca" }));
         /*statusField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 statusFieldActionPerformed(evt);
             }
         });*/
 
-        utworz.setText("Dodaj");
+        utworz.setText("Zapisz");
         utworz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 utworzActionPerformed(evt);
@@ -472,7 +495,7 @@ public class DialogDodajPracownika extends javax.swing.JDialog
 
     private void imieFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_imieFieldFocusLost
         if (imieField.getText().equals("")) {
-            imieField.setText("Imię");
+            imieField.setText(IMIE_PLACEHOLDER);
         }
     }//GEN-LAST:event_imieFieldFocusLost
 
@@ -482,7 +505,7 @@ public class DialogDodajPracownika extends javax.swing.JDialog
 
     private void nazwiskoFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nazwiskoFieldFocusLost
         if (nazwiskoField.getText().equals("")) {
-            nazwiskoField.setText("Nazwisko");
+            nazwiskoField.setText(NAZWISKO_PLACEHOLDER);
         }
     }//GEN-LAST:event_nazwiskoFieldFocusLost
 
@@ -492,7 +515,7 @@ public class DialogDodajPracownika extends javax.swing.JDialog
 
     private void ulicaFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ulicaFieldFocusLost
         if (ulicaField.getText().equals("")) {
-            ulicaField.setText("Ulica");
+            ulicaField.setText(ULICA_PLACEHOLDER);
         }
     }//GEN-LAST:event_ulicaFieldFocusLost
 
@@ -502,7 +525,7 @@ public class DialogDodajPracownika extends javax.swing.JDialog
 
     private void nrdomuFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nrdomuFieldFocusLost
         if (nrdomuField.getText().equals("")) {
-            nrdomuField.setText("Nr domu");
+            nrdomuField.setText(NR_DOMU_PLACEHOLDER);
         }
     }//GEN-LAST:event_nrdomuFieldFocusLost
 
@@ -512,7 +535,7 @@ public class DialogDodajPracownika extends javax.swing.JDialog
 
     private void nrlokaluFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nrlokaluFieldFocusLost
         if (nrlokaluField.getText().equals("")) {
-            nrlokaluField.setText("Nr lokalu");
+            nrlokaluField.setText(NR_LOKALU_PLACEHOLDER);
         }
     }//GEN-LAST:event_nrlokaluFieldFocusLost
 
@@ -526,7 +549,7 @@ public class DialogDodajPracownika extends javax.swing.JDialog
 
     private void pocztaFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pocztaFieldFocusLost
         if (pocztaField.getText().equals("")) {
-            pocztaField.setText("Poczta");
+            pocztaField.setText(POCZTA_PLACEHOLDER);
         }
     }//GEN-LAST:event_pocztaFieldFocusLost
 
@@ -536,7 +559,7 @@ public class DialogDodajPracownika extends javax.swing.JDialog
 
     private void miejscowoscFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_miejscowoscFieldFocusLost
         if (miejscowoscField.getText().equals("")) {
-            miejscowoscField.setText("Miejscowość");
+            miejscowoscField.setText(MIEJSCOWOSC_PLACEHOLDER);
         }
     }//GEN-LAST:event_miejscowoscFieldFocusLost
 
@@ -546,7 +569,7 @@ public class DialogDodajPracownika extends javax.swing.JDialog
 
     private void telefonFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_telefonFieldFocusLost
         if (telefonField.getText().equals("")) {
-            telefonField.setText("Telefon");
+            telefonField.setText(TELEFON_PLACEHOLDER);
         }
     }//GEN-LAST:event_telefonFieldFocusLost
 
@@ -556,7 +579,7 @@ public class DialogDodajPracownika extends javax.swing.JDialog
 
     private void mailFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mailFieldFocusLost
         if (mailField.getText().equals("")) {
-            mailField.setText("Mail");
+            mailField.setText(MAIL_PLACEHOLDER);
         }
     }//GEN-LAST:event_mailFieldFocusLost
 
@@ -566,7 +589,7 @@ public class DialogDodajPracownika extends javax.swing.JDialog
 
     private void krajFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_krajFieldFocusLost
         if (krajField.getText().equals("")) {
-            krajField.setText("Kraj");
+            krajField.setText(KRAJ_PLACEHOLDER);
         }
     }//GEN-LAST:event_krajFieldFocusLost
 
@@ -576,7 +599,7 @@ public class DialogDodajPracownika extends javax.swing.JDialog
 
     private void umowaFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_umowaFieldFocusLost
         if (umowaField.getText().equals("")) {
-            umowaField.setText("Umowa");
+            umowaField.setText(UMOWA_PLACEHOLDER);
         }
     }//GEN-LAST:event_umowaFieldFocusLost
 
@@ -586,7 +609,7 @@ public class DialogDodajPracownika extends javax.swing.JDialog
 
     private void loginFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_loginFieldFocusLost
         if (loginField.getText().equals("")) {
-            loginField.setText("Login");
+            loginField.setText(LOGIN_PLACEHOLDER);
         }
     }//GEN-LAST:event_loginFieldFocusLost
 

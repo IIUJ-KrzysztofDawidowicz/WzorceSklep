@@ -6,7 +6,7 @@ import WzorceSklep.Data.Hurtownia.Hurtownia;
 import WzorceSklep.Data.Hurtownia.HurtowniaDAO;
 import WzorceSklep.Data.Klient.Klient;
 import WzorceSklep.Data.Klient.KlientDAO;
-import WzorceSklep.Data.Klient.TableDataConverter;
+import WzorceSklep.Data.ResultSetConverter;
 import WzorceSklep.Data.Pracownik.Pracownik;
 import WzorceSklep.Data.Pracownik.PracownikDAO;
 import WzorceSklep.Data.Produkt.Produkt;
@@ -14,10 +14,7 @@ import WzorceSklep.Data.Produkt.ProduktyDAO;
 import WzorceSklep.Data.SingleTableDataGetter;
 import WzorceSklep.Data.Statystyki.*;
 import WzorceSklep.Data.TableDataGetter;
-import WzorceSklep.Data.Zamowienie.ZamowienieHurtowni;
-import WzorceSklep.Data.Zamowienie.ZamowienieKlienta;
-import WzorceSklep.Data.Zamowienie.ZamowienieKlientaDAO;
-import WzorceSklep.Data.Zamowienie.ZamownieniaHurtowniDAO;
+import WzorceSklep.Data.Zamowienie.*;
 
 import java.sql.SQLException;
 
@@ -37,12 +34,12 @@ public class DAOFactory {
         return DataAdapterFactory.getDatabaseAdapter();
     }
 
-    public static DataAccessObject<Hurtownia> getHurtowniaDAO() throws SQLException {
-        return new HurtowniaDAO(getDatabaseAdapter());
-    }
-
     public static DataAccessObject<Produkt> getProduktyDAO() throws SQLException {
         return new ProduktyDAO(getDatabaseAdapter());
+    }
+
+    public DataAccessObject<Hurtownia> getHurtowniaDAO() throws SQLException {
+        return new HurtowniaDAO(getDatabaseAdapter());
     }
 
     public DataAccessObject<ZamowienieKlienta> getZamowieniaKllientaDAO() throws SQLException {
@@ -63,7 +60,7 @@ public class DAOFactory {
     }
 
     public TableDataGetter<? extends Statystyki> getStatystykiGetter(String tableName) throws SQLException {
-        TableDataConverter dataConverter;
+        ResultSetConverter dataConverter;
         if(tableName.toUpperCase().startsWith("STATYSTYKAPRODUKTY"))
             dataConverter = new StatystykiProduktyDataConverter(tableName);
         else if(tableName.toUpperCase().startsWith("StatystykaHurtownia".toUpperCase()))
@@ -76,12 +73,15 @@ public class DAOFactory {
     }
 
     public TableDataGetter<ZamowienieKlienta> getZamowieniaKllientaGetter() throws SQLException {
-        return new ZamowienieKlientaDAO(getDatabaseAdapter());
+        return new SingleTableDataGetter<ZamowienieKlienta>(new ZamowienieKlientaViewTableDataConverter(), getDatabaseAdapter(), "ZamowieniaKlientaView");
     }
 
     public TableDataGetter<ZamowienieHurtowni> getZamownieniaHurtowniGetter() throws SQLException {
+        return new SingleTableDataGetter<ZamowienieHurtowni>(new ZamowienieHurtowniViewResultSetConverter(), getDatabaseAdapter(), "ZamowieniaHurtowniView");
+/*
         return new ZamownieniaHurtowniDAO(getDatabaseAdapter(),
                 getHurtowniaDAO(), getProduktyDAO());
+*/
     }
 
     public TableDataGetter<Klient> getKlientGetter() throws SQLException {
@@ -103,4 +103,9 @@ public class DAOFactory {
     public TableDataGetter<Produkt> getProduktGetter() throws SQLException {
         return new ProduktyDAO(getDatabaseAdapter());
     }
+
+    public DataAccessObject<Produkt> getProduktDAO() throws SQLException {
+        return new ProduktyDAO(getDatabaseAdapter());
+    }
+
 }

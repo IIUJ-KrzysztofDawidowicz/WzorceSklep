@@ -11,5 +11,18 @@ import WzorceSklep.Data.Hurtownia.Hurtownia;
  */
 public class ZamowienieHurtowni extends Zamowienie
 {
-    public Hurtownia zamawiajacy;
+    private Hurtownia zamawiajacy;
+
+    public ZamowienieHurtowni()
+    {
+        setZamawiajacy(new Hurtownia());
+    }
+
+    public Hurtownia getZamawiajacy() {
+        return zamawiajacy;
+    }
+
+    public void setZamawiajacy(Hurtownia zamawiajacy) {
+        this.zamawiajacy = zamawiajacy;
+    }
 }

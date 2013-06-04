@@ -3,6 +3,9 @@ package WzorceSklep.GUI.DataRenderingUtils.TableConverters;
 import WzorceSklep.Data.Produkt.Produkt;
 import WzorceSklep.GUI.DataRenderingUtils.AbstractTableConverter;
 
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 /**
  * Created with IntelliJ IDEA.
  * User: KrzysztofD
@@ -13,8 +16,18 @@ import WzorceSklep.GUI.DataRenderingUtils.AbstractTableConverter;
 public class ProduktyTableConverter extends AbstractTableConverter<Produkt> {
 
 
-    private final static String[] columnNames = new String[]{"ID", "Typ", "Cena", "Nazwa", "Ilosc", "Specyfikacja"};
+    private final static String[] columnNames = new String[]{"ID", "Typ", "Cena", "Nazwa", "Ilosc", "Specyfikacja", "Edytuj"};
 
+    @Override
+    protected TableModel getEmptyTableModel(int length) {
+        return new DefaultTableModel(columnNames, length)
+        {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column>=6;
+            }
+        };
+    }
 
     @Override
     protected Object[] mapDataToColumns(Produkt produkt) {
@@ -26,6 +39,7 @@ public class ProduktyTableConverter extends AbstractTableConverter<Produkt> {
         wynik[3] = produkt.nazwa;
         wynik[4] = produkt.ilosc;
         wynik[5] = produkt.specyfikacja;
+        wynik[6] = "Edytuj";
 
         return wynik;
     }

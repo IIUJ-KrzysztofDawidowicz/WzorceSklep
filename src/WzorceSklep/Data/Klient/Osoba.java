@@ -4,8 +4,6 @@ import WzorceSklep.Data.AdresOsoby;
 import WzorceSklep.Data.ZAdresem;
 import WzorceSklep.DataEntity;
 
-import java.math.BigDecimal;
-
 /**
  * Created with IntelliJ IDEA.
  * User: KrzysztofD
@@ -18,9 +16,14 @@ public abstract class Osoba implements DataEntity, ZAdresem<AdresOsoby>
     private int ID;
     private String imie;
     private String nazwisko;
-    private BigDecimal telefon;
+    private String telefon;
     private String mail;
     private AdresOsoby adres;
+
+    public Osoba()
+    {
+        adres=new AdresOsoby();
+    }
 
     public int getID() {
         return ID;
@@ -28,6 +31,7 @@ public abstract class Osoba implements DataEntity, ZAdresem<AdresOsoby>
 
     public void setID(int ID) {
         this.ID = ID;
+        this.adres.setID(ID);
     }
 
     public String getImie() {
@@ -46,11 +50,11 @@ public abstract class Osoba implements DataEntity, ZAdresem<AdresOsoby>
         this.nazwisko = nazwisko;
     }
 
-    public BigDecimal getTelefon() {
+    public String getTelefon() {
         return telefon;
     }
 
-    public void setTelefon(BigDecimal telefon) {
+    public void setTelefon(String telefon) {
         this.telefon = telefon;
     }
 

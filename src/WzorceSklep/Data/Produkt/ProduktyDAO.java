@@ -87,12 +87,12 @@ public class ProduktyDAO implements DataAccessObject<Produkt>, TableDataGetter<P
 
     @Override
     public void update(Produkt nowy) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
+        adapter.update(convertToTableRow(nowy));
     }
 
     @Override
     public void delete(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
+        adapter.delete(TABLE_NAME, id);
     }
 
     @Override

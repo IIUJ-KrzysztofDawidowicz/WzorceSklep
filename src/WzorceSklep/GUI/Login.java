@@ -146,7 +146,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        ZalogujButton.setText("ZalogujButton");
+        ZalogujButton.setText("Zaloguj");
         ZalogujButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ZalogujActionPerformed(evt);

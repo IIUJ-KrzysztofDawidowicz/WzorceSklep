@@ -10,7 +10,6 @@ import WzorceSklep.Data.Pracownik.Pracownik;
 import WzorceSklep.Data.Produkt.Produkt;
 import WzorceSklep.Data.TableDataGetter;
 import WzorceSklep.DataAccessObject;
-import com.sun.media.sound.InvalidDataException;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -42,16 +41,16 @@ public class ZamowienieKlientaDAO implements DataAccessObject<ZamowienieKlienta>
             ZamowienieKlienta zamowienie = new ZamowienieKlienta();
             zamowienie.tworzacy = new Pracownik();
             zamowienie.zamawiajacy = new Klient();
-            zamowienie.produktZamowiony = new Produkt();
+            zamowienie.setProduktZamowiony(new Produkt());
 
-            zamowienie.ID = rs.getInt("ID");
-            zamowienie.kwota = rs.getBigDecimal("Kwota");
-            zamowienie.dataZamowienia = rs.getDate("DataZamowienie");
-            zamowienie.dataOdebrania = rs.getDate("DataOdebrania");
-            zamowienie.ilosc = rs.getInt("Ilosc");
+            zamowienie.setID(rs.getInt("ID"));
+            zamowienie.setKwota(rs.getBigDecimal("Kwota"));
+            zamowienie.setDataZamowienia(rs.getDate("DataZamowienie"));
+            zamowienie.setDataOdebrania(rs.getDate("DataOdebrania"));
+            zamowienie.setIlosc(rs.getInt("Ilosc"));
             zamowienie.zamawiajacy.setID(rs.getInt("KlientID"));
             zamowienie.tworzacy.setID(rs.getInt("PracownikID"));
-            zamowienie.produktZamowiony.ID = rs.getInt("ProduktID");
+            zamowienie.getProduktZamowiony().ID = rs.getInt("ProduktID");
 
             wynik.add(zamowienie);
         }
@@ -77,14 +76,16 @@ public class ZamowienieKlientaDAO implements DataAccessObject<ZamowienieKlienta>
     }
 
     private void doczepZamawiajacyTworzacyIProdukt(DataAccessObject<Produkt> produktDataAccessObject, DataAccessObject<Klient> klientDataAccessObject, DataAccessObject<Pracownik> pracownikDataAccessObject, ZamowienieKlienta zamowienie) throws SQLException {
-        zamowienie.produktZamowiony = produktDataAccessObject.getById(zamowienie.produktZamowiony.ID);
+        zamowienie.setProduktZamowiony(produktDataAccessObject.getById(zamowienie.getProduktZamowiony().ID));
         zamowienie.tworzacy = pracownikDataAccessObject.getById(zamowienie.tworzacy.getID());
         zamowienie.zamawiajacy = klientDataAccessObject.getById(zamowienie.zamawiajacy.getID());
     }
 
     @Override
     public List<ZamowienieKlienta> select(String lookFor, String orderBy) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
+        if(lookFor.equals(""))
+            return convertToZamowienieKlienta(adapter.select(TABLE_NAME, orderBy));
+        return convertToZamowienieKlienta(adapter.select(TABLE_NAME, lookFor,orderBy));
     }
 
     @Override
@@ -101,27 +102,33 @@ public class ZamowienieKlientaDAO implements DataAccessObject<ZamowienieKlienta>
         TableRow row = TableRowFactory.createTableRow(TABLE_NAME);
 
         row.setValue("ID", adapter.getMaxValueForColumn(TABLE_NAME,"ID")+1);
-        row.setValue("Kwota", nowy.produktZamowiony.cena.multiply(new BigDecimal(nowy.ilosc)));
-        row.setValue("DataZamowienie", nowy.dataZamowienia);
+        row.setValue("Kwota", nowy.getProduktZamowiony().cena.multiply(new BigDecimal(nowy.getIlosc())));
+        row.setValue("DataZamowienie", nowy.getDataZamowienia());
         row.setValue("PracownikID", nowy.tworzacy.getID());
         row.setValue("KlientID", nowy.zamawiajacy.getID());
-        row.setValue("ProduktID", nowy.produktZamowiony.ID);
+        row.setValue("ProduktID", nowy.getProduktZamowiony().ID);
+        row.setValue("Ilosc", nowy.getIlosc());
 
         return row;
     }
 
     @Override
     public void update(ZamowienieKlienta nowy) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
+        adapter.update(convertToTableRow(nowy));
     }
 
     @Override
     public void delete(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
+        adapter.delete(TABLE_NAME,id);
     }
 
     @Override
     public ZamowienieKlienta getById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
+        TableRow row = TableRowFactory.createTableRow(TABLE_NAME);
+        row.setValue("ID", id);
+        List<ZamowienieKlienta> wynik = convertToZamowienieKlienta(adapter.selectExactMatch(row));
+        if(wynik.size()>0)
+            return wynik.get(0);
+        return null;
     }
 }

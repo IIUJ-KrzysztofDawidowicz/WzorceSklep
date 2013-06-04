@@ -10,4 +10,8 @@ package WzorceSklep.Data.Klient;
 public class Klient extends Osoba
 {
 
+    public Klient() {}
+    public Klient(int id) {
+        setID(id);
+    }
 }

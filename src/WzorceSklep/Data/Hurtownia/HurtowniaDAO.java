@@ -6,7 +6,6 @@ import WzorceSklep.Data.DataAdapter.TableRow;
 import WzorceSklep.Data.DataAdapter.TableRowFactory;
 import WzorceSklep.Data.TableDataGetter;
 import WzorceSklep.DataAccessObject;
-import com.sun.media.sound.InvalidDataException;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,7 +37,7 @@ public class HurtowniaDAO implements DataAccessObject<Hurtownia>, TableDataGette
 
     @Override
     public List<Hurtownia> select(String lookFor, String orderBy) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
+        return convertToHurtownia(adapter.select(tableNameHurtownia,lookFor,orderBy));
     }
 
     @Override
@@ -57,12 +56,16 @@ public class HurtowniaDAO implements DataAccessObject<Hurtownia>, TableDataGette
 
     @Override
     public void update(Hurtownia nowy) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
+        TableRow row = convertToTableRow(nowy);
+        adapter.update(row);
+        row = convertAdresToTableRow(nowy.getAdres(), nowy.getID());
+        adapter.update(row);
     }
 
     @Override
     public void delete(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
+        adapter.delete(tableNameAdres, id);
+        adapter.delete(tableNameHurtownia,id);
     }
 
     @Override
@@ -86,10 +89,31 @@ public class HurtowniaDAO implements DataAccessObject<Hurtownia>, TableDataGette
             hurtownia.setID(set.getInt("ID"));
             hurtownia.setNazwa(set.getString("Nazwa"));
             hurtownia.setOsobaKontaktowa(set.getString("OsobaKontaktowa"));
-            hurtownia.setTelefon(set.getBigDecimal("Telefon"));
+            hurtownia.setTelefon(set.getString("Telefon"));
             hurtownia.setMail(set.getString("Mail"));
+            hurtownia.setAdres(getAdres(hurtownia.getID()));
 
             wynik.add(hurtownia);
+        }
+
+        return wynik;
+    }
+
+    private AdresHurtowni getAdres(int id) throws SQLException {
+        AdresHurtowni wynik = new AdresHurtowni();
+
+        TableRow row = TableRowFactory.createTableRow(tableNameAdres);
+        row.setValue("ID", id);
+        ResultSet rs = adapter.selectExactMatch(row);
+        if(rs.next())
+        {
+            wynik.setID(id);
+            wynik.setKodPocztowy(rs.getString("Kod"));
+            wynik.setKraj(rs.getString("Kraj"));
+            wynik.setMiejscowosc(rs.getString("Miejscowosc"));
+            wynik.setNrDomu((Integer)rs.getObject("NrDomu"));
+            wynik.setPoczta(rs.getString("Poczta"));
+            wynik.setUlica(rs.getString("Ulica"));
         }
 
         return wynik;
@@ -110,12 +134,12 @@ public class HurtowniaDAO implements DataAccessObject<Hurtownia>, TableDataGette
     private TableRow convertAdresToTableRow(AdresHurtowni adres, int idPracownika) throws SQLException {
         TableRow wynik = TableRowFactory.createTableRow(tableNameAdres);
         wynik.setValue("ID",idPracownika);
-        wynik.setValue("Ulica", adres.ulica);
-        wynik.setValue("NrDomu", adres.nrDomu);
-        wynik.setValue("Kod", adres.kodPocztowy);
-        wynik.setValue("Miejscowosc", adres.miejscowosc);
-        wynik.setValue("Poczta", adres.poczta);
-        wynik.setValue("Kraj", adres.kraj);
+        wynik.setValue("Ulica", adres.getUlica());
+        wynik.setValue("NrDomu", adres.getNrDomu());
+        wynik.setValue("Kod", adres.getKodPocztowy());
+        wynik.setValue("Miejscowosc", adres.getMiejscowosc());
+        wynik.setValue("Poczta", adres.getPoczta());
+        wynik.setValue("Kraj", adres.getKraj());
         return wynik;
     }
 }

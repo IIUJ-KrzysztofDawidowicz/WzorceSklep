@@ -33,6 +33,6 @@ public class TableRowFactory
     }
 
     public static TableRow createTableRow(String tableName) throws SQLException {
-        return new JavaDBTableRow(tableName);
+        return new BasicTableRow(tableName);
     }
 }

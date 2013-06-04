@@ -2,6 +2,8 @@ package WzorceSklep.Data.Zamowienie;
 
 import WzorceSklep.Data.DataAdapter.DatabaseAdapter;
 import WzorceSklep.Data.DataAdapter.TableInfo;
+import WzorceSklep.Data.DataAdapter.TableRow;
+import WzorceSklep.Data.DataAdapter.TableRowFactory;
 import WzorceSklep.Data.Hurtownia.Hurtownia;
 import WzorceSklep.Data.Produkt.Produkt;
 import WzorceSklep.Data.TableDataGetter;
@@ -42,14 +44,14 @@ public class ZamownieniaHurtowniDAO implements DataAccessObject<ZamowienieHurtow
         {
             ZamowienieHurtowni zamowienieHurtowni = new ZamowienieHurtowni();
 
-            zamowienieHurtowni.ID = resultSet.getInt("ID");
-            zamowienieHurtowni.kwota = resultSet.getBigDecimal("Kwota");
-            zamowienieHurtowni.dataOdebrania = resultSet.getDate("DataOdebrania");
-            zamowienieHurtowni.dataZamowienia = resultSet.getDate("DataZamowienie");
-            zamowienieHurtowni.ilosc = resultSet.getInt("Ilosc");
+            zamowienieHurtowni.setID(resultSet.getInt("ID"));
+            zamowienieHurtowni.setKwota(resultSet.getBigDecimal("Kwota"));
+            zamowienieHurtowni.setDataOdebrania(resultSet.getDate("DataOdebrania"));
+            zamowienieHurtowni.setDataZamowienia(resultSet.getDate("DataZamowienie"));
+            zamowienieHurtowni.setIlosc(resultSet.getInt("Ilosc"));
 
-            zamowienieHurtowni.zamawiajacy = hurtowniaDataAccessObject.getById(resultSet.getInt("HurtowniaID"));
-            zamowienieHurtowni.produktZamowiony = produktDataAccessObject.getById(resultSet.getInt("ProduktID"));
+            zamowienieHurtowni.setZamawiajacy(hurtowniaDataAccessObject.getById(resultSet.getInt("HurtowniaID")));
+            zamowienieHurtowni.setProduktZamowiony(produktDataAccessObject.getById(resultSet.getInt("ProduktID")));
 
             wynik.add(zamowienieHurtowni);
         }
@@ -76,21 +78,41 @@ public class ZamownieniaHurtowniDAO implements DataAccessObject<ZamowienieHurtow
 
     @Override
     public void insert(ZamowienieHurtowni nowy) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
+        nowy.setID(adapter.getMaxValueForColumn(TABLE_NAME, "ID") +1);
+        adapter.insert(convertToTableRow(nowy));
+    }
+
+    private TableRow convertToTableRow(ZamowienieHurtowni nowy) throws SQLException {
+        TableRow wynik = TableRowFactory.createTableRow(TABLE_NAME);
+
+        wynik.setValue("ID", nowy.getID());
+        wynik.setValue("Ilosc", nowy.getIlosc());
+        wynik.setValue("Kwota", nowy.getKwota());
+        wynik.setValue("DataZamowienie", nowy.getDataZamowienia());
+        wynik.setValue("DataOdebrania", nowy.getDataOdebrania());
+        wynik.setValue("HurtowniaID", nowy.getZamawiajacy().getID());
+        wynik.setValue("ProduktID", nowy.getProduktZamowiony().ID);
+
+        return wynik;
     }
 
     @Override
     public void update(ZamowienieHurtowni nowy) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
+        adapter.update(convertToTableRow(nowy));
     }
 
     @Override
     public void delete(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
+        adapter.delete(TABLE_NAME,id);
     }
 
     @Override
     public ZamowienieHurtowni getById(int id) throws SQLException {
-        throw new UnsupportedOperationException("Not implemented.");  //To change body of implemented methods use File | Settings | File Templates.
+        TableRow row = TableRowFactory.createTableRow(TABLE_NAME);
+        row.setValue("ID", id);
+        List<ZamowienieHurtowni> list = convertToZamowienie(adapter.selectExactMatch(row));
+        if(list.size()>0)
+            return list.get(0);
+        return null;
     }
 }

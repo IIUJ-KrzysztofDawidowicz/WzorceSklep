@@ -1,5 +1,8 @@
 package WzorceSklep.Data.DataAdapter;
 
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Reprezentuje dowolny obiekt trzymany w wierszu tabeli.
  */
@@ -18,4 +21,5 @@ public interface TableRow
 
     TableInfo getTableInfo();
 
+    Map<String,Object> getValueMap();
 }

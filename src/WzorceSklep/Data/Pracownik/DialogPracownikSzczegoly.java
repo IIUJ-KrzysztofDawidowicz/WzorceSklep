@@ -5,13 +5,14 @@
 package WzorceSklep.Data.Pracownik;
 
 import WzorceSklep.DAOFactory;
-import com.sun.media.sound.InvalidDataException;
 
 import java.awt.*;
 import java.sql.SQLException;
 
 public class DialogPracownikSzczegoly extends javax.swing.JDialog
 {
+
+    private Pracownik pracownik;
 
     /**
      * Creates new form DialogPracownikSzczegoly
@@ -262,25 +263,30 @@ public class DialogPracownikSzczegoly extends javax.swing.JDialog
     {
         try
         {
-            Pracownik pracownik = new Pracownik();
-            pracownik.setID(idPracownika);
-            pracownik = new DAOFactory().getPracownikDAO().getById(idPracownika);
-            imie.setText(pracownik.getImie());
-            nazwisko.setText(pracownik.getNazwisko());
-            adres.setText(String.format("ul. %s, %d m. %d", pracownik.getAdres().ulica, pracownik.getAdres().nrLokalu, pracownik.getAdres().nrDomu));
-            kodPocztowy.setText(pracownik.getAdres().kodPocztowy);
-            poczta.setText(pracownik.getAdres().poczta);
-            miejscowosc.setText(pracownik.getAdres().miejscowosc);
-            telefon.setText(pracownik.getTelefon().toPlainString());
-            kraj.setText(pracownik.getAdres().kraj);
-            mail.setText(pracownik.getMail());
-            umowa.setText(pracownik.getUmowa());
-            login.setText(pracownik.getLogin());
-            status.setText(pracownik.getStatusString());
+            loadPracownik(idPracownika);
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
+
+    private void loadPracownik(int idPracownika) throws SQLException {
+        pracownik = new Pracownik();
+        pracownik.setID(idPracownika);
+        pracownik = new DAOFactory().getPracownikDAO().getById(idPracownika);
+        imie.setText(pracownik.getImie());
+        nazwisko.setText(pracownik.getNazwisko());
+        adres.setText(String.format("ul. %s, %d m. %d", pracownik.getAdres().getUlica(), pracownik.getAdres().getNrLokalu(), pracownik.getAdres().getNrDomu()));
+        kodPocztowy.setText(pracownik.getAdres().getKodPocztowy());
+        poczta.setText(pracownik.getAdres().getPoczta());
+        miejscowosc.setText(pracownik.getAdres().getMiejscowosc());
+        telefon.setText(pracownik.getTelefon());
+        kraj.setText(pracownik.getAdres().getKraj());
+        mail.setText(pracownik.getMail());
+        umowa.setText(pracownik.getUmowa());
+        login.setText(pracownik.getLogin());
+        status.setText(pracownik.getStatusString());
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel adres;
     private javax.swing.JLabel ardresLabel;

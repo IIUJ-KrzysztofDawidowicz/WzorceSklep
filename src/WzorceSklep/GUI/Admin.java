@@ -13,20 +13,21 @@ package WzorceSklep.GUI;
 
 import WzorceSklep.DAOFactory;
 import WzorceSklep.Data.Hurtownia.DialogDodajHurtownie;
+import WzorceSklep.Data.Hurtownia.EdytujDostawceDialog;
 import WzorceSklep.Data.Hurtownia.Hurtownia;
 import WzorceSklep.Data.Klient.DialogDodajKlienta;
+import WzorceSklep.Data.Klient.EdytujKlientaDialog;
 import WzorceSklep.Data.Klient.Klient;
-import WzorceSklep.Data.Pracownik.DialogDodajPracownika;
-import WzorceSklep.Data.Pracownik.DialogPracownikSzczegoly;
-import WzorceSklep.Data.Pracownik.DialogUsunPracownika;
+import WzorceSklep.Data.Pracownik.*;
 import WzorceSklep.Data.Pracownik.Pracownik;
-import WzorceSklep.Data.Produkt.DialogDodajProdukt;
+import WzorceSklep.Data.Produkt.DialogDodajEdytujProdukt;
 import WzorceSklep.Data.Produkt.Produkt;
 import WzorceSklep.GUI.DataRenderingUtils.TableConverters.StatystykiHurtownieTableConverter;
 import WzorceSklep.Data.Zamowienie.ZamowienieHurtowni;
 import WzorceSklep.Data.Zamowienie.ZamowienieKlienta;
 import WzorceSklep.GUI.DataRenderingUtils.*;
 import WzorceSklep.GUI.DataRenderingUtils.TableConverters.*;
+import WzorceSklep.Util;
 import com.sun.media.sound.InvalidDataException;
 
 import javax.swing.*;
@@ -41,7 +42,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Admin extends javax.swing.JFrame {
+public class Admin extends RefreshableJFrame {
 
     private final DAOFactory daoFactory = new DAOFactory();
     private JPanel aktualnyPanel;
@@ -49,6 +50,12 @@ public class Admin extends javax.swing.JFrame {
     private final Action akcjaUsunPracownika = new ActionUsuwaniePracownika();
     private final Action akcjaPracownikSzczegoly = new ActionPracownikSczegoly();
     private final Map<JPanel, RepresentDataAction> refreshTableActions;
+    private Map<JPanel, String> panelNames;
+    private final Action akcjaKlientEdytuj = new ActionKlientEdytuj();
+    private final Action akcjaHurtowniaEdytuj = new ActionHurtowniaEdytuj();
+    private final Action akcjaPracownikEdytuj = new  ActionPracownikEdytuj();
+    private final Action akcjaProduktEdytuj = new ActionProduktEdytuj();
+
 
     /** Creates new form Main */
     public Admin() { //Main (Coccenction connect,String login)
@@ -64,12 +71,10 @@ public class Admin extends javax.swing.JFrame {
         setInitialComponentVisibility();
 
         refreshTableActions = initRefreshTableActions();
-
-
         //Koniec tworzenia guzikow w tabeli
-
     }
 
+    //<editor-fold desc="Other">
     void show_panel(JPanel noweOkno){
         Warstwy.moveToBack(aktualnyPanel);
         aktualnyPanel.setVisible(false);
@@ -79,10 +84,12 @@ public class Admin extends javax.swing.JFrame {
         refreshCurrentWindow();
     }
 
-    void refreshCurrentWindow() {
+    public void refreshCurrentWindow() {
         try {
-            if (aktualnyPanel != null)
+            if (aktualnyPanel != null) {
                 refreshTableActions.get(aktualnyPanel).execute();
+                NazwaPanelu.setText(panelNames.get(aktualnyPanel));
+            }
         } catch (InvalidDataException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (SQLException e) {
@@ -94,6 +101,7 @@ public class Admin extends javax.swing.JFrame {
 
     private Map<JPanel, RepresentDataAction> initRefreshTableActions() {
         Map<JPanel, RepresentDataAction> actionMap = new HashMap<JPanel, RepresentDataAction>();
+        panelNames = new HashMap<JPanel, String>();
 
 //        actionMap.put(panel_pracownicy, new RefreshPracownicyAction(this));
         try {
@@ -109,21 +117,28 @@ public class Admin extends javax.swing.JFrame {
 
             actionMap.put(panel_pracownicy, new RefreshTableAction<Pracownik>(
                     new PracownicyTableConverter(), daoFactory.getPracownikGetter(), new PracownicyTableAccessors()));
+            panelNames.put(panel_pracownicy, "Pracownicy");
             actionMap.put(panel_klienci, new RefreshTableAction<Klient>(
                     new KlienciTableConverter(), daoFactory.getKlientGetter(), new KlienciTableAccesors()));
+            panelNames.put(panel_klienci, "Klienci");
             actionMap.put(panel_hurtowni, new RefreshTableAction<Hurtownia>(
                     new HurtowniaTableConverter(), DAOFactory.getHurtowniaGetter(), new HurtowniaTableAccessors()));
+            panelNames.put(panel_hurtowni, "Dostawcy");
             actionMap.put(panel_produkty, new RefreshTableAction<Produkt>(
-                    new ProduktyTableConverter(), DAOFactory.getProduktyGetter(), new ProdktyTableAccessors()));
+                    new ProduktyTableConverter(), DAOFactory.getProduktyGetter(), new ProduktyTableAccessors()));
+            panelNames.put(panel_produkty, "Produkty");
             actionMap.put(panel_statystyka, refreshStatystykiAction);
+            panelNames.put(panel_statystyka, "Statystyki");
             actionMap.put(panel_zamowienia, new MulticastRepresentDataAction(
                     refreshZamowieniaHurtowniAction, refreshZamowieniaKlientAction));
+            panelNames.put(panel_zamowienia, "Zamówienia");
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 
         return actionMap;
     }
+
 
     private MulticastRepresentDataAction getRefreshStatystykiAction() throws SQLException {
         Collection<RepresentDataAction> actionCollection = new ArrayList<RepresentDataAction>();
@@ -171,6 +186,7 @@ public class Admin extends javax.swing.JFrame {
         //TableExample jest potrzebne tylko do debugu, mozna pozniej wywalic (klase, nie plik)
 //        hurtownia_tabela.getColumn("Title 4").setCellRenderer(new ButtonRenderer());
     }
+    //</editor-fold>
 
 
     //<editor-fold desc="GeneratedCode">
@@ -195,7 +211,7 @@ public class Admin extends javax.swing.JFrame {
         guzik_hurtownia = new javax.swing.JButton();
         guzik_produkty = new javax.swing.JButton();
         guzik_zamowienia = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
+        SklepLabel = new javax.swing.JLabel();
         guzik_statystyka = new javax.swing.JButton();
         guzik_klienci = new javax.swing.JButton();
         guzik_pracownicy = new javax.swing.JButton();
@@ -207,6 +223,8 @@ public class Admin extends javax.swing.JFrame {
         hurtownia_szukaj_co = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         hurtownia_dodaj = new javax.swing.JButton();
+        hurtownie_sortuj = new javax.swing.JComboBox();
+        jLabel5 = new javax.swing.JLabel();
         panel_hurtowni_szczegoly = new javax.swing.JPanel();
         panel_produkty = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -214,6 +232,8 @@ public class Admin extends javax.swing.JFrame {
         produkty_szukaj_co = new javax.swing.JTextField();
         produkty_szukaj = new javax.swing.JButton();
         produkty_dodaj = new javax.swing.JButton();
+        produkty_sortuj = new javax.swing.JComboBox();
+        jLabel4 = new javax.swing.JLabel();
         panel_zamowienia = new javax.swing.JPanel();
         zamowenia_tabbed = new javax.swing.JTabbedPane();
         zam_klient = new javax.swing.JPanel();
@@ -279,6 +299,7 @@ public class Admin extends javax.swing.JFrame {
         klienci_szukaj = new javax.swing.JButton();
         klienci_sortuj = new javax.swing.JComboBox();
         dodajKlientaButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         panel_pracownicy = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         pracownicy_tabela = new javax.swing.JTable();
@@ -286,6 +307,8 @@ public class Admin extends javax.swing.JFrame {
         pracownicy_szukaj = new javax.swing.JButton();
         pracownicy_sortuj = new javax.swing.JComboBox();
         pracownicy_dodaj = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        NazwaPanelu = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -388,7 +411,7 @@ public class Admin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        guzik_hurtownia.setText("Hurtownie");
+        guzik_hurtownia.setText("Dostawcy");
         guzik_hurtownia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 guzik_hurtowniaMouseClicked(evt);
@@ -407,17 +430,17 @@ public class Admin extends javax.swing.JFrame {
             }
         });
 
-        guzik_zamowienia.setText("Zamówienia");
+        guzik_zamowienia.setText("Zam�wienia");
         guzik_zamowienia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 guzik_zamowieniaMouseClicked(evt);
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Segoe Script", 3, 24)); // NOI18N
-        jLabel1.setText("Sklep");
+        SklepLabel.setFont(new java.awt.Font("Segoe Script", 3, 24)); // NOI18N
+        SklepLabel.setText("Sklep");
 
-        guzik_statystyka.setText("Statystyka sprzedaży");
+        guzik_statystyka.setText("Statystyka sprzeda�y");
         guzik_statystyka.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 guzik_statystykaMouseClicked(evt);
@@ -461,12 +484,26 @@ public class Admin extends javax.swing.JFrame {
             }
         });
 
-        hurtownia_dodaj.setText("Dodaj hurtownię");
+        hurtownia_dodaj.setText("Dodaj dostawc�");
         hurtownia_dodaj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 hurtownia_dodajActionPerformed(evt);
             }
         });
+
+        hurtownie_sortuj.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ID", "Nazwa", "Osoba kontaktowa" }));
+        hurtownie_sortuj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hurtownie_sortujActionPerformed(evt);
+            }
+        });
+        hurtownie_sortuj.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                hurtownie_sortujPropertyChange(evt);
+            }
+        });
+
+        jLabel5.setText("Sortuj po:");
 
         javax.swing.GroupLayout panel_hurtowniLayout = new javax.swing.GroupLayout(panel_hurtowni);
         panel_hurtowni.setLayout(panel_hurtowniLayout);
@@ -478,7 +515,11 @@ public class Admin extends javax.swing.JFrame {
                 .addComponent(hurtownia_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 330, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(hurtownie_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(hurtownia_dodaj, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -490,7 +531,9 @@ public class Admin extends javax.swing.JFrame {
                 .addGroup(panel_hurtowniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(hurtownia_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1)
-                    .addComponent(hurtownia_dodaj))
+                    .addComponent(hurtownia_dodaj)
+                    .addComponent(hurtownie_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addContainerGap())
         );
 
@@ -546,17 +589,37 @@ public class Admin extends javax.swing.JFrame {
             }
         });
 
+        produkty_sortuj.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ID", "Typ", "Nazwa" }));
+        produkty_sortuj.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                produkty_sortujActionPerformed(evt);
+            }
+        });
+        produkty_sortuj.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                produkty_sortujPropertyChange(evt);
+            }
+        });
+
+        jLabel4.setText("Sortuj po:");
+
         javax.swing.GroupLayout panel_produktyLayout = new javax.swing.GroupLayout(panel_produkty);
         panel_produkty.setLayout(panel_produktyLayout);
         panel_produktyLayout.setHorizontalGroup(
             panel_produktyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 860, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(panel_produktyLayout.createSequentialGroup()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 860, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(panel_produktyLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(produkty_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(produkty_szukaj, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
+                .addGap(18, 18, 18)
+                .addComponent(produkty_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(produkty_dodaj, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -568,7 +631,9 @@ public class Admin extends javax.swing.JFrame {
                 .addGroup(panel_produktyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(produkty_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(produkty_szukaj)
-                    .addComponent(produkty_dodaj))
+                    .addComponent(produkty_dodaj)
+                    .addComponent(produkty_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addContainerGap(54, Short.MAX_VALUE))
         );
 
@@ -589,6 +654,11 @@ public class Admin extends javax.swing.JFrame {
         jScrollPane7.setViewportView(zam_klient_tab);
 
         zam_szukaj_klient.setText("Szukaj");
+        zam_szukaj_klient.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zam_szukaj_klientActionPerformed(evt);
+            }
+        });
 
         zam_sort_klient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Klient","Produkt","Typ","Ilo��","Data","Kwota","Pracownik" }));
         zam_sort_klient.addActionListener(new java.awt.event.ActionListener() {
@@ -597,7 +667,7 @@ public class Admin extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Szukaj wegług: ");
+        jLabel2.setText("Sortuj po:");
 
         javax.swing.GroupLayout zam_klientLayout = new javax.swing.GroupLayout(zam_klient);
         zam_klient.setLayout(zam_klientLayout);
@@ -609,7 +679,7 @@ public class Admin extends javax.swing.JFrame {
                 .addComponent(zam_szukaj_co_klient, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(zam_szukaj_klient, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 265, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 293, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(zam_sort_klient, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -643,7 +713,7 @@ public class Admin extends javax.swing.JFrame {
         ));
         jScrollPane6.setViewportView(zam_hurt_tab);
 
-        jLabel3.setText("Szukaj wegług: ");
+        jLabel3.setText("Szukaj weg�ug: ");
 
         zam_szukaj_hurt.setText("Szukaj");
         zam_szukaj_hurt.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -651,8 +721,13 @@ public class Admin extends javax.swing.JFrame {
                 zam_szukaj_hurtMouseClicked(evt);
             }
         });
+        zam_szukaj_hurt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                zam_szukaj_hurtActionPerformed(evt);
+            }
+        });
 
-        zam_sortuj_hurt.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Hurtownia","Produkt","Typ","Ilość","Kwota","Data zamowienia","Data odebrania" }));
+        zam_sortuj_hurt.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Dostawca","Produkt","Typ","Ilo��","Kwota","Data zamowienia","Data odebrania" }));
         zam_sortuj_hurt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zam_sortuj_hurtActionPerformed(evt);
@@ -688,7 +763,7 @@ public class Admin extends javax.swing.JFrame {
                 .addGap(25, 25, 25))
         );
 
-        zamowenia_tabbed.addTab("Hurtownia", zam_hurt);
+        zamowenia_tabbed.addTab("Dostawcy", zam_hurt);
 
         javax.swing.GroupLayout panel_zamowieniaLayout = new javax.swing.GroupLayout(panel_zamowienia);
         panel_zamowienia.setLayout(panel_zamowieniaLayout);
@@ -737,7 +812,7 @@ public class Admin extends javax.swing.JFrame {
         ));
         jScrollPane66.setViewportView(statystka_produkty_ogolem);
 
-        Hurtownie8.setText("Hurtownie");
+        Hurtownie8.setText("Dostawcy");
 
         Produkty8.setText("Produkty");
 
@@ -794,7 +869,7 @@ public class Admin extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Ogółem", staty_ogolem);
 
-        Hurtownie9.setText("Hurtownie");
+        Hurtownie9.setText("Dostawcy");
 
         statystka_hurtownie_tygodniowo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -881,7 +956,7 @@ public class Admin extends javax.swing.JFrame {
 
         Produkty10.setText("Produkty");
 
-        Hurtownie10.setText("Hurtownie");
+        Hurtownie10.setText("Dostawcy");
 
         statystka_klienci_miesiecznie.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -977,7 +1052,7 @@ public class Admin extends javax.swing.JFrame {
         ));
         jScrollPane74.setViewportView(statystka_produkty_rocznie);
 
-        Hurtownie11.setText("Hurtownie");
+        Hurtownie11.setText("Dostawcy");
 
         Klienci11.setText("Klienci");
 
@@ -1085,7 +1160,7 @@ public class Admin extends javax.swing.JFrame {
             }
         });
 
-        klienci_sortuj.setModel(new javax.swing.DefaultComboBoxModel(new String[]  { "ID", "Nazwisko", "Login" }));
+        klienci_sortuj.setModel(new javax.swing.DefaultComboBoxModel(new String[]  { "ID", "Nazwisko" }));
         klienci_sortuj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 klienci_sortujActionPerformed(evt);
@@ -1104,6 +1179,8 @@ public class Admin extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setText("Sortuj po:");
+
         javax.swing.GroupLayout panel_klienciLayout = new javax.swing.GroupLayout(panel_klienci);
         panel_klienci.setLayout(panel_klienciLayout);
         panel_klienciLayout.setHorizontalGroup(
@@ -1111,16 +1188,15 @@ public class Admin extends javax.swing.JFrame {
             .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 860, Short.MAX_VALUE)
             .addGroup(panel_klienciLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panel_klienciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel_klienciLayout.createSequentialGroup()
-                        .addComponent(klienci_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(klienci_szukaj, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(dodajKlientaButton))
-                    .addGroup(panel_klienciLayout.createSequentialGroup()
-                        .addComponent(klienci_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(klienci_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(klienci_szukaj, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(18, 18, 18)
+                .addComponent(klienci_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(dodajKlientaButton)
                 .addContainerGap())
         );
         panel_klienciLayout.setVerticalGroup(
@@ -1131,11 +1207,11 @@ public class Admin extends javax.swing.JFrame {
                 .addGroup(panel_klienciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panel_klienciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(klienci_szukaj)
-                        .addComponent(dodajKlientaButton))
+                        .addComponent(dodajKlientaButton)
+                        .addComponent(klienci_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1))
                     .addComponent(klienci_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(klienci_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 28, Short.MAX_VALUE))
+                .addGap(0, 54, Short.MAX_VALUE))
         );
 
         panel_klienci.setBounds(0, 0, 860, 580);
@@ -1180,6 +1256,8 @@ public class Admin extends javax.swing.JFrame {
             }
         });
 
+        jLabel6.setText("Sortuj po:");
+
         javax.swing.GroupLayout panel_pracownicyLayout = new javax.swing.GroupLayout(panel_pracownicy);
         panel_pracownicy.setLayout(panel_pracownicyLayout);
         panel_pracownicyLayout.setHorizontalGroup(
@@ -1187,13 +1265,14 @@ public class Admin extends javax.swing.JFrame {
             .addComponent(jScrollPane4)
             .addGroup(panel_pracownicyLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panel_pracownicyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panel_pracownicyLayout.createSequentialGroup()
-                        .addComponent(pracownicy_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pracownicy_szukaj, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(pracownicy_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 321, Short.MAX_VALUE)
+                .addComponent(pracownicy_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pracownicy_szukaj, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
+                .addComponent(jLabel6)
+                .addGap(18, 18, 18)
+                .addComponent(pracownicy_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(pracownicy_dodaj, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -1205,14 +1284,16 @@ public class Admin extends javax.swing.JFrame {
                 .addGroup(panel_pracownicyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pracownicy_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pracownicy_szukaj)
-                    .addComponent(pracownicy_dodaj))
-                .addGap(18, 18, 18)
-                .addComponent(pracownicy_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 24, Short.MAX_VALUE))
+                    .addComponent(pracownicy_dodaj)
+                    .addComponent(pracownicy_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addGap(0, 62, Short.MAX_VALUE))
         );
 
         panel_pracownicy.setBounds(0, 0, 860, 580);
         Warstwy.add(panel_pracownicy, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        NazwaPanelu.setFont(new java.awt.Font("Segoe Script", 3, 18)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1221,31 +1302,37 @@ public class Admin extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(guzik_pracownicy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(guzik_klienci, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(guzik_hurtownia, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(guzik_zamowienia, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(guzik_statystyka, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(guzik_produkty, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 860, Short.MAX_VALUE)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
+                        .addComponent(SklepLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(guzik_pracownicy, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(guzik_klienci, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(guzik_hurtownia, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(guzik_zamowienia, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(guzik_statystyka, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(guzik_produkty, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(Warstwy))))
+                        .addComponent(Warstwy))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 345, Short.MAX_VALUE)
+                        .addComponent(NazwaPanelu, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(295, 295, 295)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(NazwaPanelu, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(SklepLabel)
+                        .addComponent(jLabel8)))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(guzik_hurtownia, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1260,7 +1347,7 @@ public class Admin extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(guzik_pracownicy, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(Warstwy, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGap(19, 19, 19))
         );
 
         pack();
@@ -1353,9 +1440,10 @@ public class Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void hurtownia_dodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hurtownia_dodajActionPerformed
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        DialogDodajHurtownie.show(this, daoFactory);
+        /*java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                otwartyDialog = new DialogDodajHurtownie(Admin.this);
+                otwartyDialog = new DialogDodajHurtownie(Admin.this, daoFactory);
                 otwartyDialog.setVisible(true);
                 otwartyDialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
                 {
@@ -1365,7 +1453,7 @@ public class Admin extends javax.swing.JFrame {
                     }
                 });
             }
-        });
+        });*/
     }//GEN-LAST:event_hurtownia_dodajActionPerformed
 
     private void produkty_szukajMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_produkty_szukajMouseClicked
@@ -1373,9 +1461,10 @@ public class Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_produkty_szukajMouseClicked
 
     private void produkty_dodajActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produkty_dodajActionPerformed
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        DialogDodajEdytujProdukt.showDialogDodaj(this, daoFactory);
+/*        java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                otwartyDialog = new DialogDodajProdukt(Admin.this);
+                otwartyDialog = new DialogDodajEdytujProdukt(Admin.this, DialogDodajEdytujProdukt.Akcja.DODAJ);
                 otwartyDialog.setVisible(true);
                 otwartyDialog.addWindowListener(new WindowAdapter()//Sprawdza, czy okno dialogowe zostało zamknięte
                 {
@@ -1385,7 +1474,7 @@ public class Admin extends javax.swing.JFrame {
                     }
                 });
             }
-        });
+        });*/
     }//GEN-LAST:event_produkty_dodajActionPerformed
 
     private void zam_sortuj_hurtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zam_sortuj_hurtActionPerformed
@@ -1428,6 +1517,30 @@ public class Admin extends javax.swing.JFrame {
     private void pracownicy_sortujPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_pracownicy_sortujPropertyChange
        refreshCurrentWindow();
     }//GEN-LAST:event_pracownicy_sortujPropertyChange
+
+    private void produkty_sortujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_produkty_sortujActionPerformed
+        refreshCurrentWindow();
+    }//GEN-LAST:event_produkty_sortujActionPerformed
+
+    private void produkty_sortujPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_produkty_sortujPropertyChange
+        refreshCurrentWindow();
+    }//GEN-LAST:event_produkty_sortujPropertyChange
+
+    private void hurtownie_sortujPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_hurtownie_sortujPropertyChange
+        refreshCurrentWindow();
+    }//GEN-LAST:event_hurtownie_sortujPropertyChange
+
+    private void hurtownie_sortujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hurtownie_sortujActionPerformed
+        refreshCurrentWindow();
+    }//GEN-LAST:event_hurtownie_sortujActionPerformed
+
+    private void zam_szukaj_klientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zam_szukaj_klientActionPerformed
+        refreshCurrentWindow();
+    }//GEN-LAST:event_zam_szukaj_klientActionPerformed
+
+    private void zam_szukaj_hurtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_zam_szukaj_hurtActionPerformed
+        refreshCurrentWindow();
+    }//GEN-LAST:event_zam_szukaj_hurtActionPerformed
     //</editor-fold>
 
     //<editor-fold desc="Swing components declarations.">
@@ -1440,10 +1553,12 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JLabel Klienci11;
     private javax.swing.JLabel Klienci8;
     private javax.swing.JLabel Klienci9;
+    private javax.swing.JLabel NazwaPanelu;
     private javax.swing.JLabel Produkty10;
     private javax.swing.JLabel Produkty11;
     private javax.swing.JLabel Produkty8;
     private javax.swing.JLabel Produkty9;
+    private javax.swing.JLabel SklepLabel;
     private javax.swing.JLayeredPane Warstwy;
     private javax.swing.JButton dodajKlientaButton;
     private javax.swing.JButton guzik_hurtownia;
@@ -1455,6 +1570,7 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JButton hurtownia_dodaj;
     private javax.swing.JTextField hurtownia_szukaj_co;
     private javax.swing.JTable hurtownia_tabela;
+    private javax.swing.JComboBox hurtownie_sortuj;
     private javax.swing.JButton jButton1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JFrame jFrame1;
@@ -1468,6 +1584,9 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -1505,6 +1624,7 @@ public class Admin extends javax.swing.JFrame {
     private javax.swing.JTextField pracownicy_szukaj_co;
     private javax.swing.JTable pracownicy_tabela;
     private javax.swing.JButton produkty_dodaj;
+    private javax.swing.JComboBox produkty_sortuj;
     private javax.swing.JButton produkty_szukaj;
     private javax.swing.JTextField produkty_szukaj_co;
     private javax.swing.JTable produkty_tabela;
@@ -1555,16 +1675,9 @@ public class Admin extends javax.swing.JFrame {
         @Override
         public void setTableModel(TableModel model) {
             pracownicy_tabela.setModel(model);
-            new ButtonColumn(pracownicy_tabela, akcjaPracownikSzczegoly, getColumnIndex(model,"Szczegóły"));
-            new ButtonColumn(pracownicy_tabela, akcjaUsunPracownika, getColumnIndex(model,"Usuń"));
-        }
-
-        private int getColumnIndex(TableModel model, String columnName) throws IllegalArgumentException {
-            for (int i = 0; i < model.getColumnCount(); i++) {
-                if(model.getColumnName(i).equals(columnName))
-                    return i;
-            }
-            throw new IllegalArgumentException(String.format("Kolumny %s nie ma w podanej tabeli.", columnName));
+            new ButtonColumn(pracownicy_tabela, akcjaPracownikSzczegoly, Util.getColumnIndex(model, "Szczegóły"));
+            new ButtonColumn(pracownicy_tabela, akcjaUsunPracownika, Util.getColumnIndex(model, "Usuń"));
+            new ButtonColumn(pracownicy_tabela, akcjaPracownikEdytuj, Util.getColumnIndex(model, "Edytuj"));
         }
 
         @Override
@@ -1575,10 +1688,18 @@ public class Admin extends javax.swing.JFrame {
     }
 
     private class HurtowniaTableAccessors implements Serializable, TableAccessors {
+        private final Map<String, String> orderByMap;
+
+        private HurtowniaTableAccessors() {
+            orderByMap = new HashMap<String, String>();
+            orderByMap.put("ID", "ID");
+            orderByMap.put("Nazwa", "Nazwa");
+            orderByMap.put("Osoba kontaktowa", "OsobaKontaktowa");
+        }
 
         @Override
         public String getOrderBy() {
-            return "ID";
+            return orderByMap.get(hurtownie_sortuj.getSelectedItem().toString());
         }
 
         @Override
@@ -1589,6 +1710,8 @@ public class Admin extends javax.swing.JFrame {
         @Override
         public void setTableModel(TableModel model) {
             hurtownia_tabela.setModel(model);
+            new ButtonColumn(hurtownia_tabela, akcjaHurtowniaEdytuj,
+                    Util.getColumnIndex(hurtownia_tabela.getModel(), "Edytuj"));
         }
 
         @Override
@@ -1600,7 +1723,7 @@ public class Admin extends javax.swing.JFrame {
     private class KlienciTableAccesors implements TableAccessors {
         @Override
         public String getOrderBy() {
-            return "ID";
+            return klienci_sortuj.getSelectedItem().toString();
         }
 
         @Override
@@ -1611,6 +1734,7 @@ public class Admin extends javax.swing.JFrame {
         @Override
         public void setTableModel(TableModel model) {
             klienci_tabela.setModel(model);
+            new ButtonColumn(klienci_tabela, akcjaKlientEdytuj, Util.getColumnIndex(model, "Edytuj"));
         }
 
         @Override
@@ -1619,10 +1743,10 @@ public class Admin extends javax.swing.JFrame {
         }
     }
 
-    private class ProdktyTableAccessors implements TableAccessors {
+    private class ProduktyTableAccessors implements TableAccessors {
         @Override
         public String getOrderBy() {
-            return "ID";
+            return produkty_sortuj.getSelectedItem().toString();
         }
 
         @Override
@@ -1633,6 +1757,7 @@ public class Admin extends javax.swing.JFrame {
         @Override
         public void setTableModel(TableModel model) {
             produkty_tabela.setModel(model);
+            new ButtonColumn(produkty_tabela, akcjaProduktEdytuj, Util.getColumnIndex(model, "Edytuj"));
         }
 
         @Override
@@ -1642,9 +1767,23 @@ public class Admin extends javax.swing.JFrame {
     }
 
     private class ZamowienieKlientaTableAccessors implements TableAccessors {
+
+        private final Map<String, String> orderBy;
+
+        private ZamowienieKlientaTableAccessors() {
+            orderBy = new HashMap<String, String>();
+            orderBy.put("Klient", "Nazwisko");
+            orderBy.put("Produkt", "NazwaProduktu");
+            orderBy.put("Typ", "Typ");
+            orderBy.put("Ilość", "Ilosc");
+            orderBy.put("Data", "DataZamowienia");
+            orderBy.put("Kwota", "Kwota");
+            orderBy.put("Pracownik", "NazwiskoPracownika");
+        }
+
         @Override
         public String getOrderBy() {
-            return "ID";
+            return orderBy.get(zam_sort_klient.getSelectedItem().toString());
         }
 
         @Override
@@ -1659,7 +1798,7 @@ public class Admin extends javax.swing.JFrame {
 
         @Override
         public String getLookFor() {
-            return "";
+            return zam_szukaj_co_klient.getText();
         }
     }
 
@@ -1685,6 +1824,35 @@ public class Admin extends javax.swing.JFrame {
             return zam_szukaj_co_hurt.getText();
         }
     }
+    private class StatystykiTableAccssors implements TableAccessors {
+
+        private StatystykiTableAccssors(JTable table) {
+            this.table = table;
+        }
+
+        private JTable table;
+
+        @Override
+        public String getOrderBy() {
+            return "";
+        }
+
+        @Override
+        public void emptyFields() {
+
+        }
+
+        @Override
+        public void setTableModel(TableModel model) {
+            table.setModel(model);
+        }
+
+        @Override
+        public String getLookFor() {
+            return "";
+        }
+    }
+
 
     //</editor-fold>
 
@@ -1724,14 +1892,11 @@ public class Admin extends javax.swing.JFrame {
     {
         public void actionPerformed(ActionEvent e)
         {
-            final int id= extractIDFromTable(e);
+            final int id= Util.getIDFromTable(e, pracownicy_tabela);
             final String nazwisko= extractNazwiskoFromTable(e);
             java.awt.EventQueue.invokeLater(new DialogUsunPracownikaLauncher(Admin.this, id, nazwisko));
         }
 
-        private Integer extractIDFromTable(ActionEvent e) {
-            return (Integer) pracownicy_tabela.getValueAt(Integer.valueOf(e.getActionCommand()), 0);
-        }
 
         private String extractNazwiskoFromTable(ActionEvent e) {
             return pracownicy_tabela.getValueAt(Integer.valueOf(e.getActionCommand()), 1).toString();
@@ -1765,34 +1930,34 @@ public class Admin extends javax.swing.JFrame {
         }
     }
 
-    private class StatystykiTableAccssors implements TableAccessors {
-
-        private StatystykiTableAccssors(JTable table) {
-            this.table = table;
-        }
-
-        private JTable table;
-
+    private class ActionKlientEdytuj extends AbstractAction {
         @Override
-        public String getOrderBy() {
-            return "";
-        }
-
-        @Override
-        public void emptyFields() {
-
-        }
-
-        @Override
-        public void setTableModel(TableModel model) {
-            table.setModel(model);
-        }
-
-        @Override
-        public String getLookFor() {
-            return "";
+        public void actionPerformed(ActionEvent e) {
+            EdytujKlientaDialog.main(Admin.this, Util.getIDFromTable(e, klienci_tabela), daoFactory);
         }
     }
+
+    private class ActionHurtowniaEdytuj extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            EdytujDostawceDialog.show(daoFactory, Util.getIDFromTable(e, hurtownia_tabela), Admin.this);
+        }
+    }
+
+    private class ActionPracownikEdytuj extends AbstractAction {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            DialogEdytujPracownika.show(Admin.this, Util.getIDFromTable(e, pracownicy_tabela));
+        }
+    }
+
+    private class ActionProduktEdytuj extends AbstractAction{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            DialogDodajEdytujProdukt.showEdytujDialog(Admin.this, daoFactory, Util.getIDFromTable(e, produkty_tabela));
+        }
+    }
+
 
     //</editor-fold>
 }

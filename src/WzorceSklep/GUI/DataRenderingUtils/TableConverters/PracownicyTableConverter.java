@@ -36,6 +36,7 @@ public class PracownicyTableConverter extends AbstractTableConverter<Pracownik> 
         wynik[index.get("Telefon")] = object.getTelefon();
         wynik[index.get("Szczegóły")] = "Szczegóły";
         wynik[index.get("Usuń")] = "Usuń";
+        wynik[index.get("Edytuj")] = "Edytuj";
 
         return wynik;
     }
@@ -45,5 +46,5 @@ public class PracownicyTableConverter extends AbstractTableConverter<Pracownik> 
         return columnNames;
     }
 
-    private static final String[] columnNames = new String[]{"ID","Nazwisko","login","Telefon", "Szczegóły", "Usuń"};
+    private static final String[] columnNames = new String[]{"ID","Nazwisko","login","Telefon", "Szczegóły", "Edytuj", "Usuń"};
 }

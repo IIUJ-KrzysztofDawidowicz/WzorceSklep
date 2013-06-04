@@ -13,20 +13,20 @@ import WzorceSklep.GUI.DataRenderingUtils.AbstractTableConverter;
 public class ZamowieniaHurtowniTableConverter extends AbstractTableConverter<ZamowienieHurtowni> {
 
     private final static String[] columnNames = new String[]{
-            "Hurtownia","Produkt","Typ","Ilość","Kwota","Data zamowienia","Data odebrania"
+            "Dostawca","Produkt","Typ","Ilość","Kwota","Data zamowienia","Data odebrania"
     };
 
     @Override
     protected Object[] mapDataToColumns(ZamowienieHurtowni zamowienie) {
         Object[] wynik = new Object[columnNames.length];
 
-        wynik[0] = zamowienie.zamawiajacy.getNazwa();
-        wynik[1] = zamowienie.produktZamowiony.nazwa;
-        wynik[2] = zamowienie.produktZamowiony.typ;
-        wynik[3] = zamowienie.ilosc;
-        wynik[4] = zamowienie.kwota;
-        wynik[5] = zamowienie.dataZamowienia;
-        wynik[6] = zamowienie.dataOdebrania;
+        wynik[0] = zamowienie.getZamawiajacy().getNazwa();
+        wynik[1] = zamowienie.getProduktZamowiony().nazwa;
+        wynik[2] = zamowienie.getProduktZamowiony().typ;
+        wynik[3] = zamowienie.getIlosc();
+        wynik[4] = zamowienie.getKwota();
+        wynik[5] = zamowienie.getDataZamowienia();
+        wynik[6] = zamowienie.getDataOdebrania();
 
         return wynik;
     }

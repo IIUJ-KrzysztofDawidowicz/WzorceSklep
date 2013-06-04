@@ -6,13 +6,12 @@ package WzorceSklep.Data.Klient;
 
 import WzorceSklep.DAOFactory;
 import WzorceSklep.Data.AdresOsoby;
+import WzorceSklep.Util;
 
-import java.awt.*;
-import java.math.BigDecimal;
-import java.sql.SQLException;
-import java.text.ParseException;
-import javax.swing.JFormattedTextField;
+import javax.swing.*;
 import javax.swing.text.MaskFormatter;
+import java.awt.*;
+import java.text.ParseException;
 
 /**
  *
@@ -20,6 +19,16 @@ import javax.swing.text.MaskFormatter;
  */
 public class DialogDodajKlienta extends javax.swing.JDialog 
 {
+    public static final String MIEJSCOWOSC_PLACEHOLDER = "Miejscowość";
+    public static final String IMIE_PLACEHOLDER = "Imię";
+    public static final String MAIL_PLACEHOLDER = "Mail";
+    public static final String KRAJ_PLACEHOLDER = "Kraj";
+    public static final String ULICA_PLACEHOLDER = "Ulica";
+    public static final String NAZWISKO_PLACEHOLDER = "Nazwa klienta / Nazwisko";
+    public static final String NR_LOKALU_PLACEHOLDER = "Nr lokalu";
+    public static final String NR_DOMU_PLACEHOLDER = "Nr domu";
+    public static final String POCZTA_PLACEHOLDER = "Poczta";
+    public static final String TELEFON_PLACEHOLDER = "Telefon";
     private JFormattedTextField.AbstractFormatter format;
 
     /**
@@ -88,9 +97,9 @@ public class DialogDodajKlienta extends javax.swing.JDialog
 
         wypelnijPola.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         wypelnijPola.setForeground(new java.awt.Color(255, 0, 0));
-        wypelnijPola.setText("Wypełnij wszystkie pola!");
+        wypelnijPola.setText("Niepoprawne lub niekompletne dane - popraw!");
 
-        miejscowoscField.setText("Miejscowość");
+        miejscowoscField.setText("Miejscowo��");
         miejscowoscField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 miejscowoscFieldFocusGained(evt);
@@ -168,7 +177,7 @@ public class DialogDodajKlienta extends javax.swing.JDialog
             }
         });
 
-        imieField.setText("Imię");
+        imieField.setText("Imi�");
         imieField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 imieFieldFocusGained(evt);
@@ -178,7 +187,7 @@ public class DialogDodajKlienta extends javax.swing.JDialog
             }
         });
 
-        utworz.setText("Dodaj");
+        utworz.setText("Zapisz");
         utworz.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 utworzActionPerformed(evt);
@@ -193,43 +202,44 @@ public class DialogDodajKlienta extends javax.swing.JDialog
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(titleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(imieField, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(nazwiskoField, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(ulicaField)
-                                .addGap(18, 18, 18)
-                                .addComponent(nrdomuField, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(nrlokaluField, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(telefonField, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(26, 26, 26)
-                                        .addComponent(mailField))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(kodLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(kodPocztowyField, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(pocztaField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(krajField, javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(miejscowoscField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE))))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(wypelnijPola)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(utworz, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(utworz, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(ulicaField)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(nrdomuField, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(nrlokaluField, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(telefonField, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(26, 26, 26)
+                                            .addComponent(mailField))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(kodLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                                            .addComponent(kodPocztowyField, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(18, 18, 18)
+                                            .addComponent(pocztaField, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(krajField, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(miejscowoscField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(nazwiskoField, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(imieField, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -237,10 +247,10 @@ public class DialogDodajKlienta extends javax.swing.JDialog
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(imieField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nazwiskoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nazwiskoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(imieField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ulicaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -273,7 +283,7 @@ public class DialogDodajKlienta extends javax.swing.JDialog
 
     private void telefonFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_telefonFieldFocusLost
         if (telefonField.getText().equals("")) {
-            telefonField.setText("Telefon");
+            telefonField.setText(TELEFON_PLACEHOLDER);
         }
     }//GEN-LAST:event_telefonFieldFocusLost
 
@@ -283,7 +293,7 @@ public class DialogDodajKlienta extends javax.swing.JDialog
 
     private void pocztaFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_pocztaFieldFocusLost
         if (pocztaField.getText().equals("")) {
-            pocztaField.setText("Poczta");
+            pocztaField.setText(POCZTA_PLACEHOLDER);
         }
     }//GEN-LAST:event_pocztaFieldFocusLost
 
@@ -293,7 +303,7 @@ public class DialogDodajKlienta extends javax.swing.JDialog
 
     private void miejscowoscFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_miejscowoscFieldFocusLost
         if (miejscowoscField.getText().equals("")) {
-            miejscowoscField.setText("Miejscowość");
+            miejscowoscField.setText(MIEJSCOWOSC_PLACEHOLDER);
         }
     }//GEN-LAST:event_miejscowoscFieldFocusLost
 
@@ -307,7 +317,7 @@ public class DialogDodajKlienta extends javax.swing.JDialog
 
     private void nrdomuFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nrdomuFieldFocusLost
         if (nrdomuField.getText().equals("")) {
-            nrdomuField.setText("Nr domu");
+            nrdomuField.setText(NR_DOMU_PLACEHOLDER);
         }
     }//GEN-LAST:event_nrdomuFieldFocusLost
 
@@ -317,7 +327,7 @@ public class DialogDodajKlienta extends javax.swing.JDialog
 
     private void nrlokaluFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nrlokaluFieldFocusLost
         if (nrlokaluField.getText().equals("")) {
-            nrlokaluField.setText("Nr lokalu");
+            nrlokaluField.setText(NR_LOKALU_PLACEHOLDER);
         }
     }//GEN-LAST:event_nrlokaluFieldFocusLost
 
@@ -327,7 +337,7 @@ public class DialogDodajKlienta extends javax.swing.JDialog
 
     private void nazwiskoFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nazwiskoFieldFocusLost
         if (nazwiskoField.getText().equals("")) {
-            nazwiskoField.setText("Nazwisko");
+            nazwiskoField.setText(NAZWISKO_PLACEHOLDER);
         }
     }//GEN-LAST:event_nazwiskoFieldFocusLost
 
@@ -337,7 +347,7 @@ public class DialogDodajKlienta extends javax.swing.JDialog
 
     private void ulicaFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_ulicaFieldFocusLost
         if (ulicaField.getText().equals("")) {
-            ulicaField.setText("Ulica");
+            ulicaField.setText(ULICA_PLACEHOLDER);
         }
     }//GEN-LAST:event_ulicaFieldFocusLost
 
@@ -347,7 +357,7 @@ public class DialogDodajKlienta extends javax.swing.JDialog
 
     private void krajFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_krajFieldFocusLost
         if (krajField.getText().equals("")) {
-            krajField.setText("Kraj");
+            krajField.setText(KRAJ_PLACEHOLDER);
         }
     }//GEN-LAST:event_krajFieldFocusLost
 
@@ -357,7 +367,7 @@ public class DialogDodajKlienta extends javax.swing.JDialog
 
     private void mailFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_mailFieldFocusLost
         if (mailField.getText().equals("")) {
-            mailField.setText("Mail");
+            mailField.setText(MAIL_PLACEHOLDER);
         }
     }//GEN-LAST:event_mailFieldFocusLost
 
@@ -367,14 +377,27 @@ public class DialogDodajKlienta extends javax.swing.JDialog
 
     private void imieFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_imieFieldFocusLost
         if (imieField.getText().equals("")) {
-            imieField.setText("Imię");
+            imieField.setText(IMIE_PLACEHOLDER);
         }
     }//GEN-LAST:event_imieFieldFocusLost
 
+
+
+    private boolean nieWypelnione() {
+        return  nazwiskoField.getText().equals(NAZWISKO_PLACEHOLDER) ||
+                !kodPocztowyField.isEditValid() ||
+                miejscowoscField.getText().equals(MIEJSCOWOSC_PLACEHOLDER) ||
+                pocztaField.getText().equals(POCZTA_PLACEHOLDER) ||
+                krajField.getText().equals(KRAJ_PLACEHOLDER);
+    }
     private void utworzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_utworzActionPerformed
 
         wypelnijPola.setVisible(false);
-
+        if(nieWypelnione())
+        {
+            wypelnijPola.setVisible(true);
+            return;
+        }
         Klient klient = new Klient();
         loadDataFromTextFields(klient);
         
@@ -382,18 +405,19 @@ public class DialogDodajKlienta extends javax.swing.JDialog
 
 
         try {
-            klient.setTelefon(new BigDecimal(telefonField.getText()));
-            klient.getAdres().nrDomu = Integer.valueOf(nrdomuField.getText());
-            klient.getAdres().nrLokalu = Integer.valueOf(nrlokaluField.getText());
+
+            if (!nrdomuField.getText().equals(NR_DOMU_PLACEHOLDER)) {
+                klient.getAdres().setNrDomu(Integer.valueOf(nrdomuField.getText()));
+            }
+            if (!nrlokaluField.getText().equals(NR_LOKALU_PLACEHOLDER)) {
+                klient.getAdres().setNrLokalu(Integer.valueOf(nrlokaluField.getText()));
+            }
+            new DAOFactory().getKlientDAO().insert(klient);
 
         } catch (Exception e) {
             wypelnijPola.setVisible(true);
+            Util.showErrorDialog(this, e);
             return;
-        }
-        try {
-            new DAOFactory().getKlientDAO().insert(klient);
-        } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
 /*        try {
             CallableStatement proc = connection.prepareCall("{call DodajKlienta(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
@@ -421,14 +445,28 @@ public class DialogDodajKlienta extends javax.swing.JDialog
 
     private void loadDataFromTextFields(Klient klient) {
         klient.setAdres(new AdresOsoby());
-        klient.setImie(imieField.getText());
+        if (!imieField.getText().equals(IMIE_PLACEHOLDER)) {
+            klient.setImie(imieField.getText());
+        }
         klient.setNazwisko(nazwiskoField.getText());
-        klient.getAdres().ulica = ulicaField.getText();
-        klient.getAdres().kodPocztowy = kodPocztowyField.getText();
-        klient.getAdres().poczta = pocztaField.getText();
-        klient.getAdres().miejscowosc=  miejscowoscField.getText();
-        klient.getAdres().kraj = krajField.getText();
-        klient.setMail(mailField.getText());
+        klient.getAdres().setKodPocztowy(kodPocztowyField.getText());
+        klient.getAdres().setKraj(krajField.getText());
+        if (!ulicaField.getText().equals(ULICA_PLACEHOLDER)) {
+            klient.getAdres().setUlica(ulicaField.getText());
+        }
+        klient.getAdres().setMiejscowosc(miejscowoscField.getText());
+        if (!pocztaField.getText().equals(POCZTA_PLACEHOLDER)) {
+            klient.getAdres().setPoczta(pocztaField.getText());
+        }
+        else {
+            klient.getAdres().setPoczta(klient.getAdres().getMiejscowosc());
+        }
+        if (!mailField.getText().equals(MAIL_PLACEHOLDER)) {
+            klient.setMail(mailField.getText());
+        }
+        if (!telefonField.getText().equals(TELEFON_PLACEHOLDER)) {
+            klient.setTelefon(telefonField.getText());
+        }
     }
 
     /**

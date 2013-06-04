@@ -6,6 +6,7 @@
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
@@ -195,7 +196,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="utworz">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Dodaj"/>
+        <Property name="text" type="java.lang.String" value="Zapisz"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="utworzActionPerformed"/>
@@ -227,7 +228,7 @@
         <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="0" green="0" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Wype&#x142;nij wszystkie pola!"/>
+        <Property name="text" type="java.lang.String" value="Niepoprawne lub niekompletne dane - popraw!"/>
       </Properties>
     </Component>
   </SubComponents>
