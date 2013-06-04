@@ -11,7 +11,8 @@ import WzorceSklep.GUI.DataRenderingUtils.AbstractTableConverter;
  * To change this template use File | Settings | File Templates.
  */
 public class ZamowianieKlientaTableConverter extends AbstractTableConverter<ZamowienieKlienta> {
-    private final static String[] columnNames = new String[]{"Klient","Produkt","Typ","Ilość","Data","Kwota","Pracownik"};
+    private final static String[] columnNames = new String[]
+            {"Klient","Produkt","Typ","Ilość","Data zamówienia","Data realizacji","Kwota","Pracownik"};
 
     @Override
     protected String[] getColumnNames() {
@@ -22,13 +23,15 @@ public class ZamowianieKlientaTableConverter extends AbstractTableConverter<Zamo
     protected Object[] mapDataToColumns(ZamowienieKlienta zamowienieKlienta) {
         Object[] wynik = new Object[getColumnNames().length];
 
-        wynik[0] = zamowienieKlienta.zamawiajacy.getName();
-        wynik[1] = zamowienieKlienta.getProduktZamowiony().nazwa;
-        wynik[2] = zamowienieKlienta.getProduktZamowiony().typ;
-        wynik[3] = zamowienieKlienta.getIlosc();
-        wynik[4] = zamowienieKlienta.getDataZamowienia();
-        wynik[5] = zamowienieKlienta.getKwota();
-        wynik[6] = String.format("%s %s", zamowienieKlienta.tworzacy.getImie(), zamowienieKlienta.tworzacy.getNazwisko());
+        wynik[index.get("Klient")] = zamowienieKlienta.zamawiajacy.getName();
+        wynik[index.get("Produkt")] = zamowienieKlienta.getProduktZamowiony().nazwa;
+        wynik[index.get("Typ")] = zamowienieKlienta.getProduktZamowiony().typ;
+        wynik[index.get("Ilość")] = zamowienieKlienta.getIlosc();
+        wynik[index.get("Data zamówienia")] = zamowienieKlienta.getDataZamowienia();
+        wynik[index.get("Data realizacji")] = zamowienieKlienta.getDataOdebrania();
+        wynik[index.get("Kwota")] = zamowienieKlienta.getKwota();
+        wynik[index.get("Pracownik")] = String.format("%s %s",
+                zamowienieKlienta.tworzacy.getImie(), zamowienieKlienta.tworzacy.getNazwisko());
 
         return wynik;
     }

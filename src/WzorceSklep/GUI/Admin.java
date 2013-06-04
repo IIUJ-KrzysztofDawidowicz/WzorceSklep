@@ -652,7 +652,7 @@ public class Admin extends RefreshableJFrame {
             }
         });
 
-        zam_sort_klient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Klient","Produkt","Typ","Ilość","Data","Kwota","Pracownik" }));
+        zam_sort_klient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Klient","Produkt","Typ","Ilość","Data zamówienia","Data realizacji","Kwota","Pracownik" }));
         zam_sort_klient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zam_sort_klientActionPerformed(evt);
@@ -705,7 +705,7 @@ public class Admin extends RefreshableJFrame {
         ));
         jScrollPane6.setViewportView(zam_hurt_tab);
 
-        jLabel3.setText("Szukaj według: ");
+        jLabel3.setText("Sortuj po: ");
 
         zam_szukaj_hurt.setText("Szukaj");
         zam_szukaj_hurt.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -719,7 +719,7 @@ public class Admin extends RefreshableJFrame {
             }
         });
 
-        zam_sortuj_hurt.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Dostawca","Produkt","Typ","Ilość","Kwota","Data zamowienia","Data odebrania" }));
+        zam_sortuj_hurt.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Dostawca","Produkt","Typ","Ilość","Kwota","Data zamowienia","Data realizacji" }));
         zam_sortuj_hurt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zam_sortuj_hurtActionPerformed(evt);
@@ -1388,8 +1388,8 @@ public class Admin extends RefreshableJFrame {
     }//GEN-LAST:event_klienci_szukajMouseClicked
 
     private void pracownicy_szukajMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pracownicy_szukajMouseClicked
-        pracownicy_szukaj_co.setText("");
         refreshCurrentWindow();
+        pracownicy_szukaj_co.setText("");
 //        refreshCurrentWindow();
     }//GEN-LAST:event_pracownicy_szukajMouseClicked
 
@@ -1768,7 +1768,8 @@ public class Admin extends RefreshableJFrame {
             orderBy.put("Produkt", "NazwaProduktu");
             orderBy.put("Typ", "Typ");
             orderBy.put("Ilość", "Ilosc");
-            orderBy.put("Data", "DataZamowienia");
+            orderBy.put("Data zamówienia", "DataZamowienia");
+            orderBy.put("Data realizacji", "DataOdebrania");
             orderBy.put("Kwota", "Kwota");
             orderBy.put("Pracownik", "NazwiskoPracownika");
         }
@@ -1808,7 +1809,7 @@ public class Admin extends RefreshableJFrame {
             orderBy.put("Ilość", "Ilosc");
             orderBy.put("Kwota", "Kwota");
             orderBy.put("Data zamówienia", "DataZamowienia");
-            orderBy.put("Data odebrania", "DataOdebrania");
+            orderBy.put("Data realizacji", "DataOdebrania");
         }
 
         @Override

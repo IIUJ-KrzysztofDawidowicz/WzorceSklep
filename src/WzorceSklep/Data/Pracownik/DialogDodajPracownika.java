@@ -7,6 +7,7 @@ package WzorceSklep.Data.Pracownik;
 import WzorceSklep.DAOFactory;
 import WzorceSklep.Data.AdresOsoby;
 import WzorceSklep.DataAccessObject;
+import WzorceSklep.Util;
 
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
@@ -48,7 +49,7 @@ public class DialogDodajPracownika extends javax.swing.JDialog
         if (!ulicaField.getText().equals(ULICA_PLACEHOLDER)) {
             pracownik.getAdres().setUlica(ulicaField.getText());
         }
-        if (miejscowoscField.getText().equals(MIEJSCOWOSC_PLACEHOLDER)) {
+        if (!miejscowoscField.getText().equals(MIEJSCOWOSC_PLACEHOLDER)) {
             pracownik.getAdres().setMiejscowosc(miejscowoscField.getText());
         }
         if (!pocztaField.getText().equals(POCZTA_PLACEHOLDER)) {
@@ -99,6 +100,7 @@ public class DialogDodajPracownika extends javax.swing.JDialog
             hasloField.setText("");
             powtorzField.setText("");
             e.printStackTrace();
+            Util.showErrorDialog(this,e);
             return;
         }
         dispose();

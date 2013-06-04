@@ -31,6 +31,7 @@ public class ZamowienieKlientaResultSetConverter implements ResultSetConverter<Z
             element.getProduktZamowiony().nazwa = set.getString("NazwaProduktu");
             element.getProduktZamowiony().typ = set.getString("Typ");
             element.setDataZamowienia(set.getDate("DataZamowienia"));
+            element.setDataOdebrania(set.getDate("DataOdebrania"));
             element.setIlosc(set.getInt("Ilosc"));
             element.setKwota(set.getBigDecimal("Kwota"));
 

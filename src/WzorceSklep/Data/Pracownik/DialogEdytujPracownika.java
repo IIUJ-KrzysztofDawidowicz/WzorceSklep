@@ -190,7 +190,7 @@ public class DialogEdytujPracownika extends javax.swing.JDialog {
 
         titleLabel.setFont(new java.awt.Font("Vijaya", 0, 24)); // NOI18N
         titleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        titleLabel.setText("Dodawanie nowego pracownika");
+        titleLabel.setText("Edytowanie danych pracownika");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
