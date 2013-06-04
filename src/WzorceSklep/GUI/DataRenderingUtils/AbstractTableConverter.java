@@ -15,7 +15,7 @@ public abstract class AbstractTableConverter<T extends DataEntity> {
 
     protected final Map<String,Integer> index;
 
-    protected AbstractTableConverter() {
+    protected AbstractTableConverter() { //TODO: Abstract table converter
         String[] colmunNames = getColumnNames();
         index = new HashMap<String, Integer>();
         for (int i = 0; i < colmunNames.length; i++) {

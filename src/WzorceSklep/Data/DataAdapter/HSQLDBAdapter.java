@@ -18,7 +18,7 @@ public class HSQLDBAdapter implements DatabaseAdapter {
     private final Properties properties;
     private final String url;
 
-    public HSQLDBAdapter(String dbName, Properties properties) throws ClassNotFoundException, SQLException {
+    public HSQLDBAdapter(String dbName, Properties properties) throws ClassNotFoundException {
         this.properties = properties;
         Class.forName("org.hsqldb.jdbcDriver");
         url = "jdbc:hsqldb:file:" + Util.getAbsolutePathOfCurrentDirectory();
@@ -87,7 +87,7 @@ public class HSQLDBAdapter implements DatabaseAdapter {
         return getResultSet(selectCommand);
     }
 
-    private ResultSet getResultSet(String selectCommand) throws SQLException {
+    private ResultSet getResultSet(String selectCommand) {
         ResultSet rs;
         try {
             Connection conn = DriverManager.getConnection(url, properties);

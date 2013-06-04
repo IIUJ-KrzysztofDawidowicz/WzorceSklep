@@ -1,7 +1,5 @@
 package WzorceSklep.GUI;
 
-import com.sun.media.sound.InvalidDataException;
-
 import java.sql.SQLException;
 
 /**
@@ -12,5 +10,5 @@ import java.sql.SQLException;
  * To change this template use File | Settings | File Templates.
  */
 public interface RepresentDataAction {
-    void execute() throws InvalidDataException, SQLException, ClassNotFoundException;
+    void execute() throws SQLException;
 }

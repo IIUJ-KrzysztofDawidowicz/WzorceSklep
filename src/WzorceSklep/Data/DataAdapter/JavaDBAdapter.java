@@ -101,7 +101,7 @@ public class JavaDBAdapter implements DatabaseAdapter {
         return getResultSet(selectCommand);
     }
 
-    private ResultSet getResultSet(String selectCommand) throws SQLException {
+    private ResultSet getResultSet(String selectCommand) {
         ResultSet rs;
         try {
             rs = getStatement().executeQuery(selectCommand);

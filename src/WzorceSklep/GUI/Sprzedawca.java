@@ -51,7 +51,6 @@ public class Sprzedawca extends RefreshableJFrame {
     private final RepresentDataAction showMojeDane = new ShowMojeDaneAction();
     private final Map<JPanel, RepresentDataAction> refreshTableActions;
     private final Pracownik zalogowany;
-    private JDialog otwartyDialog;
     private Map<JPanel, String> nazwyPaneli;
 
     public Sprzedawca(Pracownik pracownik) {
@@ -122,16 +121,10 @@ public class Sprzedawca extends RefreshableJFrame {
                 try {
                     refreshTableActions.get(okno).execute();
                     NazwaPanelu.setText(nazwyPaneli.get(okno));
-                } catch (InvalidDataException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                    showErrorDialog(this, e);
                 } catch (SQLException e) {
                     e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                     showErrorDialog(this, e);
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                    showErrorDialog(this, e);
-            }
+                }
     }
 
     private Map<JPanel, RepresentDataAction> getRefreshTableActions() {

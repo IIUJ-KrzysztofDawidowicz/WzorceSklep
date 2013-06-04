@@ -26,8 +26,8 @@ public class Util {
         String sql = "select * from Pracownik";
         try {
             DatabaseAdapter adapter = DataAdapterFactory.getDatabaseAdapter();
-            adapter.selectAll("Pracownik");
-//            adapter.executeArbitraryStatement(sql);
+//            adapter.selectAll("Pracownik");
+            adapter.executeArbitraryStatement(sql);
         } catch (SQLException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }

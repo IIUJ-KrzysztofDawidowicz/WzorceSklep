@@ -3,7 +3,6 @@ package WzorceSklep.GUI.DataRenderingUtils;
 import WzorceSklep.Data.TableDataGetter;
 import WzorceSklep.DataEntity;
 import WzorceSklep.GUI.RepresentDataAction;
-import com.sun.media.sound.InvalidDataException;
 
 import javax.swing.table.TableModel;
 import java.sql.SQLException;
@@ -33,7 +32,7 @@ public class RefreshTableAction<T extends DataEntity> implements RepresentDataAc
     }
 
     @Override
-    public void execute() throws InvalidDataException, SQLException, ClassNotFoundException {
+    public void execute() throws SQLException {
         String order_by= tableAccessors.getOrderBy();
         String lookFor = tableAccessors.getLookFor();
         List<T> list;

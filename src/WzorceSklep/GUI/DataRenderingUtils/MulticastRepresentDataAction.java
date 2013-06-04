@@ -1,7 +1,6 @@
 package WzorceSklep.GUI.DataRenderingUtils;
 
 import WzorceSklep.GUI.RepresentDataAction;
-import com.sun.media.sound.InvalidDataException;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,15 +24,11 @@ public class MulticastRepresentDataAction implements RepresentDataAction {
     }
 
     @Override
-    public void execute() throws InvalidDataException, SQLException, ClassNotFoundException {
+    public void execute() throws SQLException {
         try {
             for(RepresentDataAction action: actions)
                 action.execute();
-        } catch (InvalidDataException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }

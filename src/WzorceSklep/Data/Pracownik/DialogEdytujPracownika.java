@@ -419,10 +419,6 @@ public class DialogEdytujPracownika extends javax.swing.JDialog {
         imieField.selectAll();
     }//GEN-LAST:event_imieFieldFocusGained
 
-    /**
-     * @param parent
-     * @param idPracownika
-     */
     public static void show(final Admin parent, final int idPracownika) {
 
         /* Create and display the dialog */

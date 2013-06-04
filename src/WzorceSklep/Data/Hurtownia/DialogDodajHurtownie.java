@@ -27,7 +27,7 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
     public static final String NAZWISKO_PLACEHOLDER = "Nazwisko";
     public static final String NR_DOMU_PLACEHOLDER = "Nr domu";
     private JFormattedTextField.AbstractFormatter format;
-    private DAOFactory daoFactory;
+    private final DAOFactory daoFactory;
 
     /**
      * Creates new form DialogDodajHurtownie

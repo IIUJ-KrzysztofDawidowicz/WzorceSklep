@@ -1,14 +1,13 @@
 package WzorceSklep.Data.Pracownik;
 
-import WzorceSklep.Data.TableDataGetter;
-import WzorceSklep.Data.ZAdresem;
-import WzorceSklep.DataAccessObject;
+import WzorceSklep.Data.AdresOsoby;
 import WzorceSklep.Data.DataAdapter.DatabaseAdapter;
 import WzorceSklep.Data.DataAdapter.TableInfo;
 import WzorceSklep.Data.DataAdapter.TableRow;
 import WzorceSklep.Data.DataAdapter.TableRowFactory;
-import WzorceSklep.Data.AdresOsoby;
-import com.sun.media.sound.InvalidDataException;
+import WzorceSklep.Data.TableDataGetter;
+import WzorceSklep.Data.ZAdresem;
+import WzorceSklep.DataAccessObject;
 import javafx.util.Pair;
 
 import java.sql.ResultSet;
@@ -109,7 +108,7 @@ public class PracownikDAO implements DataAccessObject<Pracownik>, TableDataGette
         return list.get(0);
     }
 
-    public Pracownik getByLogin(String login, String haslo) throws SQLException, InvalidDataException {
+    public Pracownik getByLogin(String login, String haslo) throws SQLException {
         TableRow row = TableRowFactory.createTableRow(tableNamePracownik);
         row.setValue("Login", login);
         row.setValue("Password", haslo);

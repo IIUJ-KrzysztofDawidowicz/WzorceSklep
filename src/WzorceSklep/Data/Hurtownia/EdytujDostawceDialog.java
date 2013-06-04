@@ -18,7 +18,7 @@ import java.sql.SQLException;
 public class EdytujDostawceDialog extends javax.swing.JDialog {
     private JFormattedTextField.AbstractFormatter format;
     private Hurtownia hurtownia;
-    private DAOFactory daoFactory;
+    private final DAOFactory daoFactory;
 
     /**
      * Creates new form EdytujDostawceDialog

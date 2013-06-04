@@ -15,7 +15,7 @@ public class KlientTableDataConverter implements TableDataConverter<Klient> {
 
     private final String klientTableName;
     private final String adresTableName;
-    private DatabaseAdapter adapter;
+    private final DatabaseAdapter adapter;
 
     public KlientTableDataConverter(String klientTableName, String adresTableName, DatabaseAdapter adapter) {
         this.klientTableName = klientTableName;
@@ -33,7 +33,6 @@ public class KlientTableDataConverter implements TableDataConverter<Klient> {
         return wynik;
     }
 
-    @Override
     public TableRow convertToTableRow(Klient klient) throws SQLException {
         TableRow tableRow = null;
         try {

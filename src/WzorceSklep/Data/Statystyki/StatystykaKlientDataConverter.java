@@ -30,7 +30,6 @@ public class StatystykaKlientDataConverter implements TableDataConverter<Statyst
         return wynik;
     }
 
-    @Override
     public TableRow convertToTableRow(StatystykiKlienta dataEntity) throws SQLException {
         TableRow wynik = TableRowFactory.createTableRow(tableName);
 

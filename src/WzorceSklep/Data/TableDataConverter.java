@@ -16,6 +16,6 @@ import java.util.List;
 public interface TableDataConverter<T extends DataEntity> extends ResultSetConverter<T> {
     List<TableRow> convertToTableRows(T dataEntity) throws SQLException;
 
-    TableRow convertToTableRow(T dataEntity) throws SQLException;
+//    TableRow convertToTableRow(T dataEntity) throws SQLException;
 
 }

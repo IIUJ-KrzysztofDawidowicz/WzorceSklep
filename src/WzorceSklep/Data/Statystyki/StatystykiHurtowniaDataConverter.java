@@ -31,7 +31,7 @@ public class StatystykiHurtowniaDataConverter implements TableDataConverter<Stat
         return wynik;
     }
 
-    @Override
+
     public TableRow convertToTableRow(StatystykiHurtowni dataEntity) throws SQLException {
         TableRow row = TableRowFactory.createTableRow(tableName);
 

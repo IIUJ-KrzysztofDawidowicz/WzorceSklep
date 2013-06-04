@@ -19,16 +19,13 @@ import WzorceSklep.Data.Klient.DialogDodajKlienta;
 import WzorceSklep.Data.Klient.EdytujKlientaDialog;
 import WzorceSklep.Data.Klient.Klient;
 import WzorceSklep.Data.Pracownik.*;
-import WzorceSklep.Data.Pracownik.Pracownik;
 import WzorceSklep.Data.Produkt.DialogDodajEdytujProdukt;
 import WzorceSklep.Data.Produkt.Produkt;
-import WzorceSklep.GUI.DataRenderingUtils.TableConverters.StatystykiHurtownieTableConverter;
 import WzorceSklep.Data.Zamowienie.ZamowienieHurtowni;
 import WzorceSklep.Data.Zamowienie.ZamowienieKlienta;
 import WzorceSklep.GUI.DataRenderingUtils.*;
 import WzorceSklep.GUI.DataRenderingUtils.TableConverters.*;
 import WzorceSklep.Util;
-import com.sun.media.sound.InvalidDataException;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
@@ -42,9 +39,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static WzorceSklep.DAOFactory.STATYSTYKA_HURTOWNIA;
-import static WzorceSklep.DAOFactory.STATYSTYKA_KLIENT;
-import static WzorceSklep.DAOFactory.STATYSTYKA_PRODUKTY;
+import static WzorceSklep.DAOFactory.*;
 import static WzorceSklep.Util.showErrorDialog;
 
 public class Admin extends RefreshableJFrame {
@@ -95,11 +90,7 @@ public class Admin extends RefreshableJFrame {
                 refreshTableActions.get(aktualnyPanel).execute();
                 NazwaPanelu.setText(panelNames.get(aktualnyPanel));
             }
-        } catch (InvalidDataException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (SQLException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        } catch (ClassNotFoundException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
@@ -126,10 +117,10 @@ public class Admin extends RefreshableJFrame {
                     new KlienciTableConverter(), daoFactory.getKlientGetter(), new KlienciTableAccesors()));
             panelNames.put(panel_klienci, "Klienci");
             actionMap.put(panel_hurtowni, new RefreshTableAction<Hurtownia>(                                    //Klienci
-                    new HurtowniaTableConverter(), DAOFactory.getHurtowniaGetter(), new HurtowniaTableAccessors()));
+                    new HurtowniaTableConverter(), daoFactory.getHurtowniaGetter(), new HurtowniaTableAccessors()));
             panelNames.put(panel_hurtowni, "Dostawcy");
             actionMap.put(panel_produkty, new RefreshTableAction<Produkt>(                                      //Produkty
-                    new ProduktyTableConverter(), DAOFactory.getProduktyGetter(), new ProduktyTableAccessors()));
+                    new ProduktyTableConverter(), daoFactory.getProduktyGetter(), new ProduktyTableAccessors()));
             panelNames.put(panel_produkty, "Produkty");
             actionMap.put(panel_statystyka, refreshStatystykiAction);
             panelNames.put(panel_statystyka, "Statystyki");
@@ -1847,7 +1838,7 @@ public class Admin extends RefreshableJFrame {
             this.table = table;
         }
 
-        private JTable table;
+        private final JTable table;
 
         @Override
         public String getOrderBy() {

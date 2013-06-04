@@ -25,7 +25,7 @@ public class DialogDodajZamowienieHurtowni extends javax.swing.JDialog {
 
     private Produkt[] produkty;
     private Hurtownia[] hurtownie;
-    private DAOFactory daoFactory;
+    private final DAOFactory daoFactory;
 
     /**
      * Creates new form DialogDodajZamowienieHurtowni
@@ -222,9 +222,9 @@ public class DialogDodajZamowienieHurtowni extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton CancelButton;
     private javax.swing.JSpinner IloscSpinner;
-    private javax.swing.JComboBox KlientComboBox;
+    private javax.swing.JComboBox<String> KlientComboBox;
     private javax.swing.JButton OKButton;
-    private javax.swing.JComboBox ProduktyComboBox;
+    private javax.swing.JComboBox<String> ProduktyComboBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

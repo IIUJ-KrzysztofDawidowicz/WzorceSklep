@@ -100,7 +100,7 @@ public class DAOFactory {
         return new PracownikDAO(getDatabaseAdapter());
     }
 
-    public static TableDataGetter<Hurtownia> getHurtowniaGetter() throws SQLException {
+    public  TableDataGetter<Hurtownia> getHurtowniaGetter() throws SQLException {
         return new HurtowniaDAO(getDatabaseAdapter());
     }
 

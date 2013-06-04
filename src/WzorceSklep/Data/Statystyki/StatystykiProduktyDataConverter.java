@@ -17,7 +17,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class StatystykiProduktyDataConverter implements TableDataConverter<StatystykiProdukty> {
-    private String tableName;
+    private final String tableName;
 
     public StatystykiProduktyDataConverter(String tableName) {
         this.tableName = tableName;
@@ -30,7 +30,6 @@ public class StatystykiProduktyDataConverter implements TableDataConverter<Staty
         return wynik;
     }
 
-    @Override
     public TableRow convertToTableRow(StatystykiProdukty dataEntity) throws SQLException {
         TableRow wynik = TableRowFactory.createTableRow(tableName);
 
