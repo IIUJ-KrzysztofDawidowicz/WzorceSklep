@@ -174,7 +174,7 @@ public class EdytujDostawceDialog extends javax.swing.JDialog {
             }
         });
 
-        miejscowoscField.setText("Miejscowo��");
+        miejscowoscField.setText("Miejscowość");
         miejscowoscField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 miejscowoscFieldFocusLost(evt);

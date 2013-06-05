@@ -99,7 +99,7 @@ public class DialogDodajKlienta extends javax.swing.JDialog
         wypelnijPola.setForeground(new java.awt.Color(255, 0, 0));
         wypelnijPola.setText("Niepoprawne lub niekompletne dane - popraw!");
 
-        miejscowoscField.setText("Miejscowo��");
+        miejscowoscField.setText("Miejscowość");
         miejscowoscField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 miejscowoscFieldFocusGained(evt);
@@ -177,7 +177,7 @@ public class DialogDodajKlienta extends javax.swing.JDialog
             }
         });
 
-        imieField.setText("Imi�");
+        imieField.setText("Imię");
         imieField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 imieFieldFocusGained(evt);

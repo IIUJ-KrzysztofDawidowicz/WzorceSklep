@@ -920,6 +920,14 @@ public class Sprzedawca extends RefreshableJFrame {
         @Override
         public void setTableModel(TableModel model) {
             zam_klienci_table.setModel(model);
+            try {
+                new ButtonColumn(zam_klienci_table,
+                        new UsunZamowienieAction(zam_klienci_table, daoFactory.getZamowieniaKllientaDAO(), Sprzedawca.this),
+                        getColumnIndex(model,"Usuń"));
+            } catch (SQLException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                showErrorDialog(Sprzedawca.this, e);
+            }
         }
 
         @Override

@@ -77,7 +77,7 @@ public class NoweZamowienieKlientaDialog extends javax.swing.JDialog {
             }
         });
 
-        jLabel3.setText("Ilo��:");
+        jLabel3.setText("Ilość:");
 
         CancelButton.setText("Cancel");
         CancelButton.addActionListener(new java.awt.event.ActionListener() {

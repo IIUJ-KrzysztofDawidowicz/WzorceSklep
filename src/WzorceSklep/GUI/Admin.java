@@ -1789,6 +1789,21 @@ public class Admin extends RefreshableJFrame {
         @Override
         public void setTableModel(TableModel model) {
             zam_klient_tab.setModel(model);
+            try {
+                new ButtonColumn(zam_klient_tab,
+                        new UsunZamowienieAction(zam_klient_tab, daoFactory.getZamowieniaKllientaDAO(), Admin.this),
+                        getColumnIndex(model,"Usuń"));
+                /*new ButtonColumn(zam_klient_tab,
+                        new RealizujZamowienieKlientaAction(
+                                Admin.this,
+                                zam_klient_tab,
+                                daoFactory.getZamowieniaKllientaDAO(),
+                                daoFactory.getProduktDAO()),
+                        getColumnIndex(model, "Zrealizuj"));*/
+            } catch (SQLException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                showErrorDialog(Admin.this,e);
+            }
         }
 
         @Override

@@ -19,6 +19,7 @@ public abstract class Zamowienie implements DataEntity
     private Date dataZamowienia;
     private Date dataOdebrania;
     private Produkt produktZamowiony;
+    private boolean zrealizowane;
     private int ilosc;
     private int ID;
 
@@ -73,5 +74,13 @@ public abstract class Zamowienie implements DataEntity
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public boolean isZrealizowane() {
+        return zrealizowane;
+    }
+
+    public void setZrealizowane(boolean zrealizowane) {
+        this.zrealizowane = zrealizowane;
     }
 }

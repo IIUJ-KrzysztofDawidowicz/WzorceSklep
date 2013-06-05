@@ -104,6 +104,7 @@ public class ZamowienieKlientaDAO implements DataAccessObject<ZamowienieKlienta>
         row.setValue("ID", adapter.getMaxValueForColumn(TABLE_NAME,"ID")+1);
         row.setValue("Kwota", nowy.getProduktZamowiony().cena.multiply(new BigDecimal(nowy.getIlosc())));
         row.setValue("DataZamowienie", nowy.getDataZamowienia());
+        row.setValue("DataOdebrania", nowy.getDataOdebrania());
         row.setValue("PracownikID", nowy.tworzacy.getID());
         row.setValue("KlientID", nowy.zamawiajacy.getID());
         row.setValue("ProduktID", nowy.getProduktZamowiony().ID);

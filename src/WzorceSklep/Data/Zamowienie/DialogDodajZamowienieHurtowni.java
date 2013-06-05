@@ -78,9 +78,9 @@ public class DialogDodajZamowienieHurtowni extends javax.swing.JDialog {
 
         KlientComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel1.setText("Wybierz dostawc�:");
+        jLabel1.setText("Wybierz dostawcę:");
 
-        jLabel3.setText("Ilo��:");
+        jLabel3.setText("Ilość:");
 
         OKButton.setText("OK");
         OKButton.addActionListener(new java.awt.event.ActionListener() {

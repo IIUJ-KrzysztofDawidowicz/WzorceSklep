@@ -136,7 +136,7 @@ public class DialogDodajHurtownie extends javax.swing.JDialog {
             }
         });
 
-        miejscowoscField.setText("Miejscowo��");
+        miejscowoscField.setText("Miejscowość");
         miejscowoscField.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 miejscowoscFieldFocusGained(evt);

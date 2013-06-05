@@ -24,6 +24,7 @@ public class ZamowienieKlientaResultSetConverter implements ResultSetConverter<Z
         {
             ZamowienieKlienta element = new ZamowienieKlienta();
 
+            element.setID(set.getInt("ID"));
             element.zamawiajacy.setImie(set.getString("Imie"));
             element.zamawiajacy.setNazwisko(set.getString("Nazwisko"));
             element.tworzacy.setImie(set.getString("ImiePracownika"));
@@ -34,6 +35,7 @@ public class ZamowienieKlientaResultSetConverter implements ResultSetConverter<Z
             element.setDataOdebrania(set.getDate("DataOdebrania"));
             element.setIlosc(set.getInt("Ilosc"));
             element.setKwota(set.getBigDecimal("Kwota"));
+            element.setZrealizowane(set.getBoolean("Zrealizowane"));
 
             wynik.add(element);
         }

@@ -16,7 +16,7 @@ import javax.swing.table.TableModel;
 public class ZamowieniaHurtowniTableConverter extends AbstractTableConverter<ZamowienieHurtowni> {
 
     private final static String[] columnNames = new String[]{
-            "ID", "Dostawca","Produkt","Typ","Ilość","Kwota","Data zamówienia","Data odebrania", "Usuń"
+            "ID", "Dostawca","Produkt","Typ","Ilość","Kwota","Data zamówienia",/*"Data odebrania",*/ "Usuń"
     };
 
     @Override
@@ -40,7 +40,7 @@ public class ZamowieniaHurtowniTableConverter extends AbstractTableConverter<Zam
         wynik[index.get("Ilość")] = zamowienie.getIlosc();
         wynik[index.get("Kwota")] = zamowienie.getKwota();
         wynik[index.get("Data zamówienia")] = zamowienie.getDataZamowienia();
-        wynik[index.get("Data odebrania")] = zamowienie.getDataOdebrania();
+//        wynik[index.get("Data odebrania")] = zamowienie.getDataOdebrania();
         wynik[index.get("Usuń")] = "Usuń";
 
         return wynik;
