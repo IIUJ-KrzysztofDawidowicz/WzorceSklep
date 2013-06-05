@@ -21,6 +21,7 @@ import WzorceSklep.Data.Klient.Klient;
 import WzorceSklep.Data.Pracownik.*;
 import WzorceSklep.Data.Produkt.DialogDodajEdytujProdukt;
 import WzorceSklep.Data.Produkt.Produkt;
+import WzorceSklep.Data.Zamowienie.UsunZamowienieAction;
 import WzorceSklep.Data.Zamowienie.ZamowienieHurtowni;
 import WzorceSklep.Data.Zamowienie.ZamowienieKlienta;
 import WzorceSklep.GUI.DataRenderingUtils.*;
@@ -40,6 +41,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static WzorceSklep.DAOFactory.*;
+import static WzorceSklep.Util.getColumnIndex;
 import static WzorceSklep.Util.showErrorDialog;
 
 public class Admin extends RefreshableJFrame {
@@ -1826,6 +1828,14 @@ public class Admin extends RefreshableJFrame {
         @Override
         public void setTableModel(TableModel model) {
             zam_hurt_tab.setModel(model);
+            try {
+                new ButtonColumn(zam_hurt_tab,
+                        new UsunZamowienieAction(zam_hurt_tab, daoFactory.getZamownieniaHurtowniDAO(), Admin.this),
+                        getColumnIndex(model, "Usuń"));
+            } catch (SQLException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                showErrorDialog(Admin.this, e);
+            }
         }
 
         @Override

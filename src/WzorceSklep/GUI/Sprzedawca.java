@@ -10,10 +10,7 @@ import WzorceSklep.Data.Klient.Klient;
 import WzorceSklep.Data.Pracownik.Pracownik;
 import WzorceSklep.Data.Produkt.DialogDodajEdytujProdukt;
 import WzorceSklep.Data.Produkt.Produkt;
-import WzorceSklep.Data.Zamowienie.DialogDodajZamowienieHurtowni;
-import WzorceSklep.Data.Zamowienie.NoweZamowienieKlientaDialog;
-import WzorceSklep.Data.Zamowienie.ZamowienieHurtowni;
-import WzorceSklep.Data.Zamowienie.ZamowienieKlienta;
+import WzorceSklep.Data.Zamowienie.*;
 import WzorceSklep.GUI.DataRenderingUtils.ButtonColumn;
 import WzorceSklep.GUI.DataRenderingUtils.MulticastRepresentDataAction;
 import WzorceSklep.GUI.DataRenderingUtils.RefreshTableAction;
@@ -23,7 +20,6 @@ import WzorceSklep.GUI.DataRenderingUtils.TableConverters.ProduktyTableConverter
 import WzorceSklep.GUI.DataRenderingUtils.TableConverters.ZamowianieKlientaTableConverter;
 import WzorceSklep.GUI.DataRenderingUtils.TableConverters.ZamowieniaHurtowniTableConverter;
 import WzorceSklep.Util;
-import com.sun.media.sound.InvalidDataException;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
@@ -215,7 +211,7 @@ public class Sprzedawca extends RefreshableJFrame {
             }
         });
 
-        Zamowienia.setText("Zam�wnienia");
+        Zamowienia.setText("Zamównienia");
         Zamowienia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ZamowieniaActionPerformed(evt);
@@ -471,7 +467,7 @@ public class Sprzedawca extends RefreshableJFrame {
             }
         });
 
-        zam_hurt_sortuj.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"", "Dostawca", "Produkt", "Data zam�wienia", "Data odebrania" }));
+        zam_hurt_sortuj.setModel(new javax.swing.DefaultComboBoxModel(new String[] {"", "Dostawca", "Produkt", "Data zamówienia", "Data odebrania" }));
         zam_hurt_sortuj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zam_hurt_sortujActionPerformed(evt);
@@ -961,6 +957,14 @@ public class Sprzedawca extends RefreshableJFrame {
         @Override
         public void setTableModel(TableModel model) {
             zam_hurt_table.setModel(model);
+            try {
+                new ButtonColumn(zam_hurt_table,
+                        new UsunZamowienieAction(zam_hurt_table, daoFactory.getZamownieniaHurtowniDAO(), Sprzedawca.this),
+                        getColumnIndex(model,"Usuń"));
+            } catch (SQLException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                showErrorDialog(Sprzedawca.this, e);
+            }
         }
 
         @Override

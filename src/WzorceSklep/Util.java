@@ -57,4 +57,14 @@ public class Util {
         return (Integer) table.getValueAt(Integer.valueOf(e.getActionCommand()),
                 getColumnIndex(table.getModel(), "ID"));
     }
+
+    public static int showDeleteConfirmationDialog(Component owner, String name) {
+        final String[] options = { "Tak", "Nie" };
+        return JOptionPane.showOptionDialog(owner,
+                String.format("Czy na pewno chcesz usunąć %s?", name),
+                "Potwierdzenie usunięcia",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE,
+                null, options, options[1]);
+    }
 }

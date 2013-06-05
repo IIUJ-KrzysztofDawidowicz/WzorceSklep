@@ -23,6 +23,7 @@ public class ZamowienieHurtowniViewResultSetConverter implements ResultSetConver
         {
             ZamowienieHurtowni zamowienieHurtowni = new ZamowienieHurtowni();
 
+            zamowienieHurtowni.setID(set.getInt("ID"));
             zamowienieHurtowni.getZamawiajacy().setNazwa(set.getString("NazwaHurtowni"));
             zamowienieHurtowni.getProduktZamowiony().nazwa= set.getString("NazwaProduktu");
             zamowienieHurtowni.getProduktZamowiony().typ=set.getString("TypProduktu");

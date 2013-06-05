@@ -709,7 +709,7 @@ public class EdytujDostawceDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_utworz1ActionPerformed
 
     private void UsunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UsunButtonActionPerformed
-        int answer = showConfirmationDialog(this, hurtownia.getName());
+        int answer = Util.showDeleteConfirmationDialog(this, hurtownia.getName());
         if(answer==JOptionPane.YES_OPTION)
             try {
                 daoFactory.getHurtowniaDAO().delete(hurtownia.getID());
@@ -723,16 +723,6 @@ public class EdytujDostawceDialog extends javax.swing.JDialog {
     private void pocztaField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pocztaField1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_pocztaField1ActionPerformed
-
-    private static int showConfirmationDialog(Component owner, String name) {
-        final String[] options = { "Tak", "Nie" };
-        return JOptionPane.showOptionDialog(owner,
-                String.format("Czy na pewno chcesz usunąć %s?", name),
-                "Potwierdzenie usunięcia",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE,
-                null, options, options[1]);
-    }
 
 
     public static void show(final DAOFactory daoFactory, final int idHurtowni, final Admin parent) {
