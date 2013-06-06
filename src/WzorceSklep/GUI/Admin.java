@@ -423,7 +423,7 @@ public class Admin extends RefreshableJFrame {
             }
         });
 
-        guzik_zamowienia.setText("Zamówienia");
+        guzik_zamowienia.setText("ZamÃ³wienia");
         guzik_zamowienia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 guzik_zamowieniaMouseClicked(evt);
@@ -433,7 +433,7 @@ public class Admin extends RefreshableJFrame {
         SklepLabel.setFont(new java.awt.Font("Segoe Script", 3, 24)); // NOI18N
         SklepLabel.setText("Sklep");
 
-        guzik_statystyka.setText("Statystyka sprzeda¿y");
+        guzik_statystyka.setText("Statystyka sprzedaÅ¼y");
         guzik_statystyka.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 guzik_statystykaMouseClicked(evt);
@@ -477,7 +477,7 @@ public class Admin extends RefreshableJFrame {
             }
         });
 
-        hurtownia_dodaj.setText("Dodaj dostawcê");
+        hurtownia_dodaj.setText("Dodaj dostawcÄ™");
         hurtownia_dodaj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 hurtownia_dodajActionPerformed(evt);
@@ -653,7 +653,7 @@ public class Admin extends RefreshableJFrame {
             }
         });
 
-        zam_sort_klient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Klient","Produkt","Typ","Iloœæ","Data","Kwota","Pracownik" }));
+        zam_sort_klient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Klient","Produkt","Typ","IloÅ›Ä‡","Data","Kwota","Pracownik" }));
         zam_sort_klient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zam_sort_klientActionPerformed(evt);
@@ -706,7 +706,7 @@ public class Admin extends RefreshableJFrame {
         ));
         jScrollPane6.setViewportView(zam_hurt_tab);
 
-        jLabel3.setText("Szukaj weg³ug: ");
+        jLabel3.setText("Szukaj wedÅ‚ug: ");
 
         zam_szukaj_hurt.setText("Szukaj");
         zam_szukaj_hurt.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -720,7 +720,7 @@ public class Admin extends RefreshableJFrame {
             }
         });
 
-        zam_sortuj_hurt.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Dostawca","Produkt","Typ","Iloœæ","Kwota","Data zamowienia","Data odebrania" }));
+        zam_sortuj_hurt.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Dostawca","Produkt","Typ","IloÅ›Ä‡","Kwota","Data zamowienia","Data odebrania" }));
         zam_sortuj_hurt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zam_sortuj_hurtActionPerformed(evt);
@@ -863,7 +863,7 @@ public class Admin extends RefreshableJFrame {
                 .addGap(0, 37, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Ogó³em", staty_ogolem);
+        jTabbedPane1.addTab("OgÃ³Å‚em", staty_ogolem);
 
         Hurtownie9.setText("Hurtownie");
 
@@ -1037,7 +1037,7 @@ public class Admin extends RefreshableJFrame {
                 .addGap(0, 37, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Miesiêcznie", staty_miesiecznie);
+        jTabbedPane1.addTab("MiesiÄ™cznie", staty_miesiecznie);
 
         statystka_produkty_rocznie.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
