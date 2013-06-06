@@ -35,7 +35,6 @@ public class ZamowienieKlientaResultSetConverter implements ResultSetConverter<Z
             element.setDataOdebrania(set.getDate("DataOdebrania"));
             element.setIlosc(set.getInt("Ilosc"));
             element.setKwota(set.getBigDecimal("Kwota"));
-            element.setZrealizowane(set.getBoolean("Zrealizowane"));
 
             wynik.add(element);
         }

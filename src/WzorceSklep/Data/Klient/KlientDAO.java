@@ -6,6 +6,7 @@ import WzorceSklep.Data.TableDataGetter;
 import WzorceSklep.DataAccessObject;
 import WzorceSklep.Data.DataAdapter.DatabaseAdapter;
 import WzorceSklep.Data.DataAdapter.*;
+import WzorceSklep.TableNames;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -19,17 +20,13 @@ import java.util.List;
  */
 public class KlientDAO implements DataAccessObject<Klient>, TableDataGetter<Klient> {
     private final DatabaseAdapter adapter;
-
-    private final static String tableName = "KLIENT";
-    private final static String tableNameAdres = "ADRESKLIENTA";
-
     private final TableDataGetter<Klient> tableDataGetter;
     private final TableDataConverter<Klient> tableDataConverter;
 
     public KlientDAO(DatabaseAdapter adapter) {
         this.adapter = adapter;
-        tableDataConverter = new KlientTableDataConverter(tableName, tableNameAdres, adapter);
-        tableDataGetter = new SingleTableDataGetter<Klient>(tableDataConverter, this.adapter, tableName);
+        tableDataConverter = new KlientTableDataConverter(TableNames.KLIENT, TableNames.ADRES_KLIENTA, adapter);
+        tableDataGetter = new SingleTableDataGetter<Klient>(tableDataConverter, this.adapter, TableNames.KLIENT);
     }
 
     @Override
@@ -49,7 +46,7 @@ public class KlientDAO implements DataAccessObject<Klient>, TableDataGetter<Klie
 
     @Override
     public void insert(Klient nowy) throws SQLException {
-        int id = adapter.getMaxValueForColumn(tableName, "ID") + 1;
+        int id = adapter.getMaxValueForColumn(TableNames.KLIENT, "ID") + 1;
         nowy.getAdres().setID(id);
         nowy.setID(id);
         for (TableRow row: tableDataConverter.convertToTableRows(nowy))
@@ -64,13 +61,13 @@ public class KlientDAO implements DataAccessObject<Klient>, TableDataGetter<Klie
 
     @Override
     public void delete(int id) throws SQLException {
-        adapter.delete(tableNameAdres, id);
-        adapter.delete(tableName,id);
+        adapter.delete(TableNames.ADRES_KLIENTA, id);
+        adapter.delete(TableNames.KLIENT,id);
     }
 
     @Override
     public Klient getById(int id) throws SQLException {
-        TableRow row = TableRowFactory.createTableRow(tableName);
+        TableRow row = TableRowFactory.createTableRow(TableNames.KLIENT);
         row.setValue("ID", id);
         List<Klient> list = tableDataConverter.convertResultSet(adapter.selectExactMatch(row));
         if(list.size()==0)

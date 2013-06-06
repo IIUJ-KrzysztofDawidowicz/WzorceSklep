@@ -10,6 +10,7 @@ import WzorceSklep.Data.Pracownik.Pracownik;
 import WzorceSklep.Data.Produkt.Produkt;
 import WzorceSklep.Data.TableDataGetter;
 import WzorceSklep.DataAccessObject;
+import WzorceSklep.TableNames;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -25,11 +26,12 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class ZamowienieKlientaDAO implements DataAccessObject<ZamowienieKlienta>, TableDataGetter<ZamowienieKlienta> {
-    private static final String TABLE_NAME = "ZAMOWIENIEKLIENTA";
     private final DatabaseAdapter adapter;
+    private DAOFactory daoFactory;
 
-    public ZamowienieKlientaDAO(DatabaseAdapter databaseAdapter) {
+    public ZamowienieKlientaDAO(DatabaseAdapter databaseAdapter, DAOFactory daoFactory) {
         adapter = databaseAdapter;
+        this.daoFactory = daoFactory;
     }
 
     private List<ZamowienieKlienta> convertToZamowienieKlienta(ResultSet rs) throws SQLException
@@ -61,7 +63,7 @@ public class ZamowienieKlientaDAO implements DataAccessObject<ZamowienieKlienta>
     @Override
     public List<ZamowienieKlienta> select(String orderBy) throws SQLException {
         List<ZamowienieKlienta>     wynik = convertToZamowienieKlienta(
-                adapter.select(TABLE_NAME, TableInfo.getColumnNameWithCheckedCase(TABLE_NAME, orderBy)));
+                adapter.select(TableNames.ZAMOWIENIE_KLIENTA, TableInfo.getColumnNameWithCheckedCase(TableNames.ZAMOWIENIE_KLIENTA, orderBy)));
 
         DataAccessObject<Produkt>   produktDataAccessObject     = DAOFactory.getProduktyDAO();
         DataAccessObject<Klient>    klientDataAccessObject      = new DAOFactory().getKlientDAO();
@@ -84,24 +86,25 @@ public class ZamowienieKlientaDAO implements DataAccessObject<ZamowienieKlienta>
     @Override
     public List<ZamowienieKlienta> select(String lookFor, String orderBy) throws SQLException {
         if(lookFor.equals(""))
-            return convertToZamowienieKlienta(adapter.select(TABLE_NAME, orderBy));
-        return convertToZamowienieKlienta(adapter.select(TABLE_NAME, lookFor,orderBy));
+            return convertToZamowienieKlienta(adapter.select(TableNames.ZAMOWIENIE_KLIENTA, orderBy));
+        return convertToZamowienieKlienta(adapter.select(TableNames.ZAMOWIENIE_KLIENTA, lookFor,orderBy));
     }
 
     @Override
     public List<ZamowienieKlienta> select() throws SQLException {
-        return convertToZamowienieKlienta(adapter.selectAll(TABLE_NAME));
+        return convertToZamowienieKlienta(adapter.selectAll(TableNames.ZAMOWIENIE_KLIENTA));
     }
 
     @Override
     public void insert(ZamowienieKlienta nowy) throws SQLException {
+        nowy.setID(adapter.getMaxValueForColumn(TableNames.ZAMOWIENIE_KLIENTA, "ID")+1);
         adapter.insert(convertToTableRow(nowy));
     }
 
     private TableRow convertToTableRow(ZamowienieKlienta nowy) throws SQLException {
-        TableRow row = TableRowFactory.createTableRow(TABLE_NAME);
+        TableRow row = TableRowFactory.createTableRow(TableNames.ZAMOWIENIE_KLIENTA);
 
-        row.setValue("ID", adapter.getMaxValueForColumn(TABLE_NAME,"ID")+1);
+        row.setValue("ID", nowy.getID());
         row.setValue("Kwota", nowy.getProduktZamowiony().cena.multiply(new BigDecimal(nowy.getIlosc())));
         row.setValue("DataZamowienie", nowy.getDataZamowienia());
         row.setValue("DataOdebrania", nowy.getDataOdebrania());
@@ -120,16 +123,21 @@ public class ZamowienieKlientaDAO implements DataAccessObject<ZamowienieKlienta>
 
     @Override
     public void delete(int id) throws SQLException {
-        adapter.delete(TABLE_NAME,id);
+        adapter.delete(TableNames.ZAMOWIENIE_KLIENTA,id);
     }
 
     @Override
     public ZamowienieKlienta getById(int id) throws SQLException {
-        TableRow row = TableRowFactory.createTableRow(TABLE_NAME);
+        TableRow row = TableRowFactory.createTableRow(TableNames.ZAMOWIENIE_KLIENTA);
         row.setValue("ID", id);
-        List<ZamowienieKlienta> wynik = convertToZamowienieKlienta(adapter.selectExactMatch(row));
-        if(wynik.size()>0)
-            return wynik.get(0);
-        return null;
+        List<ZamowienieKlienta> list = convertToZamowienieKlienta(adapter.selectExactMatch(row));
+        if (list.size() == 0) {
+            return null;
+        }
+        ZamowienieKlienta zamowienieKlienta = list.get(0);
+        zamowienieKlienta.tworzacy = daoFactory.getPracownikDAO().getById(zamowienieKlienta.tworzacy.getID());
+        zamowienieKlienta.zamawiajacy = daoFactory.getKlientDAO().getById(zamowienieKlienta.zamawiajacy.getID());
+        zamowienieKlienta.setProduktZamowiony(daoFactory.getProduktDAO().getById(zamowienieKlienta.getProduktZamowiony().ID));
+        return zamowienieKlienta;
     }
 }

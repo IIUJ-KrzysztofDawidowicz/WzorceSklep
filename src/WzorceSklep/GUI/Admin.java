@@ -21,11 +21,11 @@ import WzorceSklep.Data.Klient.Klient;
 import WzorceSklep.Data.Pracownik.*;
 import WzorceSklep.Data.Produkt.DialogDodajEdytujProdukt;
 import WzorceSklep.Data.Produkt.Produkt;
-import WzorceSklep.Data.Zamowienie.UsunZamowienieAction;
-import WzorceSklep.Data.Zamowienie.ZamowienieHurtowni;
-import WzorceSklep.Data.Zamowienie.ZamowienieKlienta;
+import WzorceSklep.Data.Zamowienie.*;
+import WzorceSklep.DataAccessObject;
 import WzorceSklep.GUI.DataRenderingUtils.*;
 import WzorceSklep.GUI.DataRenderingUtils.TableConverters.*;
+import WzorceSklep.TableNames;
 import WzorceSklep.Util;
 
 import javax.swing.*;
@@ -40,7 +40,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import static WzorceSklep.DAOFactory.*;
 import static WzorceSklep.Util.getColumnIndex;
 import static WzorceSklep.Util.showErrorDialog;
 
@@ -147,7 +146,7 @@ public class Admin extends RefreshableJFrame {
                         {statystka_hurtownie_ogolem, statystka_hurtownie_tygodniowo, statystka_hurtownie_miesiecznie, statystka_hurtownie_rocznie},
                         {statystka_klienci_ogolem, statystka_klienci_tygodniowo, statystka_klienci_miesiecznie, statystka_klienci_rocznie}
                 };
-        String[] tableNames = {STATYSTYKA_PRODUKTY, STATYSTYKA_HURTOWNIA, STATYSTYKA_KLIENT};
+        String[] tableNames = {TableNames.STATYSTYKA_PRODUKTY, TableNames.STATYSTYKA_HURTOWNIA, TableNames.STATYSTYKA_KLIENT};
         String[] suffix = {"", "Tydzien", "Miesiac","Rok"};
         AbstractTableConverter[] converters = {new StatystykiProduktyTableConverter(), new StatystykiHurtownieTableConverter(), new StatystykiKlienciTableConverter()};
         for (int i = 0; i < tables.length; i++)
@@ -1793,13 +1792,13 @@ public class Admin extends RefreshableJFrame {
                 new ButtonColumn(zam_klient_tab,
                         new UsunZamowienieAction(zam_klient_tab, daoFactory.getZamowieniaKllientaDAO(), Admin.this),
                         getColumnIndex(model,"Usuń"));
-                /*new ButtonColumn(zam_klient_tab,
+                new ButtonColumn(zam_klient_tab,
                         new RealizujZamowienieKlientaAction(
                                 Admin.this,
                                 zam_klient_tab,
                                 daoFactory.getZamowieniaKllientaDAO(),
                                 daoFactory.getProduktDAO()),
-                        getColumnIndex(model, "Zrealizuj"));*/
+                        getColumnIndex(model, "Zrealizuj"));
             } catch (SQLException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 showErrorDialog(Admin.this,e);
@@ -1844,13 +1843,22 @@ public class Admin extends RefreshableJFrame {
         public void setTableModel(TableModel model) {
             zam_hurt_tab.setModel(model);
             try {
+                final DataAccessObject<ZamowienieHurtowni> zamowienieDao = daoFactory.getZamownieniaHurtowniDAO();
                 new ButtonColumn(zam_hurt_tab,
-                        new UsunZamowienieAction(zam_hurt_tab, daoFactory.getZamownieniaHurtowniDAO(), Admin.this),
-                        getColumnIndex(model, "Usuń"));
+                        new UsunZamowienieAction(zam_hurt_tab, zamowienieDao, Admin.this),
+                        getColumnIndex(model, ZamowieniaHurtowniTableConverter.USUN_COLUMN));
+                new ButtonColumn(zam_hurt_tab,
+                        geZrealizujZamowienieAction(zamowienieDao),
+                        getColumnIndex(model, ZamowieniaHurtowniTableConverter.ZREALIZUJ_COLUMN));
             } catch (SQLException e) {
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
                 showErrorDialog(Admin.this, e);
             }
+        }
+
+        private ZrealizujZamowienieHurtowniAction geZrealizujZamowienieAction(DataAccessObject<ZamowienieHurtowni> zamowienieDao) throws SQLException {
+            return new ZrealizujZamowienieHurtowniAction(zamowienieDao,
+                    zam_hurt_tab, Admin.this, daoFactory.getProduktDAO());
         }
 
         @Override
