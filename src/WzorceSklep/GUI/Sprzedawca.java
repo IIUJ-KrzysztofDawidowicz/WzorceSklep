@@ -273,7 +273,7 @@ public class Sprzedawca extends RefreshableJFrame {
             panel_KlienciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_KlienciLayout.createSequentialGroup()
                 .addGroup(panel_KlienciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 810, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1040, Short.MAX_VALUE)
                     .addGroup(panel_KlienciLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(klienci_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -299,7 +299,7 @@ public class Sprzedawca extends RefreshableJFrame {
                 .addGap(0, 41, Short.MAX_VALUE))
         );
 
-        panel_Klienci.setBounds(0, 0, 820, 440);
+        panel_Klienci.setBounds(0, 0, 1050, 440);
         Warstwy.add(panel_Klienci, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         prod_table.setModel(new javax.swing.table.DefaultTableModel(
@@ -351,7 +351,7 @@ public class Sprzedawca extends RefreshableJFrame {
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(prod_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 810, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1040, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panel_ProduktyLayout.setVerticalGroup(
@@ -368,7 +368,7 @@ public class Sprzedawca extends RefreshableJFrame {
                 .addGap(0, 41, Short.MAX_VALUE))
         );
 
-        panel_Produkty.setBounds(0, 0, 820, 440);
+        panel_Produkty.setBounds(0, 0, 1050, 440);
         Warstwy.add(panel_Produkty, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         zam_klienci_table.setModel(new javax.swing.table.DefaultTableModel(
@@ -418,7 +418,7 @@ public class Sprzedawca extends RefreshableJFrame {
             zam_klienci_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, zam_klienci_panelLayout.createSequentialGroup()
                 .addGroup(zam_klienci_panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 805, Short.MAX_VALUE)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 1025, Short.MAX_VALUE)
                     .addGroup(zam_klienci_panelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(zam_klienci_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -506,7 +506,7 @@ public class Sprzedawca extends RefreshableJFrame {
                         .addComponent(zam_hurt_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(noweZamowienieHurtowniButton, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 805, Short.MAX_VALUE))
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.DEFAULT_SIZE, 1025, Short.MAX_VALUE))
                 .addContainerGap())
         );
         zam_hurt_panelLayout.setVerticalGroup(
@@ -537,7 +537,7 @@ public class Sprzedawca extends RefreshableJFrame {
             .addComponent(tabbed_zamowienia)
         );
 
-        panel_Zamowienia.setBounds(0, 0, 820, 460);
+        panel_Zamowienia.setBounds(0, 0, 1040, 460);
         Warstwy.add(panel_Zamowienia, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         IDLabel.setText("ID:");
@@ -593,7 +593,7 @@ public class Sprzedawca extends RefreshableJFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(panel_Moje_DaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(KrajLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(MiejscowoscLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)))
+                                    .addComponent(MiejscowoscLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 423, Short.MAX_VALUE)))
                             .addComponent(UlicaLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
@@ -631,7 +631,7 @@ public class Sprzedawca extends RefreshableJFrame {
                 .addContainerGap(275, Short.MAX_VALUE))
         );
 
-        panel_Moje_Dane.setBounds(0, 0, 820, 440);
+        panel_Moje_Dane.setBounds(0, 0, 1040, 440);
         Warstwy.add(panel_Moje_Dane, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         NazwaPanelu.setFont(new java.awt.Font("Segoe Script", 3, 18)); // NOI18N
@@ -648,14 +648,14 @@ public class Sprzedawca extends RefreshableJFrame {
                     .addComponent(Klienci, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Produkty, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(Warstwy, javax.swing.GroupLayout.DEFAULT_SIZE, 818, Short.MAX_VALUE)
+                .addComponent(Warstwy, javax.swing.GroupLayout.DEFAULT_SIZE, 1071, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(NazwaPanelu, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(336, 336, 336))
+                .addGap(469, 469, 469))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

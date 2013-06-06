@@ -32,7 +32,7 @@
                   <Component id="Produkty" alignment="0" min="-2" pref="158" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="Warstwy" pref="818" max="32767" attributes="0"/>
+              <Component id="Warstwy" pref="1071" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
           <Group type="102" alignment="0" attributes="0">
@@ -40,7 +40,7 @@
               <Component id="jLabel1" min="-2" pref="100" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
               <Component id="NazwaPanelu" min="-2" pref="186" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="336" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="469" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -119,7 +119,7 @@
         <Container class="javax.swing.JPanel" name="panel_Klienci">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout$JLayeredPaneConstraintsDescription">
-              <JLayeredPaneConstraints x="0" y="0" width="820" height="440" layer="0" position="-1"/>
+              <JLayeredPaneConstraints x="0" y="0" width="1050" height="440" layer="0" position="-1"/>
             </Constraint>
           </Constraints>
 
@@ -128,7 +128,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jScrollPane1" pref="810" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" pref="1040" max="32767" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="klienci_szukaj_co" min="-2" pref="258" max="-2" attributes="0"/>
@@ -218,7 +218,7 @@
         <Container class="javax.swing.JPanel" name="panel_Produkty">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout$JLayeredPaneConstraintsDescription">
-              <JLayeredPaneConstraints x="0" y="0" width="820" height="440" layer="0" position="-1"/>
+              <JLayeredPaneConstraints x="0" y="0" width="1050" height="440" layer="0" position="-1"/>
             </Constraint>
           </Constraints>
 
@@ -237,7 +237,7 @@
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="prod_sortuj" min="-2" pref="99" max="-2" attributes="0"/>
                           </Group>
-                          <Component id="jScrollPane2" alignment="0" pref="810" max="32767" attributes="0"/>
+                          <Component id="jScrollPane2" alignment="0" pref="1040" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -314,7 +314,7 @@
         <Container class="javax.swing.JPanel" name="panel_Zamowienia">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout$JLayeredPaneConstraintsDescription">
-              <JLayeredPaneConstraints x="0" y="0" width="820" height="460" layer="0" position="-1"/>
+              <JLayeredPaneConstraints x="0" y="0" width="1040" height="460" layer="0" position="-1"/>
             </Constraint>
           </Constraints>
 
@@ -349,7 +349,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
                               <Group type="103" groupAlignment="1" attributes="0">
-                                  <Component id="jScrollPane5" pref="805" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane5" pref="1025" max="32767" attributes="0"/>
                                   <Group type="102" attributes="0">
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="zam_klienci_szukaj_co" min="-2" pref="258" max="-2" attributes="0"/>
@@ -468,7 +468,7 @@
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="noweZamowienieHurtowniButton" min="-2" pref="95" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jScrollPane6" alignment="0" pref="805" max="32767" attributes="0"/>
+                                  <Component id="jScrollPane6" alignment="0" pref="1025" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -558,7 +558,7 @@
         <Container class="javax.swing.JPanel" name="panel_Moje_Dane">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JLayeredPaneSupportLayout$JLayeredPaneConstraintsDescription">
-              <JLayeredPaneConstraints x="0" y="0" width="820" height="440" layer="0" position="-1"/>
+              <JLayeredPaneConstraints x="0" y="0" width="1040" height="440" layer="0" position="-1"/>
             </Constraint>
           </Constraints>
 
@@ -591,7 +591,7 @@
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Component id="KrajLabel" max="32767" attributes="0"/>
-                                          <Component id="MiejscowoscLabel" pref="203" max="32767" attributes="0"/>
+                                          <Component id="MiejscowoscLabel" pref="423" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Component id="UlicaLabel" max="32767" attributes="0"/>
