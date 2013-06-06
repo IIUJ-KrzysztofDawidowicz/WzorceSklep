@@ -423,7 +423,7 @@ public class Admin extends RefreshableJFrame {
             }
         });
 
-        guzik_zamowienia.setText("ZamÃ³wienia");
+        guzik_zamowienia.setText("Zamówienia");
         guzik_zamowienia.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 guzik_zamowieniaMouseClicked(evt);
@@ -433,7 +433,7 @@ public class Admin extends RefreshableJFrame {
         SklepLabel.setFont(new java.awt.Font("Segoe Script", 3, 24)); // NOI18N
         SklepLabel.setText("Sklep");
 
-        guzik_statystyka.setText("Statystyka sprzedaÅ¼y");
+        guzik_statystyka.setText("Statystyka sprzeda¿y");
         guzik_statystyka.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 guzik_statystykaMouseClicked(evt);
@@ -477,7 +477,7 @@ public class Admin extends RefreshableJFrame {
             }
         });
 
-        hurtownia_dodaj.setText("Dodaj dostawcÄ™");
+        hurtownia_dodaj.setText("Dodaj dostawcê");
         hurtownia_dodaj.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 hurtownia_dodajActionPerformed(evt);
@@ -502,13 +502,13 @@ public class Admin extends RefreshableJFrame {
         panel_hurtowni.setLayout(panel_hurtowniLayout);
         panel_hurtowniLayout.setHorizontalGroup(
             panel_hurtowniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 1090, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(panel_hurtowniLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(hurtownia_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(hurtownie_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -520,7 +520,7 @@ public class Admin extends RefreshableJFrame {
             panel_hurtowniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_hurtowniLayout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(panel_hurtowniLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(hurtownia_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1)
@@ -530,21 +530,21 @@ public class Admin extends RefreshableJFrame {
                 .addContainerGap())
         );
 
-        panel_hurtowni.setBounds(0, 0, 860, 580);
+        panel_hurtowni.setBounds(0, 0, 1090, 570);
         Warstwy.add(panel_hurtowni, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout panel_hurtowni_szczegolyLayout = new javax.swing.GroupLayout(panel_hurtowni_szczegoly);
         panel_hurtowni_szczegoly.setLayout(panel_hurtowni_szczegolyLayout);
         panel_hurtowni_szczegolyLayout.setHorizontalGroup(
             panel_hurtowni_szczegolyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 860, Short.MAX_VALUE)
+            .addGap(0, 1110, Short.MAX_VALUE)
         );
         panel_hurtowni_szczegolyLayout.setVerticalGroup(
             panel_hurtowni_szczegolyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 580, Short.MAX_VALUE)
         );
 
-        panel_hurtowni_szczegoly.setBounds(0, 0, 860, 580);
+        panel_hurtowni_szczegoly.setBounds(0, 0, 1110, 580);
         Warstwy.add(panel_hurtowni_szczegoly, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         produkty_tabela.setModel(new javax.swing.table.DefaultTableModel(
@@ -601,20 +601,20 @@ public class Admin extends RefreshableJFrame {
         panel_produktyLayout.setHorizontalGroup(
             panel_produktyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_produktyLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 860, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(panel_produktyLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(produkty_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(produkty_szukaj, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 478, Short.MAX_VALUE)
                 .addComponent(jLabel4)
                 .addGap(18, 18, 18)
                 .addComponent(produkty_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(produkty_dodaj, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panel_produktyLayout.createSequentialGroup()
+                .addComponent(jScrollPane2)
+                .addGap(21, 21, 21))
         );
         panel_produktyLayout.setVerticalGroup(
             panel_produktyLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -630,7 +630,7 @@ public class Admin extends RefreshableJFrame {
                 .addContainerGap(54, Short.MAX_VALUE))
         );
 
-        panel_produkty.setBounds(0, 0, 860, 580);
+        panel_produkty.setBounds(0, 0, 1110, 580);
         Warstwy.add(panel_produkty, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         zam_klient_tab.setModel(new javax.swing.table.DefaultTableModel(
@@ -653,7 +653,7 @@ public class Admin extends RefreshableJFrame {
             }
         });
 
-        zam_sort_klient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Klient","Produkt","Typ","IloÅ›Ä‡","Data zamÃ³wienia","Data realizacji","Kwota","Pracownik" }));
+        zam_sort_klient.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Klient","Produkt","Typ","Iloœæ","Data","Kwota","Pracownik" }));
         zam_sort_klient.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zam_sort_klientActionPerformed(evt);
@@ -672,7 +672,7 @@ public class Admin extends RefreshableJFrame {
                 .addComponent(zam_szukaj_co_klient, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(zam_szukaj_klient, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 293, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 511, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(zam_sort_klient, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -706,7 +706,7 @@ public class Admin extends RefreshableJFrame {
         ));
         jScrollPane6.setViewportView(zam_hurt_tab);
 
-        jLabel3.setText("Sortuj po: ");
+        jLabel3.setText("Szukaj weg³ug: ");
 
         zam_szukaj_hurt.setText("Szukaj");
         zam_szukaj_hurt.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -720,7 +720,7 @@ public class Admin extends RefreshableJFrame {
             }
         });
 
-        zam_sortuj_hurt.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Dostawca","Produkt","Typ","IloÅ›Ä‡","Kwota","Data zamowienia","Data realizacji" }));
+        zam_sortuj_hurt.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Dostawca","Produkt","Typ","Iloœæ","Kwota","Data zamowienia","Data odebrania" }));
         zam_sortuj_hurt.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 zam_sortuj_hurtActionPerformed(evt);
@@ -737,7 +737,7 @@ public class Admin extends RefreshableJFrame {
                 .addComponent(zam_szukaj_co_hurt, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(zam_szukaj_hurt, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 265, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 483, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(zam_sortuj_hurt, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -763,8 +763,9 @@ public class Admin extends RefreshableJFrame {
         panel_zamowieniaLayout.setHorizontalGroup(
             panel_zamowieniaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panel_zamowieniaLayout.createSequentialGroup()
-                .addComponent(zamowenia_tabbed, javax.swing.GroupLayout.PREFERRED_SIZE, 872, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(zamowenia_tabbed)
+                .addContainerGap())
         );
         panel_zamowieniaLayout.setVerticalGroup(
             panel_zamowieniaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -774,7 +775,7 @@ public class Admin extends RefreshableJFrame {
                 .addContainerGap(60, Short.MAX_VALUE))
         );
 
-        panel_zamowienia.setBounds(0, 0, 860, 580);
+        panel_zamowienia.setBounds(0, 0, 1110, 580);
         Warstwy.add(panel_zamowienia, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         Klienci8.setText("Klienci");
@@ -827,20 +828,22 @@ public class Admin extends RefreshableJFrame {
         staty_ogolemLayout.setHorizontalGroup(
             staty_ogolemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(staty_ogolemLayout.createSequentialGroup()
-                .addComponent(jScrollPane66, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(jScrollPane67, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane65, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(staty_ogolemLayout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(Produkty8, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(179, 179, 179)
-                .addComponent(Klienci8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 208, Short.MAX_VALUE)
-                .addComponent(Hurtownie8)
-                .addGap(201, 201, 201))
+                .addGroup(staty_ogolemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(staty_ogolemLayout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(Produkty8, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane66, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(staty_ogolemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(staty_ogolemLayout.createSequentialGroup()
+                        .addComponent(Klienci8)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane67, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(staty_ogolemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Hurtownie8)
+                    .addComponent(jScrollPane65, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         staty_ogolemLayout.setVerticalGroup(
             staty_ogolemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -853,14 +856,14 @@ public class Admin extends RefreshableJFrame {
                         .addComponent(Hurtownie8)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(staty_ogolemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane65, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane65, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(staty_ogolemLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane67, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
                         .addComponent(jScrollPane66, javax.swing.GroupLayout.Alignment.TRAILING)))
                 .addGap(0, 37, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("OgÃ³Å‚em", staty_ogolem);
+        jTabbedPane1.addTab("Ogó³em", staty_ogolem);
 
         Hurtownie9.setText("Hurtownie");
 
@@ -912,20 +915,22 @@ public class Admin extends RefreshableJFrame {
         staty_tygodniwoLayout.setHorizontalGroup(
             staty_tygodniwoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(staty_tygodniwoLayout.createSequentialGroup()
-                .addComponent(jScrollPane68, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(jScrollPane70, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane69, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(staty_tygodniwoLayout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(Produkty9, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(179, 179, 179)
-                .addComponent(Klienci9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 208, Short.MAX_VALUE)
-                .addComponent(Hurtownie9)
-                .addGap(201, 201, 201))
+                .addGroup(staty_tygodniwoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(staty_tygodniwoLayout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(Produkty9, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane68, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(staty_tygodniwoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(staty_tygodniwoLayout.createSequentialGroup()
+                        .addComponent(Klienci9)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane70, javax.swing.GroupLayout.DEFAULT_SIZE, 376, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(staty_tygodniwoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane69, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Hurtownie9))
+                .addContainerGap())
         );
         staty_tygodniwoLayout.setVerticalGroup(
             staty_tygodniwoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -938,7 +943,7 @@ public class Admin extends RefreshableJFrame {
                         .addComponent(Hurtownie9)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(staty_tygodniwoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane69, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane69, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(staty_tygodniwoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane70, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
                         .addComponent(jScrollPane68, javax.swing.GroupLayout.Alignment.TRAILING)))
@@ -997,20 +1002,22 @@ public class Admin extends RefreshableJFrame {
         staty_miesiecznieLayout.setHorizontalGroup(
             staty_miesiecznieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(staty_miesiecznieLayout.createSequentialGroup()
-                .addComponent(jScrollPane71, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(jScrollPane73, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane72, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(staty_miesiecznieLayout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(Produkty10, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(179, 179, 179)
-                .addComponent(Klienci10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 208, Short.MAX_VALUE)
-                .addComponent(Hurtownie10)
-                .addGap(201, 201, 201))
+                .addGroup(staty_miesiecznieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(staty_miesiecznieLayout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(Produkty10, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane71, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(staty_miesiecznieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(staty_miesiecznieLayout.createSequentialGroup()
+                        .addComponent(Klienci10)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane73, javax.swing.GroupLayout.DEFAULT_SIZE, 382, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(staty_miesiecznieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane72, javax.swing.GroupLayout.PREFERRED_SIZE, 327, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Hurtownie10))
+                .addContainerGap())
         );
         staty_miesiecznieLayout.setVerticalGroup(
             staty_miesiecznieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1030,7 +1037,7 @@ public class Admin extends RefreshableJFrame {
                 .addGap(0, 37, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("MiesiÄ™cznie", staty_miesiecznie);
+        jTabbedPane1.addTab("Miesiêcznie", staty_miesiecznie);
 
         statystka_produkty_rocznie.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1082,20 +1089,22 @@ public class Admin extends RefreshableJFrame {
         staty_rocznieLayout.setHorizontalGroup(
             staty_rocznieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(staty_rocznieLayout.createSequentialGroup()
-                .addComponent(jScrollPane74, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(jScrollPane76, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane75, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(staty_rocznieLayout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(Produkty11, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(179, 179, 179)
-                .addComponent(Klienci11)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 208, Short.MAX_VALUE)
-                .addComponent(Hurtownie11)
-                .addGap(201, 201, 201))
+                .addGroup(staty_rocznieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(staty_rocznieLayout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(Produkty11, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane74, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(staty_rocznieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(staty_rocznieLayout.createSequentialGroup()
+                        .addComponent(Klienci11)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane76, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(staty_rocznieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Hurtownie11)
+                    .addComponent(jScrollPane75, javax.swing.GroupLayout.PREFERRED_SIZE, 328, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         staty_rocznieLayout.setVerticalGroup(
             staty_rocznieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1108,7 +1117,7 @@ public class Admin extends RefreshableJFrame {
                         .addComponent(Hurtownie11)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(staty_rocznieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane75, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane75, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 435, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(staty_rocznieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jScrollPane76, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 435, Short.MAX_VALUE)
                         .addComponent(jScrollPane74, javax.swing.GroupLayout.Alignment.TRAILING)))
@@ -1130,7 +1139,7 @@ public class Admin extends RefreshableJFrame {
                 .addGap(0, 27, Short.MAX_VALUE))
         );
 
-        panel_statystyka.setBounds(0, 0, 860, 580);
+        panel_statystyka.setBounds(0, 0, 1110, 580);
         Warstwy.add(panel_statystyka, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         klienci_tabela.setModel(new javax.swing.table.DefaultTableModel(
@@ -1178,7 +1187,7 @@ public class Admin extends RefreshableJFrame {
         panel_klienci.setLayout(panel_klienciLayout);
         panel_klienciLayout.setHorizontalGroup(
             panel_klienciLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 860, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1110, Short.MAX_VALUE)
             .addGroup(panel_klienciLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(klienci_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1207,7 +1216,7 @@ public class Admin extends RefreshableJFrame {
                 .addGap(0, 54, Short.MAX_VALUE))
         );
 
-        panel_klienci.setBounds(0, 0, 860, 580);
+        panel_klienci.setBounds(0, 0, 1110, 580);
         Warstwy.add(panel_klienci, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         pracownicy_tabela.setModel(new javax.swing.table.DefaultTableModel(
@@ -1261,7 +1270,7 @@ public class Admin extends RefreshableJFrame {
                 .addComponent(pracownicy_szukaj_co, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pracownicy_szukaj, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 354, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addGap(18, 18, 18)
                 .addComponent(pracownicy_sortuj, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1283,7 +1292,7 @@ public class Admin extends RefreshableJFrame {
                 .addGap(0, 62, Short.MAX_VALUE))
         );
 
-        panel_pracownicy.setBounds(0, 0, 860, 580);
+        panel_pracownicy.setBounds(0, 0, 1110, 580);
         Warstwy.add(panel_pracownicy, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         NazwaPanelu.setFont(new java.awt.Font("Segoe Script", 3, 18)); // NOI18N
@@ -1310,7 +1319,7 @@ public class Admin extends RefreshableJFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Warstwy))
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 345, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 575, Short.MAX_VALUE)
                         .addComponent(NazwaPanelu, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(295, 295, 295)
                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
